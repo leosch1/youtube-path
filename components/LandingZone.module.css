@@ -41,8 +41,8 @@
 }
 
 .exploreButton {
-  background-color: var(--primary-color);
-  color: var(--on-primary-color);
+  background-color: var(--primary-action-color);
+  color: var(--on-primary-action-color);
 }
 
 .dataButton {
