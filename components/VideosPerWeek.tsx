@@ -2,14 +2,10 @@
 
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-
-interface DataPoint {
-  date: Date;
-  value: number;
-}
+import { VideoData } from '../types/types';
 
 interface VideosPerWeekProps {
-  data: DataPoint[];
+  data: VideoData[];
 }
 
 const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
@@ -39,7 +35,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
         .range([margin.top, totalHeight - margin.bottom]);
 
       // Define the step function for the stepped line
-      const line = d3.line<DataPoint>()
+      const line = d3.line<VideoData>()
         .x(d => x(d.value))
         .y(d => y(d.date))
         .curve(d3.curveStepAfter); // Use the step after curve to create the stepped look
