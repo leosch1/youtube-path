@@ -1,8 +1,25 @@
+'use client';
+
+import React, { useRef, useState } from 'react';
 import styles from "./page.module.css";
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
 
 export default function Home() {
+  const watchHistoryDataRef = useRef(null);
+  const [videosPerWeek, setVideosPerWeek] = useState(null);
+
+  const getVideosPerWeek = (data: any) => {
+    console.log(data)
+    return data;
+  }
+
+  const handleDataChange = (data: any) => {
+    watchHistoryDataRef.current = data;
+    const result = getVideosPerWeek(data);
+    setVideosPerWeek(result);
+  };
+
   const videosPerWeekData = [
     { date: new Date('2022-07-01'), value: 16 },
     { date: new Date('2022-07-08'), value: 18 },
@@ -48,7 +65,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <LandingZone />
+      <LandingZone setData={handleDataChange} />
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
           <div className={styles.videosPerWeek}>
