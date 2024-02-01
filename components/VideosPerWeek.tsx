@@ -48,10 +48,16 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
         .attr("stroke-width", 2)
         .attr("d", line);
 
+      // Define the desired distance between the ticks (in pixels)
+      const tickSpacing = 30;
+
+      // Calculate the number of ticks
+      const numTicks = Math.floor((totalWidth - margin.left - margin.right) / tickSpacing);
+
       // Add the X Axis
       const xAxis = svg.append("g")
         .attr("transform", `translate(0,${margin.top})`)
-        .call(d3.axisTop(x));
+        .call(d3.axisTop(x).ticks(numTicks).tickFormat(d3.format("~s")));
 
       xAxis.selectAll("text")
         .attr("fill", tickColor);
