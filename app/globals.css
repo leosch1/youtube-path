@@ -1,10 +1,14 @@
 :root {
   --background-color: #242424;
-  --primary-color: #FF9D0A;
-  --on-primary-color: #000000;
+
+  --primary-action-color: #FF9D0A;
+  --on-primary-action-color: #000000;
+
   --secondary-action-color: #8C8C8C;
   --on-secondary-action-color: #fff;
+  
   --text-color: #fff;
+  --secondary-text-color: #CDCDCD;
 }
 
 * {
