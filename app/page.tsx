@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
 import styles from "./page.module.css";
 import { getVideosPerWeek } from './utils'; // adjust the path as needed
 import LandingZone from '../components/LandingZone';
