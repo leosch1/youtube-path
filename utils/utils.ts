@@ -1,16 +1,24 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoData } from "../types/types";
+import { VideoCountData, WatchHistoryEntry, TotalVideoCountData } from "../types/types";
 
-export const getVideosPerWeek = (data: any[]): VideoData[] => {
-  // Sort the data in ascending order by date
-  data.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
+  // Create a copy of the data array
+  const sortedData = [...data];
 
+  // Sort the copy in ascending order by date
+  sortedData.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+
+  // Return the sorted copy
+  return sortedData;
+};
+
+export const getVideosPerWeekData = (data: WatchHistoryEntry[]): VideoCountData[] => {
   // Initialize the start and end dates
   let startDate = startOfWeek(new Date(data[0].time));
   let endDate = endOfWeek(startDate);
 
   // Initialize the result array
-  const result: VideoData[] = [];
+  const result: VideoCountData[] = [];
 
   // Initialize the video count
   let videoCount = 0;
@@ -45,4 +53,15 @@ export const formatDate = (date: Date): string => {
     month: 'long',
     day: 'numeric',
   });
+};
+
+export const getTotalVideoCountData = (data: WatchHistoryEntry[]): TotalVideoCountData => {
+  // Convert the first and last time values to Dates
+  const startDate = new Date(data[0].time);
+  const endDate = new Date(data[data.length - 1].time);
+
+  // Get the total video count
+  const videoCount = data.length;
+
+  return { startDate, endDate, videoCount };
 };

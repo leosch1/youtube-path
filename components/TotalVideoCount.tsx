@@ -1,16 +1,17 @@
 import React from 'react';
 import styles from './TotalVideoCount.module.css';
 import { formatDate } from '../utils/utils';
+import { TotalVideoCountData } from '../types/types';
 
 type TotalVideoCountProps = {
-  data: {
-    startDate: Date;
-    endDate: Date;
-    videoCount: number;
-  };
+  data: TotalVideoCountData | null;
 };
 
 const TotalVideoCount: React.FC<TotalVideoCountProps> = ({ data }) => {
+  if (!data) {
+    return null;
+  }
+
   const { startDate, endDate, videoCount } = data;
 
   return (

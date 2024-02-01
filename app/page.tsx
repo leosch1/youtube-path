@@ -2,26 +2,21 @@
 
 import React, { useRef, useState } from 'react';
 import styles from "./page.module.css";
-import { getVideosPerWeek } from '../utils/utils';
+import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData } from '../utils/utils';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
 import TotalVideoCount from '../components/TotalVideoCount';
-import { VideoData } from "../types/types";
+import { WatchHistoryEntry, VideoCountData, TotalVideoCountData } from "../types/types";
 
 export default function Home() {
-  const watchHistoryDataRef = useRef(null);
-  const [videosPerWeekData, setVideosPerWeekData] = useState<VideoData[]>([]);
+  const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
+  const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>([]);
+  const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData | null>(null);
 
-  const handleDataChange = (data: any) => {
-    watchHistoryDataRef.current = data;
-    const result = getVideosPerWeek(data);
-    setVideosPerWeekData(result);
-  };
-
-  const totalVideoCountData = {
-    startDate: new Date('2022-07-06'),
-    endDate: new Date('2023-05-18'),
-    videoCount: 12941
+  const handleDataChange = (data: WatchHistoryEntry[]) => {
+    watchHistoryDataRef.current = sortDataByTime(data);
+    setVideosPerWeekData(getVideosPerWeekData(watchHistoryDataRef.current));
+    setTotalVideoCountData(getTotalVideoCountData(watchHistoryDataRef.current));
   };
 
   return (
