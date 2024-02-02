@@ -7,6 +7,7 @@ import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
 import TotalVideoCount from '../components/TotalVideoCount';
 import VideosPerWeekday from '../components/VideosPerWeekday';
+import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, VideosPerWeekdayData } from "../types/types";
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
@@ -38,6 +39,7 @@ export default function Home() {
         <div className={styles.mainDiagrams}>
           <TotalVideoCount data={totalVideoCountData} />
           <VideosPerWeekday data={videosPerWeekdayData} />
+          <MaxVideosPerWeek data={videosPerWeekData} />
         </div>
       </div>
     </main>

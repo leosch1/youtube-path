@@ -43,7 +43,7 @@ export const exampleVideosPerWeekData: VideoCountData[] = [
   { "date": new Date("2021-08-14T17:00:00.000Z"), "value": 719 },
   { "date": new Date("2021-08-21T17:00:00.000Z"), "value": 714 },
   { "date": new Date("2021-08-28T17:00:00.000Z"), "value": 243 },
-  { "date": new Date("2021-09-04T17:00:00.000Z"), "value": 231 },
+  { "date": new Date("2021-09-04T17:00:00.000Z"), "value": 2731 },
   { "date": new Date("2021-09-11T17:00:00.000Z"), "value": 468 },
   { "date": new Date("2021-09-18T17:00:00.000Z"), "value": 498 },
   { "date": new Date("2021-09-25T17:00:00.000Z"), "value": 485 },
