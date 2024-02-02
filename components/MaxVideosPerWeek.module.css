@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+  height: 100vh;
+}
+
+.centeredElement {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.centeredElement h2 {
+  font-size: 2.5em;
+  margin-left: 0.5em;
+}
+
+.container h2 em {
+  font-style: normal;
+  color: var(--primary-action-color);
+}
+
+.centeredText {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  margin-top: 2.5em;
+}
