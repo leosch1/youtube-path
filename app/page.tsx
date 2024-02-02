@@ -8,12 +8,15 @@ import VideosPerWeek from "../components/VideosPerWeek";
 import TotalVideoCount from '../components/TotalVideoCount';
 import VideosPerWeekday from '../components/VideosPerWeekday';
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, VideosPerWeekdayData } from "../types/types";
+import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
+import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
+import { exampleVideosPerWeekdayData } from '../example-data/exampleVideosPerWeekdayData';
 
 export default function Home() {
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
-  const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>([]);
-  const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData | null>(null);
-  const [videosPerWeekdayData, setVideosPerWeekdayData] = useState<VideosPerWeekdayData[]>([]);
+  const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>(exampleVideosPerWeekData);
+  const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
+  const [videosPerWeekdayData, setVideosPerWeekdayData] = useState<VideosPerWeekdayData[]>(exampleVideosPerWeekdayData);
 
   const handleDataChange = (data: WatchHistoryEntry[]) => {
     watchHistoryDataRef.current = sortDataByTime(data);
