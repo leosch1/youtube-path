@@ -8,16 +8,18 @@ type VideosPerWeekdayProps = {
 };
 
 const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
-  const d3Container = useRef(null);
+  const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
     if (data && d3Container.current) {
       const svg = d3.select(d3Container.current);
 
       // Set up your chart dimensions and margins
-      const margin = { top: 20, right: 30, bottom: 40, left: 90 };
-      const width = 600 - margin.left - margin.right;
-      const height = 400 - margin.top - margin.bottom;
+      const totalWidth = d3Container.current.clientWidth;
+      const totalHeight = d3Container.current.clientHeight;
+      const margin = { top: 5, right: 40, bottom: 20, left: 5 };
+      const width = totalWidth - margin.left - margin.right;
+      const height = totalHeight - margin.top - margin.bottom;
 
       // Clear svg content before adding new elements
       svg.selectAll("*").remove();
@@ -32,33 +34,40 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .domain([0, d3.max(data, d => d.value)!])
         .range([height, 0]);
 
+      const maxValue = d3.max(data, d => d.value);
+      const barColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
+      const maxBarColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
+
       // Append the rectangles for the bar chart
       svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`)
         .selectAll('rect')
         .data(data)
         .enter()
         .append('rect')
-          .attr('x', d => xScale(d.day)!)
-          .attr('width', xScale.bandwidth())
-          .attr('y', d => yScale(d.value))
-          .attr('height', d => height - yScale(d.value))
-          .attr('fill', (d, i) => i === data.length - 1 ? '#FFA500' : '#FFF');
+        .attr('x', d => xScale(d.day)!)
+        .attr('width', xScale.bandwidth())
+        .attr('y', d => yScale(d.value))
+        .attr('height', d => height - yScale(d.value))
+        .attr('fill', d => d.value === maxValue ? maxBarColor : barColor);
 
       // Add the x-axis
       svg.append('g')
-        .attr('transform', `translate(0,${height})`)
+        .attr('transform', `translate(${margin.left},${height + margin.top})`)
         .call(d3.axisBottom(xScale));
 
       // Add the y-axis
       svg.append('g')
-        .call(d3.axisLeft(yScale));
+        .attr('transform', `translate(${width + margin.left},${margin.top})`)
+        .call(d3.axisRight(yScale));
 
       // Additional chart setup...
     }
   }, [data]);
 
   return (
-    <div className={styles.chartContainer}>
+    <div className={styles.container}>
+      <h2>The average amount of videos you watch per weekday.</h2>
       <svg
         className={styles.VideosPerWeekday}
         width={600}
