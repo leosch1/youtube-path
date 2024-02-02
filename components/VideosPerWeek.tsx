@@ -22,16 +22,21 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
 
       const totalWidth = d3Container.current.clientWidth;
       const totalHeight = d3Container.current.clientHeight;
-      const margin = { top: 20, right: 10, bottom: 5, left: 70 };
+      const margin = { top: 20, right: 10, bottom: 5, left: 80 };
 
       // Create the x scale
       const x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value) ?? 0])
         .range([margin.left, totalWidth - margin.right]);
 
+      // Calculate the range of the data
+      const dateRange = d3.extent(data, d => d.date) as [Date, Date];
+      const offsettedStartDate = new Date(dateRange[0].getTime() - (dateRange[1].getTime() - dateRange[0].getTime()) * 0.01); // Go 5% back from the start date
+      const endDate = dateRange[1];
+
       // Create the y scale
       const y = d3.scaleTime()
-        .domain(d3.extent(data, d => d.date) as [Date, Date])
+        .domain([offsettedStartDate, endDate])
         .range([margin.top, totalHeight - margin.bottom]);
 
       // Define the step function for the stepped line
@@ -57,9 +62,21 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
       // Add the X Axis
       const xAxis = svg.append("g")
         .attr("transform", `translate(0,${margin.top})`)
-        .call(d3.axisTop(x).ticks(numTicks).tickFormat(d3.format("~s")));
+        .attr("stroke-width", 2)
+        .call(d3.axisTop(x).ticks(numTicks).tickFormat(d3.format("~s")).tickSize(0).tickPadding(10));
+
+      // Extend the x-axis to the left by half of the stroke width to create a cleaner connection at the intersection
+      xAxis.select(".domain").attr("d", function () {
+        const d: string = (d3.select(this).node() as SVGPathElement).getAttribute("d")!;
+        const modifiedD = d.replace(/M(\d+),0H(\d+)/, function (match, group1, group2) {
+          const extendedX = parseInt(group1) - 1; // Extend the x-axis to the left by half of the stroke width
+          return `M${extendedX},0H${group2}`;
+        });
+        return modifiedD;
+      });
 
       xAxis.selectAll("text")
+        .attr("font-size", "1.2em")
         .attr("fill", tickColor);
 
       // Add vertical gridlines
@@ -71,10 +88,17 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
       // Add the Y Axis
       const yAxis = svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
+        .attr("stroke-width", 2)
         .call(d3.axisLeft(y).tickFormat((domainValue) => d3.timeFormat("%d %b %Y")(domainValue as Date)));
+
+      // Modify the y-axis path to remove the first tick
+      const domainPath = yAxis.select(".domain").attr("d");
+      const modifiedPath = domainPath.replace(/M-6,(\d+)H0V/, "M0,$1V");
+      yAxis.select(".domain").attr("d", modifiedPath);
 
       // Change the color of the tick labels
       yAxis.selectAll("text")
+        .attr("font-size", "1.2em")
         .attr("fill", tickColor);
     }
   }, [data]);
