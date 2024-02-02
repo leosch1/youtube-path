@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoCountData, WatchHistoryEntry, TotalVideoCountData } from "../types/types";
+import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, VideosPerWeekdayData } from "../types/types";
 
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
   // Create a copy of the data array
@@ -64,4 +64,35 @@ export const getTotalVideoCountData = (data: WatchHistoryEntry[]): TotalVideoCou
   const videoCount = data.length;
 
   return { startDate, endDate, videoCount };
+};
+
+
+export const getVideosPerWeekdayData = (data: WatchHistoryEntry[]): VideosPerWeekdayData[] => {
+  // Initialize an object to count videos per weekday
+  const counts: { [key: string]: number } = {
+    Mon: 0,
+    Tue: 0,
+    Wed: 0,
+    Thu: 0,
+    Fri: 0,
+    Sat: 0,
+    Sun: 0,
+  };
+
+  // Iterate over the data
+  for (const entry of data) {
+    // Get the day of the week
+    const day = new Date(entry.time).toLocaleString('en-US', { weekday: 'short' });
+
+    // Increment the count for this day
+    counts[day]++;
+  }
+
+  // Convert the counts object to an array of VideosPerWeekdayData
+  const videosPerWeekdayData: VideosPerWeekdayData[] = Object.keys(counts).map(day => ({
+    day,
+    value: counts[day],
+  }));
+
+  return videosPerWeekdayData;
 };

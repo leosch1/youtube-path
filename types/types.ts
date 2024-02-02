@@ -23,3 +23,8 @@ export interface WatchHistoryEntry {
   products: string[];
   activityControls: string[];
 }
+
+export interface VideosPerWeekdayData {
+  day: string;
+  value: number;
+};
