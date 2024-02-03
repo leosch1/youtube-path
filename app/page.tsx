@@ -32,14 +32,13 @@ export default function Home() {
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
           <div className={styles.videosPerWeek}>
-            <h2>Videos per week</h2>
             <VideosPerWeek data={videosPerWeekData} />
           </div>
         </div>
         <div className={styles.mainDiagrams}>
           <TotalVideoCount data={totalVideoCountData} />
-          <VideosPerWeekday data={videosPerWeekdayData} />
           <MaxVideosPerWeek data={videosPerWeekData} />
+          <VideosPerWeekday data={videosPerWeekdayData} />
         </div>
       </div>
     </main>

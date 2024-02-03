@@ -100,6 +100,72 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
       yAxis.selectAll("text")
         .attr("font-size", "1.2em")
         .attr("fill", tickColor);
+
+      // TODO: Add title to diagram on top left saying "Videos per Week"
+
+      const viewportHeight = window.innerHeight;
+      svg.attr('transform', `translate(0, ${viewportHeight})`);
+
+      const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
+      const maxVideosWeekY = y(maxVideosPerWeekData.date);
+
+      const scrollIntervals = [
+        {
+          start: {
+            scrollPosition: 0,
+            diagramPosition: viewportHeight
+          },
+          end: {
+            scrollPosition: viewportHeight, // TotalVideoCount
+            diagramPosition: viewportHeight
+          }
+        },
+        {
+          start: {
+            scrollPosition: viewportHeight,
+            diagramPosition: viewportHeight
+          },
+          end: {
+            scrollPosition: 2 * viewportHeight, // MaxVideosPerWeek
+            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2 // TODO: subtract half of step size to fully center
+          }
+        },
+        {
+          start: {
+            scrollPosition: 2 * viewportHeight,
+            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2
+          },
+          end: {
+            scrollPosition: 3 * viewportHeight, // VideosPerWeekday
+            diagramPosition: 3 * viewportHeight - 2000 + viewportHeight / 2 // End of diagram as test
+          }
+        }
+      ];
+
+      const getActiveScrollInterval = (scrollPosition: number) => {
+        return scrollIntervals.find(interval => interval.start.scrollPosition <= scrollPosition && interval.end.scrollPosition > scrollPosition);
+      }
+
+      const handleScroll = () => {
+        const scrollPosition = window.scrollY;
+
+        const activeScrollInterval = getActiveScrollInterval(scrollPosition)
+        if (activeScrollInterval) {
+          const diagramPositionDelta = activeScrollInterval.end.diagramPosition - activeScrollInterval.start.diagramPosition;
+          const scrollPositionDelta = activeScrollInterval.end.scrollPosition - activeScrollInterval.start.scrollPosition;
+
+          const diagramScrollPerScroll = diagramPositionDelta / scrollPositionDelta;
+          const translate = activeScrollInterval.start.diagramPosition + (scrollPosition - activeScrollInterval.start.scrollPosition) * diagramScrollPerScroll;
+          svg.attr('transform', `translate(0, ${translate})`);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+
+      // Clean up the event listener when the component is unmounted
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
     }
   }, [data]);
 
@@ -107,7 +173,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
     <svg
       className="d3-component"
       width="100%"
-      height="1000"
+      height="2000"
       ref={d3Container}
       preserveAspectRatio="xMidYMid meet"
     />
