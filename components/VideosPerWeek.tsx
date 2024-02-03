@@ -101,6 +101,8 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
         .attr("font-size", "1.2em")
         .attr("fill", tickColor);
 
+      const stepSize = y(data[1].date) - y(data[0].date);
+
       // TODO: Add title to diagram on top left saying "Videos per Week"
 
       const viewportHeight = window.innerHeight;
@@ -127,7 +129,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
           },
           end: {
             scrollPosition: 2 * viewportHeight, // MaxVideosPerWeek
-            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2 // TODO: subtract half of step size to fully center
+            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
           }
         },
         {
