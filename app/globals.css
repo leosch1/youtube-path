@@ -7,7 +7,7 @@
   --secondary-action-color: #8C8C8C;
   --on-secondary-action-color: #fff;
   
-  --text-color: #fff;
+  --primary-text-color: #fff;
   --secondary-text-color: #CDCDCD;
 }
 
@@ -19,7 +19,7 @@
 
 body {
   background-color: var(--background-color);
-  color: var(--text-color);
+  color: var(--primary-text-color);
 }
 
 .shadow {

@@ -18,6 +18,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
       // Clear the SVG before drawing new content
       svg.selectAll("*").remove();
 
+      const textColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
       const tickColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
       const totalWidth = d3Container.current.clientWidth;
@@ -45,8 +46,11 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
         .y(d => y(d.date))
         .curve(d3.curveStepAfter); // Use the step after curve to create the stepped look
 
+      // Create a group for the diagram and translate it down by the height of the title
+      const diagramGroup = svg.append('g');
+
       // Add the path using the line generator
-      svg.append("path")
+      diagramGroup.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "white")
@@ -60,7 +64,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
       const numTicks = Math.floor((totalWidth - margin.left - margin.right) / tickSpacing);
 
       // Add the X Axis
-      const xAxis = svg.append("g")
+      const xAxis = diagramGroup.append("g")
         .attr("transform", `translate(0,${margin.top})`)
         .attr("stroke-width", 2)
         .call(d3.axisTop(x).ticks(numTicks).tickFormat(d3.format("~s")).tickSize(0).tickPadding(10));
@@ -86,7 +90,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
         .attr("stroke-opacity", 0.1);
 
       // Add the Y Axis
-      const yAxis = svg.append("g")
+      const yAxis = diagramGroup.append("g")
         .attr("transform", `translate(${margin.left},0)`)
         .attr("stroke-width", 2)
         .call(d3.axisLeft(y).tickFormat((domainValue) => d3.timeFormat("%d %b %Y")(domainValue as Date)));
@@ -103,13 +107,32 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
 
       const stepSize = y(data[1].date) - y(data[0].date);
 
-      // TODO: Add title to diagram on top left saying "Videos per Week"
+      const title = svg.append("text")
+        .attr("x", margin.left)     // Position the text on the left edge of the diagram
+        .attr("y", margin.top)      // Position the text at the top of the diagram
+        .attr("font-size", "1em") // Set the font size
+        .attr("font-weight", "600")
+        .attr("fill", textColor)
+        .text("Videos per Week");   // Set the text
+
+      // Get the width of the title
+      const titleWidth = title.node()?.getBBox().width ?? 0;
+
+      // Position the text on the right edge of the diagram
+      title.attr("x", totalWidth - titleWidth - margin.right);
+
+      // Get the height of the title
+      const titleHeight = title.node()?.getBBox().height ?? 0;
+      const titleBottomMargin = 15;
+
+      diagramGroup.attr('transform', `translate(0, ${titleHeight + titleBottomMargin})`);
 
       const viewportHeight = window.innerHeight;
+
       svg.attr('transform', `translate(0, ${viewportHeight})`);
 
       const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
-      const maxVideosWeekY = y(maxVideosPerWeekData.date);
+      const maxVideosWeekY = y(maxVideosPerWeekData.date) + titleHeight + titleBottomMargin;
 
       const scrollIntervals = [
         {
@@ -135,7 +158,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
         {
           start: {
             scrollPosition: 2 * viewportHeight,
-            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2
+            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
           },
           end: {
             scrollPosition: 3 * viewportHeight, // VideosPerWeekday

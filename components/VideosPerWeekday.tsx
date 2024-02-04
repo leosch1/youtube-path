@@ -35,7 +35,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .range([height, 0]);
 
       const maxValue = d3.max(data, d => d.value);
-      const barColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
+      const barColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
       const maxBarColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
 
       // Append the rectangles for the bar chart
