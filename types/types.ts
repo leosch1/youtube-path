@@ -28,3 +28,8 @@ export interface VideosPerWeekdayData {
   day: string;
   value: number;
 };
+
+export interface ScrollPoint {
+  scrollPosition: number;
+  diagramPosition: number;
+}

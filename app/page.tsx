@@ -26,13 +26,27 @@ export default function Home() {
     setVideosPerWeekdayData(getVideosPerWeekdayData(watchHistoryDataRef.current));
   };
 
+  const getDiagramOrder = (
+    videosPerWeekData: VideoCountData[],
+    totalVideoCountData: TotalVideoCountData,
+    videosPerWeekdayData: VideosPerWeekdayData[]
+  ): React.FC<any>[] => {
+    return [
+      TotalVideoCount,
+      MaxVideosPerWeek,
+      VideosPerWeekday
+    ];
+  }
+
+  const diagramOrder = getDiagramOrder(videosPerWeekData, totalVideoCountData, videosPerWeekdayData);
+
   return (
     <main className={styles.main}>
       <LandingZone setData={handleDataChange} />
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
           <div className={styles.videosPerWeek}>
-            <VideosPerWeek data={videosPerWeekData} />
+            <VideosPerWeek data={videosPerWeekData} diagramOrder={diagramOrder} />
           </div>
         </div>
         <div className={styles.mainDiagrams}>
