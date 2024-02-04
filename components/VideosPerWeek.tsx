@@ -2,13 +2,14 @@
 
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import { VideoCountData } from '../types/types';
+import { VideoCountData, ScrollPoint } from '../types/types';
 
 interface VideosPerWeekProps {
   data: VideoCountData[];
+  diagramOrder: React.FC<any>[];
 }
 
-const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
+const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder }) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -134,42 +135,49 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
       const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
       const maxVideosWeekY = y(maxVideosPerWeekData.date) + titleHeight + titleBottomMargin;
 
-      const scrollIntervals = [
-        {
-          start: {
-            scrollPosition: 0,
-            diagramPosition: viewportHeight
-          },
-          end: {
-            scrollPosition: viewportHeight, // TotalVideoCount
-            diagramPosition: viewportHeight
+      const getScrollPoints = (): ScrollPoint[] => {
+        const result: ScrollPoint[] = [{
+          scrollPosition: 0,
+          diagramPosition: viewportHeight
+        }];
+        diagramOrder.forEach((component, index) => {
+          switch (component.name) {
+            case 'TotalVideoCount':
+              result.push({
+                scrollPosition: (index + 1) * viewportHeight,
+                diagramPosition: (index + 1) * viewportHeight
+              });
+              break;
+            case 'MaxVideosPerWeek':
+              result.push({
+                scrollPosition: (index + 1) * viewportHeight,
+                diagramPosition: (index + 1) * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
+              });
+              break;
+            case 'VideosPerWeekday':
+              result.push({
+                scrollPosition: (index + 1) * viewportHeight,
+                diagramPosition: (index + 1) * viewportHeight - 2000 + viewportHeight / 2 // End of diagram as test
+              });
+              break;
           }
-        },
-        {
-          start: {
-            scrollPosition: viewportHeight,
-            diagramPosition: viewportHeight
-          },
-          end: {
-            scrollPosition: 2 * viewportHeight, // MaxVideosPerWeek
-            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
-          }
-        },
-        {
-          start: {
-            scrollPosition: 2 * viewportHeight,
-            diagramPosition: 2 * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
-          },
-          end: {
-            scrollPosition: 3 * viewportHeight, // VideosPerWeekday
-            diagramPosition: 3 * viewportHeight - 2000 + viewportHeight / 2 // End of diagram as test
-          }
-        }
-      ];
+        });
+        return result;
+      }
+
+      const scrollPoints = getScrollPoints();
 
       const getActiveScrollInterval = (scrollPosition: number) => {
-        return scrollIntervals.find(interval => interval.start.scrollPosition <= scrollPosition && interval.end.scrollPosition > scrollPosition);
-      }
+        for (let i = 0; i < scrollPoints.length - 1; i++) {
+          if (scrollPoints[i].scrollPosition <= scrollPosition && scrollPoints[i + 1].scrollPosition > scrollPosition) {
+            return {
+              start: scrollPoints[i],
+              end: scrollPoints[i + 1]
+            };
+          }
+        }
+        return null;
+      };
 
       const handleScroll = () => {
         const scrollPosition = window.scrollY;
