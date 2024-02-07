@@ -1,0 +1,33 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+}
+
+.container h2 {
+  font-weight: 400;
+  font-size: 2.5em;
+}
+
+.container h2 em {
+  font-style: normal;
+  font-weight: 600;
+  background-color: var(--primary-action-color);
+  color: var(--on-primary-action-color-2);
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+.container p {
+  font-size: 1.5em;
+  margin-top: 0.5em;
+  text-wrap: balance;
+  text-align: end;
+}
+
+.container p em {
+  font-style: normal;
+  color: var(--primary-action-color);
+}

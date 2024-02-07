@@ -3,11 +3,12 @@
 
   --primary-action-color: #FF9D0A;
   --on-primary-action-color: #000000;
+  --on-primary-action-color-2: #FFFFFF;
 
   --secondary-action-color: #8C8C8C;
-  --on-secondary-action-color: #fff;
+  --on-secondary-action-color: #FFFFFF;
   
-  --primary-text-color: #fff;
+  --primary-text-color: #FFFFFF;
   --secondary-text-color: #CDCDCD;
 }
 
