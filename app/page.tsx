@@ -8,6 +8,7 @@ import VideosPerWeek from "../components/VideosPerWeek";
 import TotalVideoCount from '../components/TotalVideoCount';
 import VideosPerWeekday from '../components/VideosPerWeekday';
 import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
+import Phase from '../components/Phase';
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
@@ -56,6 +57,7 @@ export default function Home() {
           <TotalVideoCount data={totalVideoCountData} />
           <MaxVideosPerWeek data={videosPerWeekData} />
           <VideosPerWeekday data={videosPerWeekdayData} />
+          <Phase data={phaseData[0]} />
         </div>
       </div>
     </main>
