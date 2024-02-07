@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, VideosPerWeekdayData, Phase } from "../types/types";
+import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
 
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
   // Create a copy of the data array
@@ -96,8 +96,8 @@ export const getVideosPerWeekdayData = (data: WatchHistoryEntry[]): VideosPerWee
   return videosPerWeekdayData;
 };
 
-const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLimit: number, maxTimeLimit: number, totalVideoCount: number): Phase[] => {
-  const phases: (Phase & { count: number, density: number, normalizedDensity: number })[] = [];
+const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLimit: number, maxTimeLimit: number, totalVideoCount: number): PhaseData[] => {
+  const phases: (PhaseData & { count: number, density: number, normalizedDensity: number })[] = [];
 
   // Group the data by channel
   const groupedData = data.reduce((acc, entry) => {
@@ -140,7 +140,7 @@ const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLi
   return phases;
 };
 
-export const getChannelPhases = (data: WatchHistoryEntry[], minTargetPhaseCount: number, maxTargetPhaseCount: number): Phase[] => {
+export const getChannelPhases = (data: WatchHistoryEntry[], minTargetPhaseCount: number, maxTargetPhaseCount: number): PhaseData[] => {
   const minTimeLimit = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
   const maxTimeLimit = 8 * 7 * 24 * 60 * 60 * 1000; // 8 weeks in milliseconds
   const totalVideoCount = data.length;

@@ -2,12 +2,12 @@
 
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import { VideoCountData, ScrollPoint, Phase } from '../types/types';
+import { VideoCountData, ScrollPoint, PhaseData } from '../types/types';
 
 interface VideosPerWeekProps {
   data: VideoCountData[];
   diagramOrder: React.FC<any>[];
-  phaseData: Phase[];
+  phaseData: PhaseData[];
 }
 
 const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phaseData }) => {
