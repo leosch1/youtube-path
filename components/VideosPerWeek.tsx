@@ -56,7 +56,9 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
           .attr("y", yStart)
           .attr("width", totalWidth - margin.left - margin.right)
           .attr("height", height)
-          .attr("fill", highlightColor); // Replace "lightgray" with the desired color
+          .attr("fill", highlightColor)
+          .attr("rx", 2)
+          .attr("ry", 2);
       });
 
       // Define the step function for the stepped line
