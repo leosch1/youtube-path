@@ -34,7 +34,7 @@ export interface ScrollPoint {
   diagramPosition: number;
 }
 
-export interface Phase {
+export interface PhaseData {
   start: Date;
   end: Date;
   title: string;

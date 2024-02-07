@@ -1,6 +1,6 @@
-import { Phase } from "../types/types";
+import { PhaseData } from "../types/types";
 
-export const examplePhaseData: Phase[] = [
+export const examplePhaseData: PhaseData[] = [
   {
       "start": new Date("2021-05-14T08:17:03.131Z"),
       "end": new Date("2021-05-21T12:22:45.350Z"),
