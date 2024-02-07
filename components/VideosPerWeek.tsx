@@ -2,14 +2,15 @@
 
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import { VideoCountData, ScrollPoint } from '../types/types';
+import { VideoCountData, ScrollPoint, Phase } from '../types/types';
 
 interface VideosPerWeekProps {
   data: VideoCountData[];
   diagramOrder: React.FC<any>[];
+  phaseData: Phase[];
 }
 
-const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder }) => {
+const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phaseData }) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder }) => 
 
       const textColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
       const tickColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
+      const highlightColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
 
       const totalWidth = d3Container.current.clientWidth;
       const totalHeight = d3Container.current.clientHeight;
@@ -40,6 +42,22 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder }) => 
       const y = d3.scaleTime()
         .domain([offsettedStartDate, endDate])
         .range([margin.top, totalHeight - margin.bottom]);
+
+      // Create rectangles for each phase
+      phaseData.forEach(phase => {
+        // Calculate the y position and height of the rectangle
+        const yStart = y(phase.start);
+        const yEnd = y(phase.end);
+        const height = yEnd - yStart;
+
+        // Add the rectangle to the SVG
+        svg.append("rect")
+          .attr("x", margin.left)
+          .attr("y", yStart)
+          .attr("width", totalWidth - margin.left - margin.right)
+          .attr("height", height)
+          .attr("fill", highlightColor); // Replace "lightgray" with the desired color
+      });
 
       // Define the step function for the stepped line
       const line = d3.line<VideoCountData>()
@@ -200,7 +218,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder }) => 
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [data]);
+  }, [data, diagramOrder, phaseData]);
 
   return (
     <svg

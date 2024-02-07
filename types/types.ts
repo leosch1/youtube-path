@@ -33,3 +33,12 @@ export interface ScrollPoint {
   scrollPosition: number;
   diagramPosition: number;
 }
+
+export interface Phase {
+  start: Date;
+  end: Date;
+  title: string;
+  count: number;
+  density: number;
+  normalizedDensity: number;
+}
