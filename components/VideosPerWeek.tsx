@@ -6,11 +6,11 @@ import { VideoCountData, ScrollPoint, PhaseData } from '../types/types';
 
 interface VideosPerWeekProps {
   data: VideoCountData[];
-  diagramOrder: React.FC<any>[];
+  diagramComponents: JSX.Element[];
   phaseData: PhaseData[];
 }
 
-const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phaseData }) => {
+const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, phaseData }) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -174,8 +174,8 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
           scrollPosition: viewportHeight,
           diagramPosition: viewportHeight
         }];
-        diagramOrder.forEach((component, index) => {
-          switch (component.name) {
+        diagramComponents.forEach((component, index) => {
+          switch (component.type.name) {
             case 'TotalVideoCount':
               result.push({
                 scrollPosition: (index + 1) * viewportHeight,
@@ -240,7 +240,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [data, diagramOrder, phaseData]);
+  }, [data, diagramComponents, phaseData]);
 
   return (
     <svg
