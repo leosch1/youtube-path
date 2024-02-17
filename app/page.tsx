@@ -30,20 +30,20 @@ export default function Home() {
     setVideosPerWeekdayData(getVideosPerWeekdayData(watchHistoryDataRef.current));
   };
 
-  const getDiagramOrder = (
+  const getDiagramComponents = (
     videosPerWeekData: VideoCountData[],
     totalVideoCountData: TotalVideoCountData,
     videosPerWeekdayData: VideosPerWeekdayData[]
-  ): React.FC<any>[] => {
+  ): JSX.Element[] => {
     return [
-      TotalVideoCount,
-      Phase,
-      MaxVideosPerWeek,
-      VideosPerWeekday,
+      <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
+      <Phase key="phase0" data={phaseData[0]} />,
+      <MaxVideosPerWeek key="maxVideosPerWeek" data={videosPerWeekData} />,
+      <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />
     ];
   }
 
-  const diagramOrder = getDiagramOrder(videosPerWeekData, totalVideoCountData, videosPerWeekdayData);
+  const diagramComponents = getDiagramComponents(videosPerWeekData, totalVideoCountData, videosPerWeekdayData);
 
   return (
     <main className={styles.main}>
@@ -51,14 +51,11 @@ export default function Home() {
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
           <div className={styles.videosPerWeek}>
-            <VideosPerWeek data={videosPerWeekData} diagramOrder={diagramOrder} phaseData={phaseData} />
+            <VideosPerWeek data={videosPerWeekData} diagramComponents={diagramComponents} phaseData={phaseData} />
           </div>
         </div>
         <div className={styles.mainDiagrams}>
-          <TotalVideoCount data={totalVideoCountData} />
-          <Phase data={phaseData[0]} />
-          <MaxVideosPerWeek data={videosPerWeekData} />
-          <VideosPerWeekday data={videosPerWeekdayData} />
+          {diagramComponents}
         </div>
       </div>
     </main>
