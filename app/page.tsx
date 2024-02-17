@@ -37,8 +37,9 @@ export default function Home() {
   ): React.FC<any>[] => {
     return [
       TotalVideoCount,
+      Phase,
       MaxVideosPerWeek,
-      VideosPerWeekday
+      VideosPerWeekday,
     ];
   }
 
@@ -55,9 +56,9 @@ export default function Home() {
         </div>
         <div className={styles.mainDiagrams}>
           <TotalVideoCount data={totalVideoCountData} />
+          <Phase data={phaseData[0]} />
           <MaxVideosPerWeek data={videosPerWeekData} />
           <VideosPerWeekday data={videosPerWeekdayData} />
-          <Phase data={phaseData[0]} />
         </div>
       </div>
     </main>

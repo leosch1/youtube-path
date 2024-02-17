@@ -43,6 +43,28 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
         .domain([offsettedStartDate, endDate])
         .range([margin.top, totalHeight - margin.bottom]);
 
+      const title = svg.append("text")
+        .attr("x", margin.left)     // Position the text on the left edge of the diagram
+        .attr("y", margin.top)      // Position the text at the top of the diagram
+        .attr("font-size", "1em") // Set the font size
+        .attr("font-weight", "600")
+        .attr("fill", textColor)
+        .text("Videos per Week");   // Set the text
+
+      // Get the width of the title
+      const titleWidth = title.node()?.getBBox().width ?? 0;
+
+      // Position the text on the right edge of the diagram
+      title.attr("x", totalWidth - titleWidth - margin.right);
+
+      // Get the height of the title
+      const titleHeight = title.node()?.getBBox().height ?? 0;
+      const titleBottomMargin = 15;
+
+      // Create a group for the diagram and translate it down by the height of the title
+      const diagramGroup = svg.append('g');
+      diagramGroup.attr('transform', `translate(0, ${titleHeight + titleBottomMargin})`);
+
       // Create rectangles for each phase
       phaseData.forEach(phase => {
         // Calculate the y position and height of the rectangle
@@ -51,7 +73,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
         const height = yEnd - yStart;
 
         // Add the rectangle to the SVG
-        svg.append("rect")
+        diagramGroup.append("rect")
           .attr("x", margin.left)
           .attr("y", yStart)
           .attr("width", totalWidth - margin.left - margin.right)
@@ -67,9 +89,6 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
         .y(d => y(d.date))
         .curve(d3.curveStepAfter); // Use the step after curve to create the stepped look
 
-      // Create a group for the diagram and translate it down by the height of the title
-      const diagramGroup = svg.append('g');
-
       // Add the path using the line generator
       diagramGroup.append("path")
         .datum(data)
@@ -78,11 +97,11 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
         .attr("stroke-width", 2)
         .attr("d", line);
 
-      // Define the desired distance between the ticks (in pixels)
-      const tickSpacing = 30;
+      // Define the desired distance between the x ticks (in pixels)
+      const xTickSpacing = 30;
 
       // Calculate the number of ticks
-      const numTicks = Math.floor((totalWidth - margin.left - margin.right) / tickSpacing);
+      const numTicks = Math.floor((totalWidth - margin.left - margin.right) / xTickSpacing);
 
       // Add the X Axis
       const xAxis = diagramGroup.append("g")
@@ -128,36 +147,31 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
 
       const stepSize = y(data[1].date) - y(data[0].date);
 
-      const title = svg.append("text")
-        .attr("x", margin.left)     // Position the text on the left edge of the diagram
-        .attr("y", margin.top)      // Position the text at the top of the diagram
-        .attr("font-size", "1em") // Set the font size
-        .attr("font-weight", "600")
-        .attr("fill", textColor)
-        .text("Videos per Week");   // Set the text
-
-      // Get the width of the title
-      const titleWidth = title.node()?.getBBox().width ?? 0;
-
-      // Position the text on the right edge of the diagram
-      title.attr("x", totalWidth - titleWidth - margin.right);
-
-      // Get the height of the title
-      const titleHeight = title.node()?.getBBox().height ?? 0;
-      const titleBottomMargin = 15;
-
-      diagramGroup.attr('transform', `translate(0, ${titleHeight + titleBottomMargin})`);
-
       const viewportHeight = window.innerHeight;
 
       svg.attr('transform', `translate(0, ${viewportHeight})`);
 
       const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
       const maxVideosWeekY = y(maxVideosPerWeekData.date) + titleHeight + titleBottomMargin;
+      // calculate middle between start and end of first phase
+      const phaseMiddle = new Date((phaseData[0].end.getTime() - phaseData[0].start.getTime()) / 2 + phaseData[0].start.getTime());
+      const phaseY = y(phaseMiddle) + titleBottomMargin + titleHeight;
+      // Add horizontal line at phaseY
+      svg.append("line")
+        .attr("x1", margin.left)
+        .attr("x2", totalWidth - margin.right)
+        .attr("y1", phaseY)
+        .attr("y2", phaseY)
+        .attr("stroke", "black")
+        .attr("stroke-width", 2);
 
       const getScrollPoints = (): ScrollPoint[] => {
         const result: ScrollPoint[] = [{
           scrollPosition: 0,
+          diagramPosition: viewportHeight
+        },
+        {
+          scrollPosition: viewportHeight,
           diagramPosition: viewportHeight
         }];
         diagramOrder.forEach((component, index) => {
@@ -177,7 +191,13 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramOrder, phase
             case 'VideosPerWeekday':
               result.push({
                 scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight - 2000 + viewportHeight / 2 // End of diagram as test
+                diagramPosition: (index + 1) * viewportHeight
+              });
+              break;
+            case 'Phase':
+              result.push({
+                scrollPosition: (index + 1) * viewportHeight,
+                diagramPosition: (index + 1) * viewportHeight - phaseY + viewportHeight / 2
               });
               break;
           }
