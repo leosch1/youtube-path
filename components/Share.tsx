@@ -5,7 +5,7 @@ const Share: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <p>End.</p>
+      <p>Share</p>
     </div>
   );
 };
