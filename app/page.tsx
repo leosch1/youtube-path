@@ -9,6 +9,7 @@ import TotalVideoCount from '../components/TotalVideoCount';
 import VideosPerWeekday from '../components/VideosPerWeekday';
 import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
 import Phase from '../components/Phase';
+import Share from '../components/Share';
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
@@ -42,6 +43,7 @@ export default function Home() {
       <Phase key="phase-1" data={phaseData} phaseIndex={1} />,
       <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />,
       <Phase key="phase-2" data={phaseData} phaseIndex={2} />,
+      <Share key="share"/>,
     ];
   }
 
