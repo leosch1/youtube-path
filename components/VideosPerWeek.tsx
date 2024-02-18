@@ -145,25 +145,9 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
         .attr("font-size", "1.2em")
         .attr("fill", tickColor);
 
-      const stepSize = y(data[1].date) - y(data[0].date);
-
       const viewportHeight = window.innerHeight;
 
       svg.attr('transform', `translate(0, ${viewportHeight})`);
-
-      const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
-      const maxVideosWeekY = y(maxVideosPerWeekData.date) + titleHeight + titleBottomMargin;
-      // calculate middle between start and end of first phase
-      const phaseMiddle = new Date((phaseData[0].end.getTime() - phaseData[0].start.getTime()) / 2 + phaseData[0].start.getTime());
-      const phaseY = y(phaseMiddle) + titleBottomMargin + titleHeight;
-      // Add horizontal line at phaseY
-      svg.append("line")
-        .attr("x1", margin.left)
-        .attr("x2", totalWidth - margin.right)
-        .attr("y1", phaseY)
-        .attr("y2", phaseY)
-        .attr("stroke", "black")
-        .attr("stroke-width", 2);
 
       const getScrollPoints = (): ScrollPoint[] => {
         const result: ScrollPoint[] = [{
@@ -175,31 +159,33 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
           diagramPosition: viewportHeight
         }];
         diagramComponents.forEach((component, index) => {
-          switch (component.type.name) {
-            case 'TotalVideoCount':
-              result.push({
-                scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight
-              });
-              break;
-            case 'MaxVideosPerWeek':
-              result.push({
-                scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
-              });
-              break;
-            case 'VideosPerWeekday':
-              result.push({
-                scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight
-              });
-              break;
-            case 'Phase':
-              result.push({
-                scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight - phaseY + viewportHeight / 2
-              });
-              break;
+          if (component.key === 'totalVideoCount') {
+            result.push({
+              scrollPosition: (index + 1) * viewportHeight,
+              diagramPosition: (index + 1) * viewportHeight
+            });
+          } else if (component.key === 'maxVideosPerWeek') {
+            const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
+            const maxVideosWeekY = y(maxVideosPerWeekData.date) + titleHeight + titleBottomMargin;
+            const stepSize = y(data[1].date) - y(data[0].date);
+            result.push({
+              scrollPosition: (index + 1) * viewportHeight,
+              diagramPosition: (index + 1) * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
+            });
+          } else if (component.key === 'videosPerWeekday') {
+            result.push({
+              scrollPosition: (index + 1) * viewportHeight,
+              diagramPosition: (index + 1) * viewportHeight
+            });
+          } else if (component.key && component.key.startsWith('phase')) {
+            const phaseIndex = component.props.phaseIndex;
+            // calculate middle between start and end of first phase
+            const phaseMiddle = new Date((phaseData[phaseIndex].end.getTime() - phaseData[phaseIndex].start.getTime()) / 2 + phaseData[phaseIndex].start.getTime());
+            const phaseY = y(phaseMiddle) + titleBottomMargin + titleHeight;
+            result.push({
+              scrollPosition: (index + 1) * viewportHeight,
+              diagramPosition: (index + 1) * viewportHeight - phaseY + viewportHeight / 2
+            });
           }
         });
         return result;

@@ -37,9 +37,11 @@ export default function Home() {
   ): JSX.Element[] => {
     return [
       <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
-      <Phase key="phase0" data={phaseData[0]} />,
+      <Phase key="phase-0" data={phaseData} phaseIndex={0} />,
       <MaxVideosPerWeek key="maxVideosPerWeek" data={videosPerWeekData} />,
-      <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />
+      <Phase key="phase-1" data={phaseData} phaseIndex={1} />,
+      <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />,
+      <Phase key="phase-2" data={phaseData} phaseIndex={2} />,
     ];
   }
 

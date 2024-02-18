@@ -4,10 +4,11 @@ import { PhaseData } from '../types/types';
 import { formatDistance } from 'date-fns';
 
 type PhaseProps = {
-  data: PhaseData
+  data: PhaseData[]
+  phaseIndex: number
 };
 
-const Phase: React.FC<PhaseProps> = ({ data }) => {
+const Phase: React.FC<PhaseProps> = ({ data, phaseIndex }) => {
   const {
     start,
     end,
@@ -15,7 +16,7 @@ const Phase: React.FC<PhaseProps> = ({ data }) => {
     count,
     density,
     normalizedDensity,
-  } = data;
+  } = data[phaseIndex];
 
   // calculate duration in human readoble format (months/weeks etc.)
   const duration = formatDistance(start, end);
