@@ -158,24 +158,15 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
           scrollPosition: viewportHeight,
           diagramPosition: viewportHeight
         }];
+
         diagramComponents.forEach((component, index) => {
-          if (component.key === 'totalVideoCount') {
-            result.push({
-              scrollPosition: (index + 1) * viewportHeight,
-              diagramPosition: (index + 1) * viewportHeight
-            });
-          } else if (component.key === 'maxVideosPerWeek') {
+          if (component.key === 'maxVideosPerWeek') {
             const maxVideosPerWeekData = data.reduce((max, current) => current.value > max.value ? current : max);
             const maxVideosWeekY = y(maxVideosPerWeekData.date) + titleHeight + titleBottomMargin;
             const stepSize = y(data[1].date) - y(data[0].date);
             result.push({
               scrollPosition: (index + 1) * viewportHeight,
               diagramPosition: (index + 1) * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
-            });
-          } else if (component.key === 'videosPerWeekday') {
-            result.push({
-              scrollPosition: (index + 1) * viewportHeight,
-              diagramPosition: (index + 1) * viewportHeight
             });
           } else if (component.key && component.key.startsWith('phase')) {
             const phaseIndex = component.props.phaseIndex;
@@ -186,28 +177,36 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
               scrollPosition: (index + 1) * viewportHeight,
               diagramPosition: (index + 1) * viewportHeight - phaseY + viewportHeight / 2
             });
-          } else if (component.key == 'share') {
-          result.push({
-            scrollPosition: (index + 1) * viewportHeight,
-            diagramPosition: (index + 2) * viewportHeight - 2000 - margin.bottom
-          });
-        }
+          }
         });
+        result.push({
+          scrollPosition: diagramComponents.length * viewportHeight,
+          diagramPosition: (diagramComponents.length + 1) * viewportHeight - 2000 - margin.bottom
+        });
+
         return result;
       }
 
       const scrollPoints = getScrollPoints();
 
       const getActiveScrollInterval = (scrollPosition: number) => {
-        for (let i = 0; i < scrollPoints.length - 1; i++) {
-          if (scrollPoints[i].scrollPosition <= scrollPosition && scrollPoints[i + 1].scrollPosition > scrollPosition) {
+        let lastScrollPoint: ScrollPoint = scrollPoints[0];
+
+        for (let i = 1; i < scrollPoints.length; i++) {
+          if (scrollPoints[i].scrollPosition >= scrollPosition) {
             return {
-              start: scrollPoints[i],
-              end: scrollPoints[i + 1]
+              start: lastScrollPoint ?? scrollPoints[i],
+              end: scrollPoints[i]
             };
           }
+
+          lastScrollPoint = scrollPoints[i];
         }
-        return null;
+
+        return {
+          start: lastScrollPoint,
+          end: scrollPoints[scrollPoints.length - 1]
+        };
       };
 
       const handleScroll = () => {
