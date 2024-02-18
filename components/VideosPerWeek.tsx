@@ -26,7 +26,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
 
       const totalWidth = d3Container.current.clientWidth;
       const totalHeight = d3Container.current.clientHeight;
-      const margin = { top: 20, right: 10, bottom: 5, left: 80 };
+      const margin = { top: 20, right: 10, bottom: 50, left: 80 };
 
       // Create the x scale
       const x = d3.scaleLinear()
@@ -186,7 +186,12 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
               scrollPosition: (index + 1) * viewportHeight,
               diagramPosition: (index + 1) * viewportHeight - phaseY + viewportHeight / 2
             });
-          }
+          } else if (component.key == 'share') {
+          result.push({
+            scrollPosition: (index + 1) * viewportHeight,
+            diagramPosition: (index + 2) * viewportHeight - 2000 - margin.bottom
+          });
+        }
         });
         return result;
       }
