@@ -3,13 +3,9 @@
 import React, { useRef, useState } from 'react';
 import styles from "./page.module.css";
 import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getVideosPerWeekdayData, getChannelPhases } from '../utils/utils';
+import { getDiagramComponents } from '../utils/getDiagramComponents';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
-import TotalVideoCount from '../components/TotalVideoCount';
-import VideosPerWeekday from '../components/VideosPerWeekday';
-import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
-import Phase from '../components/Phase';
-import Share from '../components/Share';
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
@@ -31,23 +27,7 @@ export default function Home() {
     setVideosPerWeekdayData(getVideosPerWeekdayData(watchHistoryDataRef.current));
   };
 
-  const getDiagramComponents = (
-    videosPerWeekData: VideoCountData[],
-    totalVideoCountData: TotalVideoCountData,
-    videosPerWeekdayData: VideosPerWeekdayData[]
-  ): JSX.Element[] => {
-    return [
-      <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
-      <Phase key="phase-0" data={phaseData} phaseIndex={0} />,
-      <MaxVideosPerWeek key="maxVideosPerWeek" data={videosPerWeekData} />,
-      <Phase key="phase-1" data={phaseData} phaseIndex={1} />,
-      <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />,
-      <Phase key="phase-2" data={phaseData} phaseIndex={2} />,
-      <Share key="share"/>,
-    ];
-  }
-
-  const diagramComponents = getDiagramComponents(videosPerWeekData, totalVideoCountData, videosPerWeekdayData);
+  const diagramComponents = getDiagramComponents(videosPerWeekData, totalVideoCountData, videosPerWeekdayData, phaseData);
 
   return (
     <main className={styles.main}>

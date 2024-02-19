@@ -140,9 +140,17 @@ const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLi
   return phases;
 };
 
+
+// TODO: Optimize the channel phase calculation
+// TODO: Make phases non overlapping
 export const getChannelPhases = (data: WatchHistoryEntry[], minTargetPhaseCount: number, maxTargetPhaseCount: number): PhaseData[] => {
   const minTimeLimit = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
-  const maxTimeLimit = 8 * 7 * 24 * 60 * 60 * 1000; // 8 weeks in milliseconds
+  let maxTimeLimit = 12 * 7 * 24 * 60 * 60 * 1000; // 12 weeks in milliseconds
+  // Calculate the duration of the entire WatchHistoryEntry
+  const totalDuration = new Date(data[data.length - 1].time).getTime() - new Date(data[0].time).getTime();
+  // Set maxTimeLimit to the smaller of 20% of totalDuration or 12 weeks
+  maxTimeLimit = Math.min(totalDuration * 0.2, maxTimeLimit);
+
   const totalVideoCount = data.length;
   let lowThreshold = 1;
   let highThreshold = totalVideoCount;
