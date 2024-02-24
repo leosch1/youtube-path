@@ -42,12 +42,32 @@ export const getDiagramComponents = (
     return a.date.getTime() - b.date.getTime();
   }).map(item => item.component);
 
+  // Find the earliest and latest dates in the data
+  const startDate = videosPerWeekData[0].date;
+  const endDate = videosPerWeekData[videosPerWeekData.length - 1].date;
+
   // Find the position where the difference between dates is the largest
   let maxDiff = 0;
   let insertIndex = 1;
 
-  for (let i = 1; i < componentsWithDates.length; i++) {
-    const diff = componentsWithDates[i].date.getTime() - componentsWithDates[i - 1].date.getTime();
+  for (let i = 0; i < componentsWithDates.length; i++) {
+    let diff;
+    if (i === 0) {
+      // For the first date, consider the difference with the start date
+      diff = componentsWithDates[i].date.getTime() - startDate.getTime();
+    } else if (i === componentsWithDates.length - 1) {
+      // For the last date, consider the difference with the end date
+      diff = endDate.getTime() - componentsWithDates[i].date.getTime();
+      if (diff > maxDiff) {
+        maxDiff = diff;
+        insertIndex = i + 1; // Increment by 1 to insert after the last date component
+        continue; // Skip the rest of the loop for this iteration
+      }
+    } else {
+      // For other dates, consider the difference with the previous date
+      diff = componentsWithDates[i].date.getTime() - componentsWithDates[i - 1].date.getTime();
+    }
+  
     if (diff > maxDiff) {
       maxDiff = diff;
       insertIndex = i;
