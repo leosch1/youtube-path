@@ -1,4 +1,6 @@
 :root {
+  scroll-snap-type: y mandatory;
+
   --background-color: #242424;
 
   --primary-action-color: #FF9D0A;
