@@ -29,10 +29,8 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
         <Image
           src="/images/youtube-journey.svg"
           alt="YouTube Journey"
-          layout="responsive"
+          fill
           className="shadow"
-          width={1901}
-          height={703}
           priority
         />
       </div>
