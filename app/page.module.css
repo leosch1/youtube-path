@@ -17,3 +17,7 @@
 .mainDiagrams {
   width: 70%;
 }
+
+.snapContainer {
+  scroll-snap-align: start;
+}

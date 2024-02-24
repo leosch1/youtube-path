@@ -31,7 +31,9 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <LandingZone setData={handleDataChange} />
+      <div className={styles.snapContainer}>
+        <LandingZone setData={handleDataChange} />
+      </div>
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
           <div className={styles.videosPerWeek}>
@@ -39,7 +41,11 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.mainDiagrams}>
-          {diagramComponents}
+          {diagramComponents.map((component, index) => (
+            <div className={styles.snapContainer} key={index}>
+              {component}
+            </div>
+          ))}
         </div>
       </div>
     </main>
