@@ -26,7 +26,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
 
       const totalWidth = d3Container.current.clientWidth;
       const totalHeight = d3Container.current.clientHeight;
-      const margin = { top: 20, right: 10, bottom: 50, left: 80 };
+      const margin = { top: 60, right: 10, bottom: 50, left: 80 };
 
       // Create the x scale
       const x = d3.scaleLinear()
