@@ -11,7 +11,7 @@ const TotalVideoCount: React.FC<TotalVideoCountProps> = ({ data }) => {
   const { startDate, endDate, videoCount } = data;
 
   return (
-    <div className={styles.container}>
+    <div id="starting-component" className={styles.container}>
       <p>From {formatDate(startDate)} to {formatDate(endDate)} you watched <em>{videoCount}</em> videos.</p>
     </div>
   );

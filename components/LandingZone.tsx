@@ -9,6 +9,10 @@ interface LandingZoneProps {
 const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const handleExploreClick = () => {
+    const element = document.getElementById('starting-component');
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -35,7 +39,7 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
         />
       </div>
       <div className={styles.buttons}>
-        <button className={`${styles.button} ${styles.exploreButton}`}>Explore an example</button>
+        <button className={`${styles.button} ${styles.exploreButton}`} onClick={handleExploreClick}>Explore an example</button>
         <button className={`${styles.button} ${styles.dataButton}`} onClick={() => fileInputRef.current?.click()}>Use your own data</button>
         <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileSelect} accept=".json" />
       </div>
