@@ -9,4 +9,7 @@
 .container h2 {
   text-align: end;
   margin-bottom: 1em;
+  font-weight: 500;
+  font-size: 2em;
+  text-wrap: balance;
 }

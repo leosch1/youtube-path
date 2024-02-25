@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
+import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
 
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
   // Create a copy of the data array
@@ -66,7 +66,7 @@ export const getTotalVideoCountData = (data: WatchHistoryEntry[]): TotalVideoCou
   return { startDate, endDate, videoCount };
 };
 
-export const getVideosPerWeekdayData = (data: WatchHistoryEntry[]): VideosPerWeekdayData[] => {
+export const getAverageVideosPerWeekdayData = (data: WatchHistoryEntry[]): AverageVideosPerWeekdayData[] => {
   // Initialize an object to count videos per weekday
   const counts: { [key: string]: number } = {
     Mon: 0,
@@ -87,10 +87,15 @@ export const getVideosPerWeekdayData = (data: WatchHistoryEntry[]): VideosPerWee
     counts[day]++;
   }
 
-  // Convert the counts object to an array of VideosPerWeekdayData
-  const videosPerWeekdayData: VideosPerWeekdayData[] = Object.keys(counts).map(day => ({
+  // Calculate the number of weeks in the data
+  const startDate = new Date(data[0].time);
+  const endDate = new Date(data[data.length - 1].time);
+  const weeks = Math.ceil((endDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+
+  // Convert the counts object to an array of AverageVideosPerWeekdayData and calculate the average
+  const videosPerWeekdayData: AverageVideosPerWeekdayData[] = Object.keys(counts).map(day => ({
     day,
-    value: counts[day],
+    value: counts[day] / weeks,
   }));
 
   return videosPerWeekdayData;
