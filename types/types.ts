@@ -24,7 +24,7 @@ export interface WatchHistoryEntry {
   activityControls: string[];
 }
 
-export interface VideosPerWeekdayData {
+export interface AverageVideosPerWeekdayData {
   day: string;
   value: number;
 };

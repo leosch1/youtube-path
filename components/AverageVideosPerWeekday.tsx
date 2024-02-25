@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import styles from './VideosPerWeekday.module.css'; // Create a CSS module for your styles
-import { VideosPerWeekdayData } from "../types/types";
+import styles from './AverageVideosPerWeekday.module.css'; // Create a CSS module for your styles
+import { AverageVideosPerWeekdayData } from "../types/types";
 
 type VideosPerWeekdayProps = {
-  data: VideosPerWeekdayData[];
+  data: AverageVideosPerWeekdayData[];
 };
 
 const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {

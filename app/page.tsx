@@ -2,14 +2,14 @@
 
 import React, { useRef, useState } from 'react';
 import styles from "./page.module.css";
-import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getVideosPerWeekdayData, getChannelPhases } from '../utils/utils';
+import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData, getChannelPhases } from '../utils/utils';
 import { getDiagramComponents } from '../utils/getDiagramComponents';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
-import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
+import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
-import { exampleVideosPerWeekdayData } from '../example-data/exampleVideosPerWeekdayData';
+import { exampleAverageVideosPerWeekdayData } from '../example-data/exampleAverageVideosPerWeekdayData';
 import { examplePhaseData } from '../example-data/examplePhaseData';
 
 export default function Home() {
@@ -17,14 +17,14 @@ export default function Home() {
   const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>(exampleVideosPerWeekData);
   const [phaseData, setPhaseData] = useState<PhaseData[]>(examplePhaseData);
   const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
-  const [videosPerWeekdayData, setVideosPerWeekdayData] = useState<VideosPerWeekdayData[]>(exampleVideosPerWeekdayData);
+  const [videosPerWeekdayData, setAverageVideosPerWeekdayData] = useState<AverageVideosPerWeekdayData[]>(exampleAverageVideosPerWeekdayData);
 
   const handleDataChange = (data: WatchHistoryEntry[]) => {
     watchHistoryDataRef.current = sortDataByTime(data);
     setVideosPerWeekData(getVideosPerWeekData(watchHistoryDataRef.current));
     setPhaseData(getChannelPhases(watchHistoryDataRef.current, 3, 5));
     setTotalVideoCountData(getTotalVideoCountData(watchHistoryDataRef.current));
-    setVideosPerWeekdayData(getVideosPerWeekdayData(watchHistoryDataRef.current));
+    setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
   };
 
   const diagramComponents = getDiagramComponents(videosPerWeekData, totalVideoCountData, videosPerWeekdayData, phaseData);

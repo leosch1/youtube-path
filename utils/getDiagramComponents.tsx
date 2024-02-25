@@ -2,9 +2,9 @@ import React from 'react';
 import TotalVideoCount from '../components/TotalVideoCount';
 import Phase from '../components/Phase';
 import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
-import VideosPerWeekday from '../components/VideosPerWeekday';
+import VideosPerWeekday from '../components/AverageVideosPerWeekday';
 import Share from '../components/Share';
-import { VideoCountData, TotalVideoCountData, VideosPerWeekdayData, PhaseData } from "../types/types";
+import { VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
 
 // Function to calculate the center date for each phase
 const getPhaseComponents = (phaseData: PhaseData[]): { component: JSX.Element, date: Date }[] => {
@@ -52,7 +52,7 @@ const getInsertIndex = (componentsWithDates: { component: JSX.Element, date: Dat
 export const getDiagramComponents = (
   videosPerWeekData: VideoCountData[],
   totalVideoCountData: TotalVideoCountData,
-  videosPerWeekdayData: VideosPerWeekdayData[],
+  videosPerWeekdayData: AverageVideosPerWeekdayData[],
   phaseData: PhaseData[]
 ): JSX.Element[] => {
   const maxVideosPerWeekData = videosPerWeekData.reduce((max, current) => current.value > max.value ? current : max);
