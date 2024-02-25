@@ -97,7 +97,7 @@ export const getVideosPerWeekdayData = (data: WatchHistoryEntry[]): VideosPerWee
 };
 
 const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLimit: number, maxTimeLimit: number, totalVideoCount: number): PhaseData[] => {
-  const phases: (PhaseData & { count: number, density: number, normalizedDensity: number })[] = [];
+  const phases: PhaseData[] = [];
 
   // Group the data by channel
   const groupedData = data.reduce((acc, entry) => {
