@@ -17,7 +17,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       // Set up your chart dimensions and margins
       const totalWidth = d3Container.current.clientWidth;
       const totalHeight = d3Container.current.clientHeight;
-      const margin = { top: 5, right: 40, bottom: 20, left: 5 };
+      const margin = { top: 5, right: 40, bottom: 30, left: 5 };
       const width = totalWidth - margin.left - margin.right;
       const height = totalHeight - margin.top - margin.bottom;
 
@@ -37,6 +37,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       const maxValue = d3.max(data, d => d.value);
       const barColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
       const maxBarColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
+      const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
       // Append the rectangles for the bar chart
       svg.append('g')
@@ -54,14 +55,22 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       // Add the x-axis
       svg.append('g')
         .attr('transform', `translate(${margin.left},${height + margin.top})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale).tickSize(0)) // Add .tickSize(0) to remove the ticks
+        .selectAll("text")
+        .style("font-size", "20px")
+        .style("font-weight", "400")
+        .style("fill", axisLabelColor)
+        .attr("dy", "1em");
 
       // Add the y-axis
       svg.append('g')
         .attr('transform', `translate(${width + margin.left},${margin.top})`)
-        .call(d3.axisRight(yScale));
-
-      // Additional chart setup...
+        .call(d3.axisRight(yScale))
+        .selectAll("text")
+        .style("font-size", "20px")
+        .style("font-weight", "400")
+        .style("fill", axisLabelColor)
+        .attr("dx", "0.5em");
     }
   }, [data]);
 
