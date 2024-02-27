@@ -133,12 +133,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
       const yAxis = diagramGroup.append("g")
         .attr("transform", `translate(${margin.left},0)`)
         .attr("stroke-width", 2)
-        .call(d3.axisLeft(y).tickFormat((domainValue) => d3.timeFormat("%d %b %Y")(domainValue as Date)));
-
-      // Modify the y-axis path to remove the first tick
-      const domainPath = yAxis.select(".domain").attr("d");
-      const modifiedPath = domainPath.replace(/M-6,(\d+)H0V/, "M0,$1V");
-      yAxis.select(".domain").attr("d", modifiedPath);
+        .call(d3.axisLeft(y).tickSizeOuter(0).tickFormat((domainValue) => d3.timeFormat("%d %b %Y")(domainValue as Date)));
 
       // Change the color of the tick labels
       yAxis.selectAll("text")
