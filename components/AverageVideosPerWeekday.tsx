@@ -39,6 +39,45 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       const maxBarColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
       const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
+      // Add the x-axis
+      const xAxisG = svg.append('g')
+        .attr('transform', `translate(${margin.left},${height + margin.top})`)
+        .call(d3.axisBottom(xScale).tickSize(0)); // Add .tickSize(0) to remove the ticks
+
+      xAxisG.selectAll("text")
+        .style("font-size", "20px")
+        .style("font-weight", "400")
+        .style("fill", axisLabelColor)
+        .attr("dy", "1em");
+
+      xAxisG.select(".domain") // Select the 'path' element of the x-axis
+        .style("stroke-width", 2); // Make the x-axis thicker
+
+      // Add the y-axis
+      const yAxisG = svg.append('g')
+        .attr('transform', `translate(${width + margin.left},${margin.top})`)
+        .call(d3.axisRight(yScale).tickSizeOuter(0));
+
+      yAxisG.selectAll("text")
+        .style("font-size", "20px")
+        .style("font-weight", "400")
+        .style("fill", axisLabelColor)
+        .attr("dx", "0.3em");
+
+      yAxisG.select(".domain") // Select the 'path' element of the y-axis
+        .style("stroke-width", 2); // Make the y-axis thicker
+
+      // Remove the line elements of the y-axis
+      yAxisG.selectAll("line").remove();
+
+      // Add horizontal gridlines
+      yAxisG.selectAll(".tick")
+        .append("line")
+        .attr("x1", 0)
+        .attr("x2", -width)
+        .attr("stroke", "lightgray")
+        .attr("stroke-opacity", 0.1);
+
       // Append the rectangles for the bar chart
       svg.append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`)
@@ -51,26 +90,6 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .attr('y', d => yScale(d.value))
         .attr('height', d => height - yScale(d.value))
         .attr('fill', d => d.value === maxValue ? maxBarColor : barColor);
-
-      // Add the x-axis
-      svg.append('g')
-        .attr('transform', `translate(${margin.left},${height + margin.top})`)
-        .call(d3.axisBottom(xScale).tickSize(0)) // Add .tickSize(0) to remove the ticks
-        .selectAll("text")
-        .style("font-size", "20px")
-        .style("font-weight", "400")
-        .style("fill", axisLabelColor)
-        .attr("dy", "1em");
-
-      // Add the y-axis
-      svg.append('g')
-        .attr('transform', `translate(${width + margin.left},${margin.top})`)
-        .call(d3.axisRight(yScale))
-        .selectAll("text")
-        .style("font-size", "20px")
-        .style("font-weight", "400")
-        .style("fill", axisLabelColor)
-        .attr("dx", "0.5em");
     }
   }, [data]);
 
