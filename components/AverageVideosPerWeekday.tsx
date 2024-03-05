@@ -41,7 +41,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
 
       // Add the x-axis
       const xAxisG = svg.append('g')
-        .attr('transform', `translate(${margin.left},${height + margin.top})`)
+        .attr('transform', `translate(${margin.left},${height + margin.top - 1})`) // Shift up by 1 pixel to adjust for axis width and perfectly connect with the y-axis
         .call(d3.axisBottom(xScale).tickSize(0)); // Add .tickSize(0) to remove the ticks
 
       xAxisG.selectAll("text")
@@ -55,7 +55,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
 
       // Add the y-axis
       const yAxisG = svg.append('g')
-        .attr('transform', `translate(${width + margin.left},${margin.top})`)
+        .attr('transform', `translate(${width + margin.left - 1},${margin.top})`) // Shift left by 1 pixel to adjust for axis width and perfectly connect with x-axis
         .call(d3.axisRight(yScale).tickSizeOuter(0));
 
       yAxisG.selectAll("text")
