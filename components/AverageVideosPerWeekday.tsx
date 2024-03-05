@@ -39,20 +39,6 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       const maxBarColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
       const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
-      // Add the x-axis
-      const xAxisG = svg.append('g')
-        .attr('transform', `translate(${margin.left},${height + margin.top - 1})`) // Shift up by 1 pixel to adjust for axis width and perfectly connect with the y-axis
-        .call(d3.axisBottom(xScale).tickSize(0)); // Add .tickSize(0) to remove the ticks
-
-      xAxisG.selectAll("text")
-        .style("font-size", "20px")
-        .style("font-weight", "400")
-        .style("fill", axisLabelColor)
-        .attr("dy", "1em");
-
-      xAxisG.select(".domain") // Select the 'path' element of the x-axis
-        .style("stroke-width", 2); // Make the x-axis thicker
-
       // Add the y-axis
       const yAxisG = svg.append('g')
         .attr('transform', `translate(${width + margin.left - 1},${margin.top})`) // Shift left by 1 pixel to adjust for axis width and perfectly connect with x-axis
@@ -90,6 +76,20 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .attr('y', d => yScale(d.value))
         .attr('height', d => height - yScale(d.value))
         .attr('fill', d => d.value === maxValue ? maxBarColor : barColor);
+
+      // Add the x-axis (after the bars so it's on top of the bars)
+      const xAxisG = svg.append('g')
+        .attr('transform', `translate(${margin.left},${height + margin.top - 1})`) // Shift up by 1 pixel to adjust for axis width and perfectly connect with the y-axis
+        .call(d3.axisBottom(xScale).tickSize(0)); // Add .tickSize(0) to remove the ticks
+
+      xAxisG.selectAll("text")
+        .style("font-size", "20px")
+        .style("font-weight", "400")
+        .style("fill", axisLabelColor)
+        .attr("dy", "1em");
+
+      xAxisG.select(".domain") // Select the 'path' element of the x-axis
+        .style("stroke-width", 2); // Make the x-axis thicker
     }
   }, [data]);
 
