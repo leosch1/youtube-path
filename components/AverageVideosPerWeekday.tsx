@@ -41,7 +41,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
 
       // Add the y-axis
       const yAxisG = svg.append('g')
-        .attr('transform', `translate(${width + margin.left - 1},${margin.top})`) // Shift left by 1 pixel to adjust for axis width and perfectly connect with x-axis
+        .attr('transform', `translate(${width + margin.left},${margin.top})`)
         .call(d3.axisRight(yScale).tickSizeOuter(0));
 
       yAxisG.selectAll("text")
@@ -51,7 +51,8 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .attr("dx", "0.3em");
 
       yAxisG.select(".domain") // Select the 'path' element of the y-axis
-        .style("stroke-width", 2); // Make the y-axis thicker
+        .style("stroke-width", 2) // Make the y-axis thicker
+        .style("stroke-linecap", "round"); // Make the y-axis line rounded at the end
 
       // Remove the line elements of the y-axis
       yAxisG.selectAll("line").remove();
@@ -75,11 +76,13 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .attr('width', xScale.bandwidth())
         .attr('y', d => yScale(d.value))
         .attr('height', d => height - yScale(d.value))
-        .attr('fill', d => d.value === maxValue ? maxBarColor : barColor);
+        .attr('fill', d => d.value === maxValue ? maxBarColor : barColor)
+        .attr('rx', 2) // Set the x-radius for the corners
+        .attr('ry', 2); // Set the y-radius for the corners
 
       // Add the x-axis (after the bars so it's on top of the bars)
       const xAxisG = svg.append('g')
-        .attr('transform', `translate(${margin.left},${height + margin.top - 1})`) // Shift up by 1 pixel to adjust for axis width and perfectly connect with the y-axis
+        .attr('transform', `translate(${margin.left},${height + margin.top})`)
         .call(d3.axisBottom(xScale).tickSize(0)); // Add .tickSize(0) to remove the ticks
 
       xAxisG.selectAll("text")
@@ -89,7 +92,8 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .attr("dy", "1em");
 
       xAxisG.select(".domain") // Select the 'path' element of the x-axis
-        .style("stroke-width", 2); // Make the x-axis thicker
+        .style("stroke-width", 2) // Make the x-axis thicker
+        .style("stroke-linecap", "round"); // Make the x-axis line rounded at the end
     }
   }, [data]);
 
