@@ -17,7 +17,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       // Set up your chart dimensions and margins
       const totalWidth = d3Container.current.clientWidth;
       const totalHeight = d3Container.current.clientHeight;
-      const margin = { top: 5, right: 40, bottom: 30, left: 5 };
+      const margin = { top: 70, right: 45, bottom: 30, left: 5 };
       const width = totalWidth - margin.left - margin.right;
       const height = totalHeight - margin.top - margin.bottom;
 
@@ -35,6 +35,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .range([height, 0]);
 
       const maxValue = d3.max(data, d => d.value);
+      const maxDay = data.find(d => d.value === maxValue)?.day;
       const barColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
       const maxBarColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
       const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
@@ -79,6 +80,36 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .attr('fill', d => d.value === maxValue ? maxBarColor : barColor)
         .attr('rx', 2) // Set the x-radius for the corners
         .attr('ry', 2); // Set the y-radius for the corners
+
+      // Add annotation for the highest bar
+      const annotation = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`)
+        .selectAll('g')
+        .data(data.filter(d => d.day === maxDay))
+        .enter()
+        .append('g');
+
+      annotation.append('line')
+        .attr('x1', d => xScale(d.day)! + xScale.bandwidth() / 2)
+        .attr('y1', d => yScale(d.value) - 23)
+        .attr('x2', d => xScale(d.day)! + xScale.bandwidth() / 2)
+        .attr('y2', d => yScale(d.value) - 8)
+        .style('stroke', maxBarColor)
+        .style('stroke-width', 2)
+        .style('stroke-linecap', 'round');
+
+      annotation.append('text')
+        .attr('x', d => xScale(d.day)! + xScale.bandwidth() / 2) // Position at the center of the bar
+        .attr('y', d => yScale(d.value) - 50) // Position slightly above the bar
+        .attr('text-anchor', 'middle') // Center the text
+        .style('fill', maxBarColor)
+        .style('font-size', '14px')
+        .append('tspan')
+        .text('You watch the most')
+        .append('tspan')
+        .attr('x', d => xScale(d.day)! + xScale.bandwidth() / 2) // Position at the center of the bar
+        .attr('dy', '1.2em') // Offset by one line height
+        .text(d => `videos on ${d.day}`);
 
       // Add the x-axis (after the bars so it's on top of the bars)
       const xAxisG = svg.append('g')
