@@ -1,11 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: CloudFormation template for Next.js application infrastructure.
 
-Parameters:
-  BucketNamePrefix:
-    Type: String
-    Description: The prefix for the bucket name
-
 Resources:
   SiteBucket:
     Type: AWS::S3::Bucket
