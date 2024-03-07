@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build Next.js Application
-        run: npm run build && npm run export
+        run: npm run build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
