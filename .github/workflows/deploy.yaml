@@ -39,6 +39,13 @@ jobs:
             --stack-name YoutubePath \
             --capabilities CAPABILITY_NAMED_IAM
 
+      - name: Get Bucket Name from CloudFormation Output
+        id: get-bucket-name
+        run: |
+          BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name YoutubePath --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
+          echo "Bucket name is $BUCKET_NAME"
+          echo "::set-output name=bucket_name::$BUCKET_NAME"
+
       - name: Sync Files to S3 Bucket
         run: |
-          aws s3 sync ./out s3://${{ secrets.S3_BUCKET_NAME }} --delete
+          aws s3 sync ./out s3://${{ steps.get-bucket-name.outputs.bucket_name }} --delete

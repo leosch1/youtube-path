@@ -54,6 +54,9 @@ Resources:
           CloudFrontDefaultCertificate: true
 
 Outputs:
+  SiteBucketName:
+    Description: "The name of the S3 website bucket"
+    Value: !Ref SiteBucket
   SiteURL:
     Description: "URL of the S3 bucket hosting the site."
     Value: !GetAtt SiteBucket.WebsiteURL
