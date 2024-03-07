@@ -36,7 +36,7 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file infrastructure/template.yaml \
-            --stack-name MyStaticSiteStack \
+            --stack-name YoutubePath \
             --capabilities CAPABILITY_NAMED_IAM
 
       - name: Sync Files to S3 Bucket
