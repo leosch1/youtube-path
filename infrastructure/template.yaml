@@ -5,7 +5,7 @@ Resources:
   SiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "youtube-path-${AWS::AccountId}-${AWS::Region}"
+      BucketName: youtube-path-611312332993-eu-central-1
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
@@ -49,9 +49,6 @@ Resources:
           CloudFrontDefaultCertificate: true
 
 Outputs:
-  # SiteBucketName:
-  #   Description: "The name of the S3 website bucket"
-  #   Value: !Ref SiteBucket
   SiteURL:
     Description: "URL of the S3 bucket hosting the site."
     Value: !GetAtt SiteBucket.WebsiteURL
