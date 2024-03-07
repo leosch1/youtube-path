@@ -56,7 +56,8 @@ For CloudFormation:
                 "cloudformation:ListStackResources",
                 "cloudformation:CreateChangeSet",
                 "cloudformation:DescribeChangeSet",
-                "cloudformation:ExecuteChangeSet"
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:GetTemplateSummary"
             ],
             "Resource": "arn:aws:cloudformation:eu-central-1:611312332993:stack/YoutubePath/*"
         }
@@ -82,9 +83,15 @@ For S3:
             "Effect": "Allow",
             "Action": [
                 "s3:CreateBucket",
-                "s3:DeleteBucket"
+                "s3:DeleteBucket",
+                "s3:PutBucketWebsite",
+                "s3:PutBucketPolicy",
+                "s3:PutBucketCors",
+                "s3:GetBucketWebsite",
+                "s3:PutBucketPublicAccessBlock",
+                "s3:GetBucketPolicy"
             ],
-            "Resource": "arn:aws:s3:::*"
+            "Resource": "arn:aws:s3:::youtube-path-*"
         },
         {
             "Effect": "Allow",
@@ -94,6 +101,28 @@ For S3:
                 "s3:DeleteObject"
             ],
             "Resource": "arn:aws:s3:::youtube-path-*/*"
+        }
+    ]
+}
+```
+
+For CloudFront:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudfront:CreateDistribution",
+                "cloudfront:GetDistribution",
+                "cloudfront:UpdateDistribution",
+                "cloudfront:DeleteDistribution",
+                "cloudfront:ListDistributions",
+                "cloudfront:CreateInvalidation"
+            ],
+            "Resource": "*"
         }
     ]
 }
