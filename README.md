@@ -120,7 +120,8 @@ For CloudFront:
                 "cloudfront:UpdateDistribution",
                 "cloudfront:DeleteDistribution",
                 "cloudfront:ListDistributions",
-                "cloudfront:CreateInvalidation"
+                "cloudfront:CreateInvalidation",
+                "cloudfront:TagResource"
             ],
             "Resource": "*"
         }
