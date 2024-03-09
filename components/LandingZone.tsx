@@ -1,13 +1,16 @@
-import React, { FC, useRef, ChangeEvent } from 'react';
+import React, { FC, useRef, ChangeEvent, useState } from 'react';
 import Image from 'next/image';
 import styles from './LandingZone.module.css';
+import { WatchHistoryEntry } from "../types/types";
+import OwnDataModal from './OwnDataModal';
 
 interface LandingZoneProps {
-  setData: (data: any) => void; // Replace 'any' with the type of your data if known
+  setData: (data: WatchHistoryEntry[]) => void;
 }
 
 const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const handleExploreClick = () => {
     const element = document.getElementById('starting-component');
@@ -20,7 +23,7 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = event.target?.result ? JSON.parse(event.target.result as string) : null;
-        setData(data)
+        setData(data);
       };
       reader.readAsText(file);
     }
@@ -40,9 +43,10 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
       </div>
       <div className={styles.buttons}>
         <button className={`${styles.button} ${styles.exploreButton}`} onClick={handleExploreClick}>Explore an example</button>
-        <button className={`${styles.button} ${styles.dataButton}`} onClick={() => fileInputRef.current?.click()}>Use your own data</button>
+        <button className={`${styles.button} ${styles.dataButton}`} onClick={() => { setModalOpen(true); }}>Use your own data</button>
         <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileSelect} accept=".json" />
       </div>
+      {isModalOpen && <OwnDataModal onClose={() => setModalOpen(false)} fileInputRef={fileInputRef} />}
     </div>
   );
 };
