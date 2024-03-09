@@ -37,6 +37,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Deployment
 
+
+### Prerequisites
+
+* AWS Account
+* Hosted zone in Route53
+* User with following policies attached
+
 Create a user in the AWS account where the app should be deployed with the following policies. (Please adapt account ID, hosted zone ID, domain etc. in CloudFormation and policy templates accordingly.)
 
 For CloudFormation:
@@ -139,11 +146,15 @@ For Route53:
             "Sid": "Route53Permissions",
             "Effect": "Allow",
             "Action": [
+                "route53:GetHostedZone",
                 "route53:ChangeResourceRecordSets",
                 "route53:ListResourceRecordSets",
                 "route53:GetChange"
             ],
-            "Resource": "arn:aws:route53:::hostedzone/Z0720910164XX8B5317OC"
+            "Resource": [
+                "arn:aws:route53:::hostedzone/Z0720910164XX8B5317OC",
+                "arn:aws:route53:::change/*"
+            ]
         }
     ]
 }

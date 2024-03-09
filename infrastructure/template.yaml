@@ -38,6 +38,8 @@ Resources:
               OriginAccessIdentity: ""
         Enabled: true
         DefaultRootObject: index.html
+        Aliases:
+          - youtube-path.schleo.com
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
@@ -46,7 +48,8 @@ Resources:
             Cookies:
               Forward: none
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+          AcmCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/90cb1778-8fde-4395-b91f-25fb4a985401
+          SslSupportMethod: sni-only
 
   MyRecordSet:
     Type: AWS::Route53::RecordSet
