@@ -19,3 +19,52 @@
     padding: 1em;
     overflow: auto;
 }
+
+.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.head h2 {
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.stepsContainer {
+    position: relative;
+}
+
+.stepIndicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.stepLine {
+    position: absolute;
+    top: calc(50% - 2px);
+    left: 10px;
+    right: 10px;
+    height: 4px;
+    background-color: var(--secondary-background-color);
+    z-index: 0; /* Ensure it's behind the steps */
+}
+
+.step {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--secondary-background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1; /* Ensure the steps are above the line */
+    font-size: 0.8em;
+}
+
+.stepActive {
+    background-color: var(--primary-action-color);
+}
