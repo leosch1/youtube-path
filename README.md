@@ -1,6 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Status
+
+[![CI/CD Workflow](https://github.com/leosch1/youtube-path/actions/workflows/deploy.yaml/badge.svg)](https://github.com/leosch1/youtube-path/actions/workflows/deploy.yaml)
 
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
