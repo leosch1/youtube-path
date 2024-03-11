@@ -11,7 +11,7 @@
     z-index: 1000;
 }
 
-.modalContent {
+.container {
     width: 80%;
     height: 80%;
     background-color: var(--background-color);
@@ -67,4 +67,13 @@
 
 .stepActive {
     background-color: var(--primary-action-color);
+}
+
+.content {
+    display: flex;
+    /* position: relative; */
+}
+
+.content > * {
+    width: 50%;
 }
