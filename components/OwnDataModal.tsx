@@ -34,12 +34,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                     </div>
 
                     <div>
-                        {/* <Image
-                            src="/images/google-takeout-1.png"
-                            layout="fill"
-                            objectFit="contain"
-                            alt="Picture of the author"
-                        /> */}
+                        <img src="/images/google-takeout-1.png" alt="Google Takeout 1" />
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>

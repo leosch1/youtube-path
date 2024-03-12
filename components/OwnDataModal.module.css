@@ -18,12 +18,14 @@
     color: white;
     padding: 1em;
     overflow: auto;
+    padding: 2em;
 }
 
 .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 2em;
 }
 
 .head h2 {
@@ -71,9 +73,18 @@
 
 .content {
     display: flex;
-    /* position: relative; */
+    gap: 2em;
 }
 
 .content > * {
     width: 50%;
+}
+
+.content p {
+    margin-bottom: 0.5em;
+}
+
+.content img {
+    object-fit: cover;
+    width: 100%;
 }
