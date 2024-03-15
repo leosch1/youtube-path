@@ -12,13 +12,27 @@
 }
 
 .container {
+    position: relative;
     width: 80%;
     height: 80%;
-    background-color: var(--background-color);
-    color: white;
-    padding: 1em;
-    overflow: auto;
     padding: 2em;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+}
+
+.closeButton {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border: none;
+    font-size: 0.8em;
+    font-weight: 400;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--secondary-background-color);
 }
 
 .head {
