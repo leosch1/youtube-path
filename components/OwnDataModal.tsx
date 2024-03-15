@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styles from './OwnDataModal.module.css';
-import Image from 'next/image'
 
 interface OwnDataModalProps {
     onClose: () => void;
@@ -15,6 +14,8 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.container} onClick={stopPropagation}>
+                <button className={styles.closeButton} onClick={onClose}>X</button>
+
                 <div className={styles.head}>
                     <h2>How to get your watch history using Google Takeout?</h2>
                     <div className={styles.stepsContainer}>
@@ -42,7 +43,6 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>
-                <button onClick={onClose}>Close</button>
             </div>
         </div>
     );
