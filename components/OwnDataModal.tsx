@@ -8,9 +8,13 @@ interface OwnDataModalProps {
 }
 
 const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
+    const stopPropagation = (event: React.MouseEvent) => {
+        event.stopPropagation();
+    };
+
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.container}>
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.container} onClick={stopPropagation}>
                 <div className={styles.head}>
                     <h2>How to get your watch history using Google Takeout?</h2>
                     <div className={styles.stepsContainer}>
