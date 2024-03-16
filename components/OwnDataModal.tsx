@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './OwnDataModal.module.css';
 
 interface OwnDataModalProps {
@@ -7,9 +7,27 @@ interface OwnDataModalProps {
 }
 
 const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const images = [
+        "/images/google-takeout-1.png",
+        "/images/google-takeout-2.png",
+        "/images/google-takeout-3.png",
+        "/images/google-takeout-4.png",
+        "/images/google-takeout-5.png"
+    ];
+
     const stopPropagation = (event: React.MouseEvent) => {
         event.stopPropagation();
     };
+
+    const nextImage = () => {
+        setCurrentImageIndex((currentImageIndex + 1) % images.length);
+    };
+
+    const prevImage = () => {
+        setCurrentImageIndex((currentImageIndex - 1 + images.length) % images.length);
+    };
+
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
@@ -39,7 +57,9 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                     </div>
 
                     <div>
-                        <img src="/images/google-takeout-1.png" alt="Google Takeout 1" />
+                        <button onClick={prevImage}>Previous</button>
+                        <img src={images[currentImageIndex]} alt="Google Takeout" />
+                        <button onClick={nextImage}>Next</button>
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>
