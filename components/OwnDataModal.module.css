@@ -129,6 +129,7 @@
 .content img {
     object-fit: cover;
     width: 100%;
+    border-radius: 5px;
 }
 
 .content .imageText {
