@@ -8,12 +8,12 @@ interface OwnDataModalProps {
 
 const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const images = [
-        "/images/google-takeout-1.png",
-        "/images/google-takeout-2.png",
-        "/images/google-takeout-3.png",
-        "/images/google-takeout-4.png",
-        "/images/google-takeout-5.png"
+    const images: { path: string, text: string }[] = [
+        { path: "/images/google-takeout-1.png", text: "Go to takeout.google.com and select YouTube." },
+        { path: "/images/google-takeout-2.png", text: "Select JSON as the history format in “Multiple formats”." },
+        { path: "/images/google-takeout-3.png", text: "Include the history data and click on “Next step”." },
+        { path: "/images/google-takeout-4.png", text: "Leave the defaults and click on “Create export”." },
+        { path: "/images/google-takeout-5.png", text: "Download the export from the email you receive after a few minutes." }
     ];
 
     const stopPropagation = (event: React.MouseEvent) => {
@@ -60,7 +60,8 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                         {currentImageIndex > 0 && (
                             <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
                         )}
-                        <img src={images[currentImageIndex]} alt="Google Takeout" />
+                        <img src={images[currentImageIndex].path} alt="Google Takeout" />
+                        <div className={styles.imageText}>{images[currentImageIndex].text}</div>
                         {currentImageIndex < images.length - 1 && (
                             <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
                         )}

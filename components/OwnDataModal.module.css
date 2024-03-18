@@ -130,3 +130,9 @@
     object-fit: cover;
     width: 100%;
 }
+
+.content .imageText {
+    padding: 1em;
+    background-color: var(--tertiary-background-color);
+    border-radius: 5px;
+}
