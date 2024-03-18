@@ -57,14 +57,16 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                         <p>We take data privacy seriously. That is why your data will never leave your device and is not accessible by us at any point.</p>
                     </div>
 
-                    <div className={styles.carouselContainer}>
-                        {currentImageIndex > 0 && (
-                            <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
-                        )}
-                        {images[currentImageIndex].element}
-                        {currentImageIndex < images.length - 1 && (
-                            <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
-                        )}
+                    <div>
+                        <div className={styles.image}>
+                            {currentImageIndex > 0 && (
+                                <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
+                            )}
+                            {images[currentImageIndex].element}
+                            {currentImageIndex < images.length - 1 && (
+                                <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
+                            )}
+                        </div>
                         <div className={styles.imageText}>{images[currentImageIndex].text}</div>
                     </div>
                 </div>
