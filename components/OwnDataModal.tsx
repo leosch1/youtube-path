@@ -8,12 +8,13 @@ interface OwnDataModalProps {
 
 const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const images: { path: string, text: string }[] = [
-        { path: "/images/google-takeout-1.png", text: "Go to takeout.google.com and select YouTube." },
-        { path: "/images/google-takeout-2.png", text: "Select JSON as the history format in “Multiple formats”." },
-        { path: "/images/google-takeout-3.png", text: "Include the history data and click on “Next step”." },
-        { path: "/images/google-takeout-4.png", text: "Leave the defaults and click on “Create export”." },
-        { path: "/images/google-takeout-5.png", text: "Download the export from the email you receive after a few minutes." }
+    const images: { element: React.ReactNode, text: string }[] = [
+        { element: <img src="/images/google-takeout-1.png" alt="Google Takeout" />, text: "Go to takeout.google.com and select YouTube." },
+        { element: <img src="/images/google-takeout-2.png" alt="Google Takeout" />, text: "Select JSON as the history format in “Multiple formats”." },
+        { element: <img src="/images/google-takeout-3.png" alt="Google Takeout" />, text: "Include the history data and click on “Next step”." },
+        { element: <img src="/images/google-takeout-4.png" alt="Google Takeout" />, text: "Leave the defaults and click on “Create export”." },
+        { element: <img src="/images/google-takeout-5.png" alt="Google Takeout" />, text: "Download the export from the email you receive after a few minutes." },
+        { element: <div className={styles.uploadArea}></div>, text: "hello" }
     ];
 
     const stopPropagation = (event: React.MouseEvent) => {
@@ -60,11 +61,11 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                         {currentImageIndex > 0 && (
                             <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
                         )}
-                        <img src={images[currentImageIndex].path} alt="Google Takeout" />
-                        <div className={styles.imageText}>{images[currentImageIndex].text}</div>
+                        {images[currentImageIndex].element}
                         {currentImageIndex < images.length - 1 && (
                             <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
                         )}
+                        <div className={styles.imageText}>{images[currentImageIndex].text}</div>
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>
