@@ -7,7 +7,7 @@ interface OwnDataModalProps {
 }
 
 const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const images: { element: React.ReactNode, text: string }[] = [
         { element: <img src="/images/google-takeout-1.png" alt="Google Takeout" />, text: "Go to takeout.google.com and select YouTube." },
         { element: <img src="/images/google-takeout-2.png" alt="Google Takeout" />, text: "Select JSON as the history format in “Multiple formats”." },
@@ -22,11 +22,11 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
     };
 
     const nextImage = () => {
-        setCurrentImageIndex((currentImageIndex + 1) % images.length);
+        setCurrentStepIndex((currentStepIndex + 1) % images.length);
     };
 
     const prevImage = () => {
-        setCurrentImageIndex((currentImageIndex - 1 + images.length) % images.length);
+        setCurrentStepIndex((currentStepIndex - 1 + images.length) % images.length);
     };
 
 
@@ -40,11 +40,14 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                     <div className={styles.stepsContainer}>
                         <div className={styles.stepLine}></div> {/* This is the line connecting the circles */}
                         <div className={styles.stepIndicator}>
-                            <div className={`${styles.step} ${styles.stepActive}`}>1</div>                            <div className={styles.step}>2</div>
-                            <div className={styles.step}>3</div>
-                            <div className={styles.step}>4</div>
-                            <div className={styles.step}>5</div>
-                            <div className={styles.step}>6</div>
+                            {Array.from({ length: images.length }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`${styles.step} ${index <= currentStepIndex ? styles.stepActive : ''}`}
+                                >
+                                    {index + 1}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -59,15 +62,15 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
 
                     <div>
                         <div className={styles.image}>
-                            {currentImageIndex > 0 && (
+                            {currentStepIndex > 0 && (
                                 <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
                             )}
-                            {images[currentImageIndex].element}
-                            {currentImageIndex < images.length - 1 && (
+                            {images[currentStepIndex].element}
+                            {currentStepIndex < images.length - 1 && (
                                 <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
                             )}
                         </div>
-                        <div className={styles.imageText}>{images[currentImageIndex].text}</div>
+                        <div className={styles.imageText}>{images[currentStepIndex].text}</div>
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>
