@@ -31,8 +31,8 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
+            <button className={styles.closeButton} onClick={onClose}>X</button>
             <div className={styles.container} onClick={stopPropagation}>
-                <button className={styles.closeButton} onClick={onClose}>X</button>
 
                 <div className={styles.head}>
                     <h2>How to get your watch history using Google Takeout?</h2>
@@ -68,6 +68,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>
+
             </div>
         </div>
     );
