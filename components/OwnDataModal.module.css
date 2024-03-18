@@ -98,6 +98,33 @@
     margin-bottom: 0.5em;
 }
 
+.carouselContainer {
+    position: relative;
+    width: 100%;
+}
+
+.carouselButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-action-color);
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--primary-text-color)
+}
+
+.carouselButton.prev {
+    left: -20px;
+}
+
+.carouselButton.next {
+    right: -20px;
+}
+
 .content img {
     object-fit: cover;
     width: 100%;
