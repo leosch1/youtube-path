@@ -107,7 +107,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: var(--primary-action-color);
     border: none;
     font-size: 1.5em;
     cursor: pointer;
@@ -119,10 +118,12 @@
 
 .carouselButton.prev {
     left: -20px;
+    background-color: var(--secondary-background-color);
 }
 
 .carouselButton.next {
     right: -20px;
+    background: var(--primary-action-color);
 }
 
 .content img {
