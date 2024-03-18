@@ -57,9 +57,13 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                     </div>
 
                     <div className={styles.carouselContainer}>
-                        <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
+                        {currentImageIndex > 0 && (
+                            <button className={`${styles.carouselButton} ${styles.prev}`} onClick={prevImage}>&lt;</button>
+                        )}
                         <img src={images[currentImageIndex]} alt="Google Takeout" />
-                        <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
+                        {currentImageIndex < images.length - 1 && (
+                            <button className={`${styles.carouselButton} ${styles.next}`} onClick={nextImage}>&gt;</button>
+                        )}
                     </div>
                 </div>
                 <button onClick={() => fileInputRef.current?.click()}>Select File</button>
