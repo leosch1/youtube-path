@@ -1,5 +1,5 @@
 .uploadArea {
-    background-color: red;
+    background-color: var(--tertiary-background-color);
     width: 100%;
     border-radius: 5px;
 }
@@ -8,4 +8,12 @@
     content: "";
     display: block;
     padding-top: calc(1527 / 2383 * 100%);  /* Maintain aspect ratio of image */
+}
+
+.dottedRectangle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
 }

@@ -15,7 +15,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
         { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" />, text: "Include the history data and click on “Next step”." },
         { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" />, text: "Leave the defaults and click on “Create export”." },
         { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" />, text: "Download the export from the email you receive after a few minutes." },
-        { element: <UploadArea />, text: "hello" }
+        { element: <UploadArea />, text: "Unzip and upload the “watch-history.json” file." }
     ];
 
     const stopPropagation = (event: React.MouseEvent) => {
