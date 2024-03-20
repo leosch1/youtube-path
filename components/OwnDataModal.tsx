@@ -9,14 +9,6 @@ interface OwnDataModalProps {
 
 const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
-    const images: { element: React.ReactNode, text: string }[] = [
-        { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot}/>, text: "Go to takeout.google.com and select YouTube." },
-        { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot}/>, text: "Select JSON as the history format in “Multiple formats”." },
-        { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot}/>, text: "Include the history data and click on “Next step”." },
-        { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot}/>, text: "Leave the defaults and click on “Create export”." },
-        { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" className={styles.screenshot}/>, text: "Download the export from the email you receive after a few minutes." },
-        { element: <UploadArea />, text: "Unzip and upload the “watch-history.json” file." }
-    ];
 
     const stopPropagation = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -30,6 +22,18 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
         setCurrentStepIndex((currentStepIndex - 1 + images.length) % images.length);
     };
 
+    const onClickUpload = () => {
+        fileInputRef.current?.click();
+    }
+
+    const images: { element: React.ReactNode, text: string }[] = [
+        { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Go to takeout.google.com and select YouTube." },
+        { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Select JSON as the history format in “Multiple formats”." },
+        { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Include the history data and click on “Next step”." },
+        { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Leave the defaults and click on “Create export”." },
+        { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Download the export from the email you receive after a few minutes." },
+        { element: <UploadArea onClickUpload={onClickUpload} />, text: "Unzip and upload the “watch-history.json” file." }
+    ];
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
@@ -74,7 +78,6 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
                         <div className={styles.imageText}>{images[currentStepIndex].text}</div>
                     </div>
                 </div>
-                <button onClick={() => fileInputRef.current?.click()}>Select File</button>
 
             </div>
         </div>

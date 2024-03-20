@@ -3,6 +3,7 @@
     background-color: var(--tertiary-background-color);
     width: 100%;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .uploadArea::before {
