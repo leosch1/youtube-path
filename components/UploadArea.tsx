@@ -1,12 +1,15 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import styles from './UploadArea.module.css';
 import Image from 'next/image';
+import { ProgressContext } from '../contexts/ProgressContext';
 
 interface UploadAreaProps {
     onClickUpload: () => void;
 }
 
 const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
+    const { progress } = useContext(ProgressContext);
+
     return (
         <div className={styles.uploadArea} onClick={onClickUpload}>
             <svg className={styles.dottedRectangle}>
@@ -19,6 +22,7 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                 height={0}
                 className={styles.icon}
             />
+            {progress}
         </div>
     );
 };

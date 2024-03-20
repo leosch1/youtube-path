@@ -11,20 +11,35 @@ import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekDa
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
 import { exampleAverageVideosPerWeekdayData } from '../example-data/exampleAverageVideosPerWeekdayData';
 import { examplePhaseData } from '../example-data/examplePhaseData';
+import { ProgressContext } from '../contexts/ProgressContext';
 
 export default function Home() {
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
+  const [progress, setProgress] = useState(0);
   const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>(exampleVideosPerWeekData);
   const [phaseData, setPhaseData] = useState<PhaseData[]>(examplePhaseData);
   const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
   const [videosPerWeekdayData, setAverageVideosPerWeekdayData] = useState<AverageVideosPerWeekdayData[]>(exampleAverageVideosPerWeekdayData);
 
-  const handleDataChange = (data: WatchHistoryEntry[]) => {
+  const handleDataChange = async (data: WatchHistoryEntry[]) => {
     watchHistoryDataRef.current = sortDataByTime(data);
+    setProgress(prevProgress => prevProgress + 1 / 5);
+    await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
+
     setVideosPerWeekData(getVideosPerWeekData(watchHistoryDataRef.current));
+    setProgress(prevProgress => prevProgress + 1 / 5);
+    await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
+
     setPhaseData(getChannelPhases(watchHistoryDataRef.current, 3, 5));
+    setProgress(prevProgress => prevProgress + 1 / 5);
+    await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
+
     setTotalVideoCountData(getTotalVideoCountData(watchHistoryDataRef.current));
+    setProgress(prevProgress => prevProgress + 1 / 5);
+    await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
+
     setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
+    setProgress(prevProgress => prevProgress + 1 / 5);
   };
 
   const diagramComponents = getDiagramComponents(videosPerWeekData, totalVideoCountData, videosPerWeekdayData, phaseData);
@@ -32,7 +47,9 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.snapContainer}>
-        <LandingZone setData={handleDataChange} />
+        <ProgressContext.Provider value={{ progress, setProgress }}>
+          <LandingZone setData={handleDataChange} />
+        </ProgressContext.Provider>
       </div>
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
