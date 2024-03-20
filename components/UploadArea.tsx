@@ -2,9 +2,13 @@ import React, { FC } from 'react';
 import styles from './UploadArea.module.css';
 import Image from 'next/image';
 
-const UploadArea: FC = () => {
+interface UploadAreaProps {
+    onClickUpload: () => void;
+}
+
+const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
     return (
-        <div className={styles.uploadArea}>
+        <div className={styles.uploadArea} onClick={onClickUpload}>
             <svg className={styles.dottedRectangle}>
                 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="var(--secondary-background-color)" strokeWidth="5" strokeDasharray="10,10" />
             </svg>
