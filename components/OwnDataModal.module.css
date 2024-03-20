@@ -115,7 +115,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    color: var(--primary-text-color)
+    color: var(--primary-text-color);
+    z-index: 1;
 }
 
 .carouselButton.prev {
@@ -128,7 +129,7 @@
     background: var(--primary-action-color);
 }
 
-.content img {
+.content .screenshot {
     display: block;
     object-fit: cover;
     width: 100%;
