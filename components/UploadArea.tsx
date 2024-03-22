@@ -22,7 +22,9 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                 height={0}
                 className={styles.icon}
             />
-            {progress}
+            <div className={styles.progressBar}>
+                <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
+            </div>
         </div>
     );
 };
