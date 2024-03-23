@@ -29,15 +29,34 @@
     height: auto;
 }
 
-.progressBar {
+.progressBarContainer {
+    position: absolute;
     width: 100%;
-    height: 20px;
+    height: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.progressBar {
+    width: 60%;
+    height: 10px;
     background-color: var(--secondary-background-color);
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .progress {
     height: 100%;
     background-color: var(--primary-action-color);
     border-radius: 5px;
+}
+
+.progressBarContainer p {
+    color: var(--secondary-background-color);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 0 25px;
 }
