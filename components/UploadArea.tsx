@@ -15,16 +15,22 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
             <svg className={styles.dottedRectangle}>
                 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="var(--secondary-background-color)" strokeWidth="5" strokeDasharray="10,10" />
             </svg>
-            <Image
-                src="/images/upload-icon.svg"
-                alt="Upload"
-                width={0}
-                height={0}
-                className={styles.icon}
-            />
-            <div className={styles.progressBar}>
-                <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
-            </div>
+            {progress > 0 ? (
+                <div className={styles.progressBarContainer}>
+                    <div className={styles.progressBar}>
+                        <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
+                    </div>
+                    <p>Your personal YouTube path is being prepared...</p>
+                </div>
+            ) : (
+                <Image
+                    src="/images/upload-icon.svg"
+                    alt="Upload"
+                    width={0}
+                    height={0}
+                    className={styles.icon}
+                />
+            )}
         </div>
     );
 };
