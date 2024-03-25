@@ -8,7 +8,7 @@ interface UploadAreaProps {
 }
 
 const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
-    const progress = useContext(ProgressContext);
+    const { progress } = useContext(ProgressContext);
 
     return (
         <div className={styles.uploadArea} onClick={onClickUpload}>

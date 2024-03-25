@@ -13,12 +13,17 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const progress = useContext(ProgressContext);
+  const { progress, setProgress } = useContext(ProgressContext);
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setProgress(0);
+  }
 
   useEffect(() => {
     if (progress === 1) {
       setTimeout(() => { // Wait for 1 second before closing modal
-        setModalOpen(false);
+        closeModal();
         goToStartingComponent();
       }, 1000);
     }
@@ -41,6 +46,12 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
     }
   };
 
+  const resetEventTarget = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <h1 className={`${styles.title}`}>Analyse <b>your</b> YouTube journey.</h1>
@@ -56,9 +67,9 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
       <div className={styles.buttons}>
         <button className={`${styles.button} ${styles.exploreButton}`} onClick={goToStartingComponent}>Explore an example</button>
         <button className={`${styles.button} ${styles.dataButton}`} onClick={() => { setModalOpen(true); }}>Use your own data</button>
-        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileSelect} accept=".json" />
+        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileSelect} onClick={resetEventTarget} accept=".json" />
       </div>
-      {isModalOpen && <OwnDataModal onClose={() => setModalOpen(false)} fileInputRef={fileInputRef} />}
+      {isModalOpen && <OwnDataModal onClose={closeModal} fileInputRef={fileInputRef} />}
     </div>
   );
 };
