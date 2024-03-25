@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.snapContainer}>
-        <ProgressContext.Provider value={progress}>
+        <ProgressContext.Provider value={{ progress, setProgress }}>
           <LandingZone setData={handleDataChange} />
         </ProgressContext.Provider>
       </div>
