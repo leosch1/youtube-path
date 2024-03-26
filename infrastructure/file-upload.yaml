@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Upload files to S3 via pre-signed URLs
+
+Resources:
+  UploadBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: youtube-path-watch-histories-611312332993-eu-central-1
+  
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: YouTubePathFileUploadLambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaS3AccessPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                Resource: !Sub 'arn:aws:s3:::${UploadBucket}/*'
+  
+  PreSignedUrlFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: nodejs14.x
+      Code:
+        ZipFile: |
+          const AWS = require('aws-sdk');
+          const s3 = new AWS.S3();
+          exports.handler = async (event) => {
+            const { fileName, fileType } = JSON.parse(event.body);
+            const s3Params = {
+              Bucket: 'youtube-path-watch-histories-611312332993-eu-central-1',
+              Key: fileName,
+              Expires: 60,
+              ContentType: fileType,
+              ACL: 'private',
+            };
+            try {
+              const preSignedUrl = await s3.getSignedUrlPromise('putObject', s3Params);
+              return {
+                statusCode: 200,
+                headers: { "Access-Control-Allow-Origin": "*" },
+                body: JSON.stringify({ uploadURL: preSignedUrl })
+              };
+            } catch (err) {
+              return {
+                statusCode: 500,
+                body: JSON.stringify({ error: "Error creating pre-signed URL" })
+              };
+            }
+          }
+      FunctionName: PreSignedUrlFunction
+
+  ApiGateway:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: PreSignedURLAPI
+      Description: API Gateway to generate pre-signed URLs
+      FailOnWarnings: 'true'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Body:
+        swagger: "2.0"
+        info:
+          title: "PreSignedURLService"
+        paths:
+          /generate-url:
+            post:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PreSignedUrlFunction.Arn}/invocations
+                responses: {}
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApiGateway
+    Properties:
+      RestApiId: !Ref ApiGateway
+      StageName: prod
+
+  LambdaApiGatewayInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref PreSignedUrlFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*/*'

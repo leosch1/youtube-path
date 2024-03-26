@@ -50,7 +50,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 Create a user in the AWS account where the app should be deployed with the following policies. (Please adapt account ID, hosted zone ID, domain etc. in CloudFormation and policy templates accordingly.)
 
-For CloudFormation:
+CloudFormation (needed for `/infrastructure/frontend.yaml` and `/infrastructure/file-upload.yaml`):
 
 ```json
 {
@@ -70,13 +70,16 @@ For CloudFormation:
                 "cloudformation:ExecuteChangeSet",
                 "cloudformation:GetTemplateSummary"
             ],
-            "Resource": "arn:aws:cloudformation:eu-central-1:611312332993:stack/YoutubePath/*"
+            "Resource": [
+                "arn:aws:cloudformation:eu-central-1:611312332993:stack/YoutubePathFrontend/*",
+                "arn:aws:cloudformation:eu-central-1:611312332993:stack/YoutubePathFileUpload/*"
+            ]
         }
     ]
 }
 ```
 
-For S3:
+S3 (needed for `/infrastructure/frontend.yaml`):
 
 ```json
 {
@@ -117,7 +120,7 @@ For S3:
 }
 ```
 
-For CloudFront:
+CloudFront (needed for `/infrastructure/frontend.yaml`):
 
 ```json
 {
@@ -140,7 +143,7 @@ For CloudFront:
 }
 ```
 
-For Route53:
+Route53 (needed for `/infrastructure/frontend.yaml`):
 
 ```json
 {
@@ -161,6 +164,70 @@ For Route53:
             ]
         }
     ]
+}
+```
+
+IAM (needed for `/infrastructure/file-upload.yaml`):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "arn:aws:iam::611312332993:role/YouTubePathFileUploadLambdaExecutionRole"
+    }
+  ]
+}
+```
+
+Lambda (needed for `/infrastructure/file-upload.yaml`):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:DeleteFunction",
+        "lambda:InvokeFunction",
+        "lambda:AddPermission",
+        "lambda:RemovePermission"
+      ],
+      "Resource": "arn:aws:lambda:eu-central-1:611312332993:function:PreSignedUrlFunction"
+    }
+  ]
+}
+```
+
+API Gateway (needed for `/infrastructure/file-upload.yaml`):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:POST",
+        "apigateway:GET",
+        "apigateway:PUT",
+        "apigateway:DELETE",
+        "apigateway:PATCH"
+      ],
+      "Resource": "arn:aws:apigateway:eu-central-1::/*"
+    }
+  ]
 }
 ```
 
