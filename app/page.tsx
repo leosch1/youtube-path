@@ -50,6 +50,8 @@ export default function Home() {
   };
 
   const onClickUpload = () => {
+    setProcessingProgress(0);
+    setProcessingError(null);
     fileInputRef.current?.click();
   }
 
