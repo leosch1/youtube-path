@@ -1,21 +1,25 @@
 import React, { FC, useContext } from 'react';
 import styles from './UploadArea.module.css';
 import Image from 'next/image';
-import { ProgressContext } from '../contexts/ProgressContext';
+import { ProcessingContext } from '../contexts/ProcessingContext';
 
 interface UploadAreaProps {
     onClickUpload: () => void;
 }
 
 const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
-    const { progress } = useContext(ProgressContext);
+    const { progress, error } = useContext(ProcessingContext);
 
     return (
         <div className={styles.uploadArea} onClick={onClickUpload}>
             <svg className={styles.dottedRectangle}>
                 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="var(--secondary-background-color)" strokeWidth="5" strokeDasharray="10,10" />
             </svg>
-            {progress > 0 ? (
+            {error ? (
+                <div className={styles.errorContainer}>
+                    <p>Error: {error.message}</p>
+                </div>
+            ) : progress > 0 ? (
                 <div className={styles.progressBarContainer}>
                     <div className={styles.progressBar}>
                         <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
