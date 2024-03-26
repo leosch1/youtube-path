@@ -97,7 +97,7 @@
     width: 50%;
 }
 
-.content p {
+.content .explanation > p {
     margin-bottom: 0.5em;
 }
 
