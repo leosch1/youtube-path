@@ -180,6 +180,8 @@ IAM (needed for `/infrastructure/file-upload.yaml`):
         "iam:DeleteRole",
         "iam:AttachRolePolicy",
         "iam:DetachRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:PutRolePolicy",
         "iam:GetRole",
         "iam:PassRole"
       ],
@@ -199,6 +201,7 @@ Lambda (needed for `/infrastructure/file-upload.yaml`):
       "Effect": "Allow",
       "Action": [
         "lambda:CreateFunction",
+        "lambda:GetFunction",
         "lambda:DeleteFunction",
         "lambda:InvokeFunction",
         "lambda:AddPermission",
