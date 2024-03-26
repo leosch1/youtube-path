@@ -43,7 +43,7 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file infrastructure/file-upload.yaml \
-            --stack-name FileUpload \
+            --stack-name YouTubePathFileUpload \
             --capabilities CAPABILITY_NAMED_IAM
 
       - name: Sync Files to S3 Bucket
