@@ -54,7 +54,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
                 </div>
 
                 <div className={styles.content}>
-                    <div>
+                    <div className={styles.explanation}>
                         <p>In order to analyse your personal watch history, you can download it from Google Takeout.</p>
                         <p>Takeout is a programme by Google which allows users of Google services (e.g. YouTube) to get their personal data.</p>
                         <p>Once you have downloaded your watch history, you can use this webpage to analyse it.</p>

@@ -12,7 +12,8 @@
 .uploadArea::before {
     content: "";
     display: block;
-    padding-top: calc(1527 / 2383 * 100%);  /* Maintain aspect ratio of image */
+    padding-top: calc(1527 / 2383 * 100%);
+    /* Maintain aspect ratio of image */
 }
 
 .dottedRectangle {
@@ -41,18 +42,43 @@
 }
 
 .errorTitle {
-    font-size: 0.9em;
-    margin: 0.8em 0;
+    font-size: 1em;
+    margin: 0.8em 0 0.5em 0;
 }
 
 .errorSubtitle {
-    font-size: 0.7em;
-    margin-bottom: 0;
+    font-size: 0.8em;
+    margin-bottom: 10px;
 }
 
 .errorIcon {
     width: 50px;
     height: auto;
+}
+
+.errorButtons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.errorButtons button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+.retryButton {
+    background-color: var(--secondary-action-color);
+    color: var(--on-secondary-action-color)
+}
+
+.sendButton {
+    background-color: var(--primary-action-color);
+    color: var(--on-primary-action-color-2)
 }
 
 .progressBarContainer {
