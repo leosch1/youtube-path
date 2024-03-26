@@ -3,6 +3,9 @@
     background-color: var(--tertiary-background-color);
     width: 100%;
     border-radius: 5px;
+}
+
+.clickable {
     cursor: pointer;
 }
 
@@ -39,12 +42,12 @@
 
 .errorTitle {
     font-size: 0.9em;
-    margin: 1em 0;
+    margin: 0.8em 0;
 }
 
 .errorSubtitle {
     font-size: 0.7em;
-    margin-bottom:
+    margin-bottom: 0;
 }
 
 .errorIcon {
