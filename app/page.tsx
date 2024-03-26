@@ -63,12 +63,13 @@ export default function Home() {
     const file = event.target.files && event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      let data: WatchHistoryEntry[];
+      let data: WatchHistoryEntry[] = [];
       reader.onload = (event) => {
         try {
           data = event.target?.result ? JSON.parse(event.target.result as string) : [];
         } catch (error) {
           setProcessingError(new ProcessingError('An error occurred during JSON parsing.'));
+          return;
         }
         handleDataChange(data);
       };

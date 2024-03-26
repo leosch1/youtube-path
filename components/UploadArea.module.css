@@ -20,11 +20,34 @@
     height: calc(100% - 40px);
 }
 
-.icon {
+.errorContainer {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorContainer p {
+    color: var(--secondary-background-color);
+    width: 80%;
+    text-align: center;
+}
+
+.errorTitle {
+    font-size: 0.9em;
+    margin: 1em 0;
+}
+
+.errorSubtitle {
+    font-size: 0.7em;
+    margin-bottom:
+}
+
+.errorIcon {
     width: 50px;
     height: auto;
 }
@@ -59,4 +82,13 @@
     font-size: 0.8rem;
     font-weight: 500;
     margin: 0 25px;
+}
+
+.uploadIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: auto;
 }
