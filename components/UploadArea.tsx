@@ -27,7 +27,7 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                     <p className={styles.errorTitle}>Oops, there was an error during processing.</p>
                     <p className={styles.errorSubtitle}>Please send me your watch history and I will try to fix the issue asap.</p>
                     <div className={styles.errorButtons}>
-                        <button className={styles.retryButton}>Try Again</button>
+                        <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
                         <button className={styles.sendButton}>Send Watch History</button>
                     </div>
                 </div>
