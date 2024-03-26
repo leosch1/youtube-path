@@ -32,11 +32,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy CloudFormation Template
+      - name: Deploy Frontend with CloudFormation Template
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/template.yaml \
-            --stack-name YoutubePath \
+            --template-file infrastructure/frontend.yaml \
+            --stack-name YoutubePathFrontend \
+            # --capabilities CAPABILITY_NAMED_IAM
+
+      - name: Deploy File Upload (Backend) with CloudFormation Template
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/file-upload.yaml \
+            --stack-name FileUpload \
             --capabilities CAPABILITY_NAMED_IAM
 
       - name: Sync Files to S3 Bucket
