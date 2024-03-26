@@ -11,8 +11,8 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
     const { progress, error } = useContext(ProcessingContext);
 
     return (
-        <div className={styles.uploadArea} onClick={onClickUpload}>
-            <svg className={styles.dottedRectangle}>
+        <div className={styles.uploadArea} onClick={!error ? onClickUpload : undefined}>
+            <svg className={`${styles.dottedRectangle} ${!error ? styles.clickable : ''}`}>
                 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="var(--secondary-background-color)" strokeWidth="5" strokeDasharray="10,10" />
             </svg>
             {error ? (
