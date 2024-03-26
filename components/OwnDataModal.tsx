@@ -4,10 +4,10 @@ import UploadArea from './UploadArea';
 
 interface OwnDataModalProps {
     onClose: () => void;
-    fileInputRef: React.RefObject<HTMLInputElement>;
+    onClickUpload: () => void;
 }
 
-const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
+const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
     const stopPropagation = (event: React.MouseEvent) => {
@@ -21,10 +21,6 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, fileInputRef }) => {
     const prevImage = () => {
         setCurrentStepIndex((currentStepIndex - 1 + images.length) % images.length);
     };
-
-    const onClickUpload = () => {
-        fileInputRef.current?.click();
-    }
 
     const images: { element: React.ReactNode, text: string }[] = [
         { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Go to takeout.google.com and select YouTube." },

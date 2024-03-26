@@ -6,11 +6,10 @@ import OwnDataModal from './OwnDataModal';
 import { ProgressContext } from '../contexts/ProgressContext';
 
 interface LandingZoneProps {
-  setData: (data: WatchHistoryEntry[]) => void;
+  onClickUpload: () => void;
 }
 
-const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const { progress, setProgress } = useContext(ProgressContext);
@@ -34,24 +33,6 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const data = event.target?.result ? JSON.parse(event.target.result as string) : null;
-        setData(data);
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  const resetEventTarget = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  }
-
   return (
     <div className={styles.wrapper}>
       <h1 className={`${styles.title}`}>Analyse <b>your</b> YouTube journey.</h1>
@@ -67,9 +48,8 @@ const LandingZone: FC<LandingZoneProps> = ({ setData }) => {
       <div className={styles.buttons}>
         <button className={`${styles.button} ${styles.exploreButton}`} onClick={goToStartingComponent}>Explore an example</button>
         <button className={`${styles.button} ${styles.dataButton}`} onClick={() => { setModalOpen(true); }}>Use your own data</button>
-        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileSelect} onClick={resetEventTarget} accept=".json" />
       </div>
-      {isModalOpen && <OwnDataModal onClose={closeModal} fileInputRef={fileInputRef} />}
+      {isModalOpen && <OwnDataModal onClose={closeModal} onClickUpload={onClickUpload} />}
     </div>
   );
 };
