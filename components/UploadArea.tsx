@@ -17,7 +17,15 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
             </svg>
             {error ? (
                 <div className={styles.errorContainer}>
-                    <p>Error: {error.message}</p>
+                    <Image
+                        src="/images/error-icon.svg"
+                        alt="Error"
+                        width={0}
+                        height={0}
+                        className={styles.errorIcon}
+                    />
+                    <p className={styles.errorTitle}>Oops, there was an error during processing.</p>
+                    <p className={styles.errorSubtitle}>Please send me your watch history and I will try to fix the issue asap.</p>
                 </div>
             ) : progress > 0 ? (
                 <div className={styles.progressBarContainer}>
@@ -32,7 +40,7 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                     alt="Upload"
                     width={0}
                     height={0}
-                    className={styles.icon}
+                    className={styles.uploadIcon}
                 />
             )}
         </div>

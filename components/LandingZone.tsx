@@ -12,11 +12,12 @@ interface LandingZoneProps {
 const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const { progress, setProgress } = useContext(ProcessingContext);
+  const { progress, setProgress, setError } = useContext(ProcessingContext);
 
   const closeModal = () => {
     setModalOpen(false);
     setProgress(0);
+    setError(null);
   }
 
   useEffect(() => {
