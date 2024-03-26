@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import styles from "./page.module.css";
 import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData, getChannelPhases } from '../utils/utils';
 import { getDiagramComponents } from '../utils/getDiagramComponents';
@@ -14,6 +14,7 @@ import { examplePhaseData } from '../example-data/examplePhaseData';
 import { ProgressContext } from '../contexts/ProgressContext';
 
 export default function Home() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
   const [progress, setProgress] = useState(0);
   const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>(exampleVideosPerWeekData);
@@ -42,14 +43,37 @@ export default function Home() {
     setProgress(prevProgress => prevProgress + 1 / 5);
   };
 
+  const onClickUpload = () => {
+    fileInputRef.current?.click();
+  }
+
+  const resetEventTarget = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }
+
+  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = event.target?.result ? JSON.parse(event.target.result as string) : null;
+        handleDataChange(data);
+      };
+      reader.readAsText(file);
+    }
+  };
+
   const diagramComponents = getDiagramComponents(videosPerWeekData, totalVideoCountData, videosPerWeekdayData, phaseData);
 
   return (
     <main className={styles.main}>
       <div className={styles.snapContainer}>
         <ProgressContext.Provider value={{ progress, setProgress }}>
-          <LandingZone setData={handleDataChange} />
+          <LandingZone onClickUpload={onClickUpload} />
         </ProgressContext.Provider>
+        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onClick={resetEventTarget} onChange={handleFileSelect} accept=".json" />
       </div>
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
