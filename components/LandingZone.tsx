@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './LandingZone.module.css';
 import { WatchHistoryEntry } from '../types/types';
 import OwnDataModal from './OwnDataModal';
-import { ProgressContext } from '../contexts/ProgressContext';
+import { ProcessingContext } from '../contexts/ProcessingContext';
 
 interface LandingZoneProps {
   onClickUpload: () => void;
@@ -12,7 +12,7 @@ interface LandingZoneProps {
 const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const { progress, setProgress } = useContext(ProgressContext);
+  const { progress, setProgress } = useContext(ProcessingContext);
 
   const closeModal = () => {
     setModalOpen(false);
