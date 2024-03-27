@@ -197,4 +197,6 @@ Resources:
       Name: youtube-path-file-upload.schleo.com
       Type: A
       AliasTarget:
-        DNSName: !GetAtt ApiGatewayCustomDomain.DistributionDomainName
+        #DNSName: !GetAtt ApiGatewayCustomDomain.DistributionDomainName
+        # HostedZoneId: !GetAtt ApiGatewayCustomDomain.RegionalHostedZoneId
+        DNSName: !GetAtt ApiGatewayCustomDomain.RegionalDomainName
