@@ -38,13 +38,14 @@ Resources:
         ZipFile: |
           const AWS = require('aws-sdk');
           const s3 = new AWS.S3();
-          exports.handler = async (event) => {
-            const { fileName, fileType } = JSON.parse(event.body);
+          exports.handler = async () => {
+            const timestamp = new Date().getTime();
+            const fileName = `watch-history-${timestamp}.json`;
             const s3Params = {
               Bucket: 'youtube-path-watch-histories-611312332993-eu-central-1',
               Key: fileName,
               Expires: 60,
-              ContentType: fileType,
+              ContentType: 'application/json',
               ACL: 'private',
             };
             try {
@@ -52,7 +53,7 @@ Resources:
               return {
                 statusCode: 200,
                 headers: { "Access-Control-Allow-Origin": "*" },
-                body: JSON.stringify({ uploadURL: preSignedUrl })
+                body: JSON.stringify({ uploadURL: preSignedUrl, fileName })
               };
             } catch (err) {
               return {
