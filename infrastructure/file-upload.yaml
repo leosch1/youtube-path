@@ -63,25 +63,32 @@ Resources:
 
           const s3Client = new S3Client({ region: "eu-central-1" });
 
-          exports.handler = async () => {
+          exports.handler = async (event) => {
             const timestamp = new Date().getTime();
             const fileName = `watch-history-${timestamp}.json`;
-            
+
             const command = new PutObjectCommand({
               Bucket: 'youtube-path-watch-histories-611312332993-eu-central-1',
               Key: fileName,
               ContentType: 'application/json',
               ACL: 'private',
             });
-            
+
+            const allowedOrigins = ["https://www.yourfrontenddomain1.com", "http://localhost:3000"];
+            const origin = event.headers.origin;
+            let headers = {
+              "Content-Type": "application/json"
+            };
+
+            if (allowedOrigins.includes(origin)) {
+              headers["Access-Control-Allow-Origin"] = origin;
+            }
+
             try {
               const preSignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
               return {
                 statusCode: 200,
-                headers: { 
-                  "Access-Control-Allow-Origin": "https://www.yourfrontenddomain1.com, http://localhost:3000",
-                  "Content-Type": "application/json"
-                },
+                headers: headers,
                 body: JSON.stringify({ uploadURL: preSignedUrl, fileName })
               };
             } catch (err) {
