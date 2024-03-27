@@ -11,7 +11,7 @@ export const useUploadToS3 = () => {
 
   const fetchPresignedUrl = async (): Promise<UploadResponse> => {
     try {
-      const response = await fetch('https://63qa43sss4.execute-api.eu-central-1.amazonaws.com/prod', { // TODO: Create CNAME
+      const response = await fetch('https://youtube-path-file-upload.schleo.com/generate-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
