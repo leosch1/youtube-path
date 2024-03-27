@@ -203,7 +203,9 @@ Resources:
 
   ApiGatewayBasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
-    DependsOn: ApiGatewayCustomDomain
+    DependsOn: 
+      - ApiGatewayCustomDomain
+      - ApiGatewayStage
     Properties:
       DomainName: youtube-path-file-upload.schleo.com
       RestApiId: !Ref ApiGateway
