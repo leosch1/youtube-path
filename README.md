@@ -48,7 +48,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * Hosted zone in Route53
 * User with following policies attached
 
-Create a user in the AWS account where the app should be deployed with the following policies. (Please adapt account ID, hosted zone ID, domain etc. in CloudFormation and policy templates accordingly.)
+Create a user in the AWS account where the app should be deployed with the following policies. (Please adapt account ID, hosted zone ID, domain, domain certificate etc. in CloudFormation and policy templates accordingly.)
 
 CloudFormation (needed for `/infrastructure/frontend.yaml` and `/infrastructure/file-upload.yaml`):
 
@@ -181,6 +181,7 @@ IAM (needed for `/infrastructure/file-upload.yaml`):
         "iam:AttachRolePolicy",
         "iam:DetachRolePolicy",
         "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
         "iam:PutRolePolicy",
         "iam:GetRole",
         "iam:PassRole"
