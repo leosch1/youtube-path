@@ -9,7 +9,7 @@ Resources:
       CorsConfiguration:
         CorsRules:
           - AllowedOrigins:
-              - "https://www.yourfrontenddomain.com"
+              - "https://youtube-path.schleo.com"
               - "http://localhost:3000"
             AllowedMethods:
               - "PUT"
@@ -74,7 +74,7 @@ Resources:
               ACL: 'private',
             });
 
-            const allowedOrigins = ["https://www.yourfrontenddomain1.com", "http://localhost:3000"];
+            const allowedOrigins = ["https://youtube-path.schleo.com", "http://localhost:3000"];
             const origin = event.headers.origin;
             let headers = {
               "Content-Type": "application/json"
