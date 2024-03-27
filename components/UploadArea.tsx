@@ -2,20 +2,32 @@ import React, { FC, useContext } from 'react';
 import styles from './UploadArea.module.css';
 import Image from 'next/image';
 import { ProcessingContext } from '../contexts/ProcessingContext';
+import { useUploadToS3 } from '../hooks/useUploadToS3';
 
 interface UploadAreaProps {
     onClickUpload: () => void;
 }
 
 const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
-    const { progress, error } = useContext(ProcessingContext);
+    const { progress, error: processingError } = useContext(ProcessingContext);
+    const { fetchPresignedUrl, uploadFileToS3, isLoading, error: uploadError } = useUploadToS3();
+
+    const handleUpload = async () => {
+        try {
+            const { uploadURL } = await fetchPresignedUrl();
+            await uploadFileToS3(uploadURL, {});
+            console.log('Upload successful');
+        } catch (error) {
+            console.error('Upload failed:', error);
+        }
+    };
 
     return (
-        <div className={styles.uploadArea} onClick={!error ? onClickUpload : undefined}>
-            <svg className={`${styles.dottedRectangle} ${!error ? styles.clickable : ''}`}>
+        <div className={styles.uploadArea} onClick={!processingError ? onClickUpload : undefined}>
+            <svg className={`${styles.dottedRectangle} ${!processingError ? styles.clickable : ''}`}>
                 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="var(--secondary-background-color)" strokeWidth="5" strokeDasharray="10,10" />
             </svg>
-            {error ? (
+            {processingError ? (
                 <div className={styles.errorContainer}>
                     <Image
                         src="/images/error-icon.svg"
@@ -28,7 +40,8 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                     <p className={styles.errorSubtitle}>Please send me your watch history and I will try to fix the issue asap.</p>
                     <div className={styles.errorButtons}>
                         <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
-                        <button className={styles.sendButton}>Send Watch History</button>
+                        <button className={styles.sendButton} onClick={handleUpload} disabled={isLoading}>Send Watch History</button>
+                        {uploadError && <p>Error: {uploadError.message}</p>}
                     </div>
                 </div>
             ) : progress > 0 ? (
