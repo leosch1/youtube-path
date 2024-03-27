@@ -171,3 +171,15 @@ Resources:
       FunctionName: !Ref PreSignedUrlFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*/*'
+
+  FileUploadApiDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: "Z0720910164XX8B5317OC" # hosted zone ID of schleo.com
+      Name: youtube-path-file-upload.schleo.com
+      Type: A
+      TTL: '300'
+      ResourceRecords:
+        - Fn::GetAtt:
+            - ApiGateway
+            - RegionalDomainName
