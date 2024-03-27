@@ -198,5 +198,5 @@ Resources:
       Type: A
       AliasTarget:
         #DNSName: !GetAtt ApiGatewayCustomDomain.DistributionDomainName
-        # HostedZoneId: !GetAtt ApiGatewayCustomDomain.RegionalHostedZoneId
+        HostedZoneId: !GetAtt ApiGatewayCustomDomain.RegionalHostedZoneId
         DNSName: !GetAtt ApiGatewayCustomDomain.RegionalDomainName
