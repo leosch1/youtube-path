@@ -166,10 +166,22 @@ Resources:
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
-    DependsOn: ApiGateway
     Properties:
       RestApiId: !Ref ApiGateway
       StageName: prod
+    DependsOn: PreSignedUrlFunction
+
+  ApiGatewayStage:
+    Type: 'AWS::ApiGateway::Stage'
+    Properties:
+      StageName: prod
+      RestApiId: !Ref ApiGateway
+      DeploymentId: !Ref ApiGatewayDeployment
+      MethodSettings:
+        - ResourcePath: '/*' # for all resources
+          HttpMethod: '*' # for all methods
+          ThrottlingBurstLimit: 2
+          ThrottlingRateLimit: 1
 
   LambdaApiGatewayInvokePermission:
     Type: AWS::Lambda::Permission
