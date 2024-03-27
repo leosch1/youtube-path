@@ -41,8 +41,9 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                     <div className={styles.errorButtons}>
                         <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
                         <button className={styles.sendButton} onClick={handleUpload} disabled={isLoading}>Send Watch History</button>
-                        {uploadError && <p>Error: {uploadError.message}</p>}
                     </div>
+                    {/* TODO: Do proper error displaying */}
+                    {uploadError && <p>Error: {uploadError.message}</p>} 
                 </div>
             ) : progress > 0 ? (
                 <div className={styles.progressBarContainer}>
