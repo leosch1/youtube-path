@@ -27,7 +27,7 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
         goToStartingComponent();
       }, 1000);
     }
-  }, [progress]);
+  }, [progress, closeModal]);
 
   const goToStartingComponent = () => {
     const element = document.getElementById('starting-component');
