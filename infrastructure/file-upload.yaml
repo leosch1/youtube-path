@@ -183,4 +183,4 @@ Resources:
       ResourceRecords:
         - Fn::GetAtt:
             - ApiGateway
-            - RegionalDomainName
+            - DomainName
