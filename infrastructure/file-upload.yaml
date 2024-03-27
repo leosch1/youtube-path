@@ -168,7 +168,6 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId: !Ref ApiGateway
-      StageName: prod
     DependsOn: PreSignedUrlFunction
 
   ApiGatewayStage:
@@ -178,8 +177,8 @@ Resources:
       RestApiId: !Ref ApiGateway
       DeploymentId: !Ref ApiGatewayDeployment
       MethodSettings:
-        - ResourcePath: '/*' # for all resources
-          HttpMethod: '*' # for all methods
+        - ResourcePath: '/*'
+          HttpMethod: '*'
           ThrottlingBurstLimit: 2
           ThrottlingRateLimit: 1
 
@@ -209,7 +208,7 @@ Resources:
     Properties:
       DomainName: youtube-path-file-upload.schleo.com
       RestApiId: !Ref ApiGateway
-      Stage: prod # Change this to the desired stage name
+      Stage: prod
 
   FileUploadApiDNSRecord:
     Type: AWS::Route53::RecordSet
