@@ -176,7 +176,8 @@ Resources:
     Type: AWS::ApiGateway::DomainName
     Properties:
       DomainName: youtube-path-file-upload.schleo.com
-      RegionalCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/90cb1778-8fde-4395-b91f-25fb4a985401
+      # Certificate for *.schleo.com in eu-central-1
+      RegionalCertificateArn: arn:aws:acm:eu-central-1:611312332993:certificate/521236cc-4b93-4d38-8df8-755b7aa142be
       EndpointConfiguration:
         Types:
           - REGIONAL
@@ -196,4 +197,3 @@ Resources:
       Type: A
       AliasTarget:
         DNSName: !GetAtt ApiGatewayCustomDomain.DistributionDomainName
-        # HostedZoneId: Z2FDTNDATAQYW2 # This is for CloudFront distribution
