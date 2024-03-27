@@ -80,12 +80,44 @@ Resources:
         paths:
           /generate-url:
             post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              parameters:
+                - in: body
+                  name: RequestBody
+                  description: JSON object containing the information for generating a pre-signed URL
+                  required: true
+                  schema:
+                    $ref: '#/definitions/GenerateUrlRequest'
+              responses:
+                200:
+                  description: "Successful response"
+                  schema:
+                    $ref: '#/definitions/GenerateUrlResponse'
               x-amazon-apigateway-integration:
                 httpMethod: POST
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PreSignedUrlFunction.Arn}/invocations
-                responses: {}
+        definitions:
+          GenerateUrlRequest:
+            type: object
+            properties:
+              fileType:
+                type: string
+                enum: [ "application/json" ]
+            required:
+              - fileType
+          GenerateUrlResponse:
+            type: object
+            properties:
+              uploadURL:
+                type: string
+              fileName:
+                type: string
+
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment

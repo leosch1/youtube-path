@@ -205,7 +205,8 @@ Lambda (needed for `/infrastructure/file-upload.yaml`):
         "lambda:DeleteFunction",
         "lambda:InvokeFunction",
         "lambda:AddPermission",
-        "lambda:RemovePermission"
+        "lambda:RemovePermission",
+        "lambda:UpdateFunctionCode"
       ],
       "Resource": "arn:aws:lambda:eu-central-1:611312332993:function:PreSignedUrlFunction"
     }
