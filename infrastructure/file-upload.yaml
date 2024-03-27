@@ -156,7 +156,6 @@ Resources:
                 passthroughBehavior: "when_no_match"
                 type: "mock"
 
-
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn: ApiGateway
