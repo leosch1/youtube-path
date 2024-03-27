@@ -48,6 +48,7 @@ Resources:
             Cookies:
               Forward: none
         ViewerCertificate:
+          # Certificate for *.schleo.com in us-east-1
           AcmCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/90cb1778-8fde-4395-b91f-25fb4a985401
           SslSupportMethod: sni-only
 
