@@ -13,7 +13,8 @@ Resources:
             AllowedMethods:
               - "PUT"
             AllowedHeaders:
-              - "*"
+              - "https://www.yourproductiondomain.com"
+              - "http://localhost:3000"
             MaxAge: 3000
 
   LambdaExecutionRole:
@@ -78,7 +79,7 @@ Resources:
               return {
                 statusCode: 200,
                 headers: { 
-                  "Access-Control-Allow-Origin": "https://www.yourfrontenddomain.com",
+                  "Access-Control-Allow-Origin": "https://www.yourfrontenddomain1.com, http://localhost:3000",
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ uploadURL: preSignedUrl, fileName })
