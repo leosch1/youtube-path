@@ -92,7 +92,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/GenerateUrlRequest'
               responses:
-                200:
+                '200':
                   description: "Successful response"
                   schema:
                     $ref: '#/definitions/GenerateUrlResponse'
