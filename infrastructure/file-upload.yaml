@@ -172,15 +172,28 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*/*'
 
+  ApiGatewayCustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: youtube-path-file-upload.schleo.com
+      # CertificateArn: !Ref CertificateArn
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  ApiGatewayBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: youtube-path-file-upload.schleo.com
+      RestApiId: !Ref ApiGateway
+      Stage: prod # Change this to the desired stage name
+
   FileUploadApiDNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId: "Z0720910164XX8B5317OC" # hosted zone ID of schleo.com
       Name: youtube-path-file-upload.schleo.com
       Type: A
-      TTL: '300'
-      DependsOn: ApiGatewayDeployment
-      ResourceRecords:
-        - Fn::GetAtt:
-            - ApiGateway
-            - DomainName
+      AliasTarget:
+        DNSName: !GetAtt ApiGatewayCustomDomain.DistributionDomainName
+        # HostedZoneId: Z2FDTNDATAQYW2 # This is for CloudFront distribution
