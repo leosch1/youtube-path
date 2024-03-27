@@ -36,20 +36,24 @@ Resources:
       Runtime: nodejs20.x
       Code:
         ZipFile: |
-          const AWS = require('aws-sdk');
-          const s3 = new AWS.S3();
+          const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+          const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+          const s3Client = new S3Client({ region: "eu-central-1" });
+
           exports.handler = async () => {
             const timestamp = new Date().getTime();
             const fileName = `watch-history-${timestamp}.json`;
-            const s3Params = {
+            
+            const command = new PutObjectCommand({
               Bucket: 'youtube-path-watch-histories-611312332993-eu-central-1',
               Key: fileName,
-              Expires: 60,
               ContentType: 'application/json',
               ACL: 'private',
-            };
+            });
+            
             try {
-              const preSignedUrl = await s3.getSignedUrlPromise('putObject', s3Params);
+              const preSignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
               return {
                 statusCode: 200,
                 headers: { "Access-Control-Allow-Origin": "*" },
@@ -61,7 +65,7 @@ Resources:
                 body: JSON.stringify({ error: "Error creating pre-signed URL" })
               };
             }
-          }
+          };
       FunctionName: PreSignedUrlFunction
 
   ApiGateway:
