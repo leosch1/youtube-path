@@ -10,11 +10,11 @@ Resources:
         CorsRules:
           - AllowedOrigins:
               - "https://www.yourfrontenddomain.com"
+              - "http://localhost:3000"
             AllowedMethods:
               - "PUT"
             AllowedHeaders:
-              - "https://www.yourproductiondomain.com"
-              - "http://localhost:3000"
+              - "*"
             MaxAge: 3000
 
   LambdaExecutionRole:
