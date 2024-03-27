@@ -179,6 +179,7 @@ Resources:
       Name: youtube-path-file-upload.schleo.com
       Type: A
       TTL: '300'
+      DependsOn: ApiGatewayDeployment
       ResourceRecords:
         - Fn::GetAtt:
             - ApiGateway
