@@ -176,7 +176,7 @@ Resources:
     Type: AWS::ApiGateway::DomainName
     Properties:
       DomainName: youtube-path-file-upload.schleo.com
-      AcmCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/90cb1778-8fde-4395-b91f-25fb4a985401
+      RegionalCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/90cb1778-8fde-4395-b91f-25fb4a985401
       EndpointConfiguration:
         Types:
           - REGIONAL
