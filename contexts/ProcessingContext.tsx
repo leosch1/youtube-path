@@ -1,5 +1,5 @@
-import { createContext } from 'react';
 import ProcessingError from '../errors/ProcessingError';
+import { createContext } from 'react';
 
 interface ProcessingContextType {
   progress: number;

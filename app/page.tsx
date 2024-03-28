@@ -7,7 +7,9 @@ import { getDiagramComponents } from '../utils/getDiagramComponents';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
-import ProcessingError from '../errors/ProcessingError';
+import CalculationError from '../errors/CalculationError';
+import ParseError from '../errors/ParseError';
+import FileReadError from '../errors/FileReadError';
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
 import { exampleAverageVideosPerWeekdayData } from '../example-data/exampleAverageVideosPerWeekdayData';
@@ -18,7 +20,7 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
   const [processingProgress, setProcessingProgress] = useState(0);
-  const [processingError, setProcessingError] = useState<ProcessingError | null>(null);
+  const [processingError, setProcessingError] = useState<Error | null>(null);
   const [videosPerWeekData, setVideosPerWeekData] = useState<VideoCountData[]>(exampleVideosPerWeekData);
   const [phaseData, setPhaseData] = useState<PhaseData[]>(examplePhaseData);
   const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
@@ -45,7 +47,7 @@ export default function Home() {
       setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
       setProcessingProgress(prevProgress => prevProgress + 1 / 5);
     } catch (error) {
-      setProcessingError(new ProcessingError('An error occurred while processing the data.'));
+      setProcessingError(new CalculationError('An error occurred while processing the data.', watchHistoryDataRef.current));
     }
   };
 
@@ -70,13 +72,13 @@ export default function Home() {
         try {
           data = event.target?.result ? JSON.parse(event.target.result as string) : [];
         } catch (error) {
-          setProcessingError(new ProcessingError('An error occurred during JSON parsing.'));
+          setProcessingError(new ParseError('An error occurred during JSON parsing.'));
           return;
         }
         handleDataChange(data);
       };
       reader.onerror = () => {
-        setProcessingError(new ProcessingError('An error occurred while reading the file.'));
+        setProcessingError(new FileReadError('An error occurred while reading the file.'));
       };
       reader.readAsText(file);
     }
