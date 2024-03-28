@@ -3,6 +3,7 @@ import styles from './UploadArea.module.css';
 import Image from 'next/image';
 import { ProcessingContext } from '../contexts/ProcessingContext';
 import { useUploadToS3 } from '../hooks/useUploadToS3';
+import CalculationError from '../errors/CalculationError';
 
 interface UploadAreaProps {
     onClickUpload: () => void;
@@ -15,7 +16,7 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
     const handleUpload = async () => {
         try {
             const { uploadURL } = await fetchPresignedUrl();
-            await uploadFileToS3(uploadURL, {});
+            await uploadFileToS3(uploadURL, (processingError as CalculationError).data);
             console.log('Upload successful');
         } catch (error) {
             console.error('Upload failed:', error);
@@ -37,13 +38,17 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                         className={styles.errorIcon}
                     />
                     <p className={styles.errorTitle}>Oops, there was an error during processing.</p>
-                    <p className={styles.errorSubtitle}>Please send me your watch history and I will try to fix the issue asap.</p>
-                    <div className={styles.errorButtons}>
-                        <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
-                        <button className={styles.sendButton} onClick={handleUpload} disabled={isLoading}>Send Watch History</button>
-                    </div>
+                    {processingError instanceof CalculationError ? (
+                        <div className={styles.errorButtons}>
+                            <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
+                            <button className={styles.sendButton} onClick={handleUpload} disabled={isLoading}>Send Watch History</button>
+                        </div>
+                    ) : (
+                        /* TODO: Do proper error displaying */
+                        <p>Error: {processingError.message}</p>
+                    )}
                     {/* TODO: Do proper error displaying */}
-                    {uploadError && <p>Error: {uploadError.message}</p>} 
+                    {uploadError && <p>Error: {uploadError.message}</p>}
                 </div>
             ) : progress > 0 ? (
                 <div className={styles.progressBarContainer}>
