@@ -82,6 +82,7 @@
     align-items: center;
     z-index: 1; /* Ensure the steps are above the line */
     font-size: 0.8em;
+    cursor: pointer;
 }
 
 .stepActive {
