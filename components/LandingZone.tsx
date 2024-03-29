@@ -1,7 +1,6 @@
-import React, { FC, useRef, ChangeEvent, useState, useEffect, useContext } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import styles from './LandingZone.module.css';
-import { WatchHistoryEntry } from '../types/types';
 import OwnDataModal from './OwnDataModal';
 import { ProcessingContext } from '../contexts/ProcessingContext';
 
