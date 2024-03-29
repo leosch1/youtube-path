@@ -13,10 +13,16 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
 
   const { progress, setProgress, setError } = useContext(ProcessingContext);
 
+  const openModal = () => {
+    setModalOpen(true);
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+  }
+
   const closeModal = () => {
     setModalOpen(false);
     setProgress(0);
     setError(null);
+    document.body.style.overflow = 'unset';
   }
 
   useEffect(() => {
@@ -47,7 +53,7 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
       </div>
       <div className={styles.buttons}>
         <button className={`${styles.button} ${styles.exploreButton}`} onClick={goToStartingComponent}>Explore an example</button>
-        <button className={`${styles.button} ${styles.dataButton}`} onClick={() => { setModalOpen(true); }}>Use your own data</button>
+        <button className={`${styles.button} ${styles.dataButton}`} onClick={openModal}>Use your own data</button>
       </div>
       {isModalOpen && <OwnDataModal onClose={closeModal} onClickUpload={onClickUpload} />}
     </div>
