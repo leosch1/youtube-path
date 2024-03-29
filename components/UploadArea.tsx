@@ -11,7 +11,7 @@ interface UploadAreaProps {
 
 const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
     const { progress, error: processingError } = useContext(ProcessingContext);
-    const { fetchPresignedUrl, uploadFileToS3, isLoading, error: uploadError } = useUploadToS3();
+    const { fetchPresignedUrl, uploadFileToS3, isLoading, error: uploadError, isUploadSuccessful } = useUploadToS3();
 
     const handleUpload = async () => {
         try {
@@ -41,7 +41,13 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                     {processingError instanceof CalculationError ? (
                         <div className={styles.errorButtons}>
                             <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
-                            <button className={styles.sendButton} onClick={handleUpload} disabled={isLoading}>Send Watch History</button>
+                            <button
+                                className={`${styles.sendButton} ${isLoading ? styles.disabled : ''} ${isUploadSuccessful ? styles.uploadSuccessful : ''}`}
+                                onClick={handleUpload}
+                                disabled={isLoading || isUploadSuccessful}
+                            >
+                                {isUploadSuccessful ? 'Upload successful' : 'Send Watch History'}
+                            </button>
                         </div>
                     ) : (
                         /* TODO: Do proper error displaying */

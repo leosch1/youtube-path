@@ -81,6 +81,17 @@
     color: var(--on-primary-action-color-2)
 }
 
+.sendButton.disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.sendButton.uploadSuccessful {
+    background-color: var(--success-color);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .progressBarContainer {
     position: absolute;
     width: 100%;
