@@ -43,18 +43,21 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
                 <div className={styles.head}>
                     <h2>How to get your watch history using Google Takeout?</h2>
                     <div className={styles.stepsContainer}>
-                        <div className={styles.stepLine}></div> {/* This is the line connecting the circles */}
-                        <div className={styles.stepIndicator}>
-                            {Array.from({ length: images.length }).map((_, index) => (
+                        {Array.from({ length: images.length }).map((_, index) => (
+                            <React.Fragment key={index}>
                                 <div
-                                    key={index}
                                     className={`${styles.step} ${index <= currentStepIndex ? styles.stepActive : ''}`}
                                     onClick={() => jumpToStep(index)}
                                 >
                                     {index + 1}
                                 </div>
-                            ))}
-                        </div>
+                                {index < images.length - 1 && (
+                                    <div
+                                        className={`${styles.stepLine} ${index < currentStepIndex ? styles.stepLineActive : ''}`}
+                                    />
+                                )}
+                            </React.Fragment>
+                        ))}
                     </div>
                 </div>
 
