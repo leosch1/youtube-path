@@ -53,9 +53,8 @@
 .stepsContainer {
     display: flex;
     align-items: center;
-    flex-grow: 1;
     margin-left: 1em;
-    max-width: 220px;
+    width: 190px;
 }
 
 .stepLine {
