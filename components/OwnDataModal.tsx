@@ -22,6 +22,10 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
         setCurrentStepIndex((currentStepIndex - 1 + images.length) % images.length);
     };
 
+    const jumpToStep = (index: number) => {
+        setCurrentStepIndex(index);
+    };
+
     const images: { element: React.ReactNode, text: string }[] = [
         { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Go to takeout.google.com and select YouTube." },
         { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Select JSON as the history format in “Multiple formats”." },
@@ -45,6 +49,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
                                 <div
                                     key={index}
                                     className={`${styles.step} ${index <= currentStepIndex ? styles.stepActive : ''}`}
+                                    onClick={() => jumpToStep(index)}
                                 >
                                     {index + 1}
                                 </div>
