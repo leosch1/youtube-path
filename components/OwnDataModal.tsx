@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styles from './OwnDataModal.module.css';
 import UploadArea from './UploadArea';
 
@@ -35,10 +35,31 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
         { element: <UploadArea onClickUpload={onClickUpload} />, text: "Unzip and upload the “watch-history.json” file." }
     ];
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+    // Position the close button at the top of the container
+    useEffect(() => {
+        const containerElement = containerRef.current;
+        const closeButtonElement = closeButtonRef.current;
+    
+        if (containerElement && closeButtonElement) {
+            const resizeObserver = new ResizeObserver(() => {
+                const topOffset = (window.innerHeight - containerElement.offsetHeight) / 2
+                closeButtonElement.style.top = `${topOffset}px`;
+            });
+    
+            resizeObserver.observe(containerElement);
+    
+            // Clean up the observer when the component unmounts
+            return () => resizeObserver.unobserve(containerElement);
+        }
+    }, []);
+
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
-            <button className={styles.closeButton} onClick={onClose}>X</button>
-            <div className={styles.container} onClick={stopPropagation}>
+            <button ref={closeButtonRef} className={styles.closeButton} onClick={onClose}>X</button>
+            <div ref={containerRef} className={styles.container} onClick={stopPropagation}>
 
                 <div className={styles.head}>
                     <h2>How to get your watch history using Google Takeout?</h2>
