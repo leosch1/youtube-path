@@ -28,9 +28,9 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
 
     const images: { element: React.ReactNode, text: React.ReactNode }[] = [
         { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Go to <a href='https://takeout.google.com' target="_blank">takeout.google.com</a> and select YouTube.</p> },
-        { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Select JSON as the history format in "Multiple formats".</p> },
-        { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Include the history data and click on "Next step".</p> },
-        { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Leave the defaults and click on "Create export".</p> },
+        { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Select JSON as the history format in &quot;Multiple formats&quot;.</p> },
+        { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Include the history data and click on &quot;Next step&quot;.</p> },
+        { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Leave the defaults and click on &quot;Create export&quot;.</p> },
         { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Download the export from the email you receive after a few minutes.</p> },
         { element: <UploadArea onClickUpload={onClickUpload} />, text: <p>Unzip and upload the “watch-history.json” fil.</p> }
     ];
