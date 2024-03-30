@@ -26,13 +26,13 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
         setCurrentStepIndex(index);
     };
 
-    const images: { element: React.ReactNode, text: string }[] = [
-        { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Go to takeout.google.com and select YouTube." },
-        { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Select JSON as the history format in “Multiple formats”." },
-        { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Include the history data and click on “Next step”." },
-        { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Leave the defaults and click on “Create export”." },
-        { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" className={styles.screenshot} />, text: "Download the export from the email you receive after a few minutes." },
-        { element: <UploadArea onClickUpload={onClickUpload} />, text: "Unzip and upload the “watch-history.json” file." }
+    const images: { element: React.ReactNode, text: React.ReactNode }[] = [
+        { element: <img src="/images/google-takeout-1.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Go to <a href='https://takeout.google.com' target="_blank">takeout.google.com</a> and select YouTube.</p> },
+        { element: <img src="/images/google-takeout-2.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Select JSON as the history format in "Multiple formats".</p> },
+        { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Include the history data and click on "Next step".</p> },
+        { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Leave the defaults and click on "Create export".</p> },
+        { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Download the export from the email you receive after a few minutes.</p> },
+        { element: <UploadArea onClickUpload={onClickUpload} />, text: <p>Unzip and upload the “watch-history.json” fil.</p> }
     ];
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -42,15 +42,15 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
     useEffect(() => {
         const containerElement = containerRef.current;
         const closeButtonElement = closeButtonRef.current;
-    
+
         if (containerElement && closeButtonElement) {
             const resizeObserver = new ResizeObserver(() => {
                 const topOffset = (window.innerHeight - containerElement.offsetHeight) / 2
                 closeButtonElement.style.top = `${topOffset}px`;
             });
-    
+
             resizeObserver.observe(containerElement);
-    
+
             // Clean up the observer when the component unmounts
             return () => resizeObserver.unobserve(containerElement);
         }

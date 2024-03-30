@@ -139,3 +139,7 @@
     background-color: var(--tertiary-background-color);
     border-radius: 5px;
 }
+
+.content .imageText a {
+    color: var(--primary-action-color);
+}
