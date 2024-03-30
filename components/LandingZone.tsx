@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useState, useEffect, useContext, useCallback } from 'react';
 import Image from 'next/image';
 import styles from './LandingZone.module.css';
 import OwnDataModal from './OwnDataModal';
@@ -18,12 +18,12 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
     document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
   }
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModalOpen(false);
     setProgress(0);
     setError(null);
     document.body.style.overflow = 'unset';
-  }
+  }, [setModalOpen, setProgress, setError]);
 
   useEffect(() => {
     if (progress === 1) {
