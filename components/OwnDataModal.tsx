@@ -32,7 +32,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
         { element: <img src="/images/google-takeout-3.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Include the history data and click on &quot;Next step&quot;.</p> },
         { element: <img src="/images/google-takeout-4.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Leave the defaults and click on &quot;Create export&quot;.</p> },
         { element: <img src="/images/google-takeout-5.jpg" alt="Google Takeout" className={styles.screenshot} />, text: <p>Download the export from the email you receive after a few minutes.</p> },
-        { element: <UploadArea onClickUpload={onClickUpload} />, text: <p>Unzip and upload the “watch-history.json” fil.</p> }
+        { element: <UploadArea onClickUpload={onClickUpload} />, text: <p>Unzip and upload the &quot;watch-history.json&quot; file.</p> }
     ];
 
     const containerRef = useRef<HTMLDivElement>(null);
