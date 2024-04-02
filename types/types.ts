@@ -18,10 +18,11 @@ export interface WatchHistoryEntry {
   header: string;
   title: string;
   titleUrl: string;
-  subtitles: Subtitle[];
+  subtitles?: Subtitle[];
   time: string;
   products: string[];
   activityControls: string[];
+  details?: { name: string }[];
 }
 
 export interface AverageVideosPerWeekdayData {
