@@ -47,6 +47,7 @@ export default function Home() {
       setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
       setProcessingProgress(prevProgress => prevProgress + 1 / 5);
     } catch (error) {
+      console.error(error);
       setProcessingError(new CalculationError('An error occurred while processing the data.', watchHistoryDataRef.current));
     }
   };
