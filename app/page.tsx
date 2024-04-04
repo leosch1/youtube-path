@@ -2,8 +2,9 @@
 
 import React, { ChangeEvent, useRef, useState } from 'react';
 import styles from "./page.module.css";
-import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData, getChannelPhases } from '../utils/utils';
+import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData } from '../utils/utils';
 import { getDiagramComponents } from '../utils/getDiagramComponents';
+import { getChannelPhases } from '../utils/channelPhases';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
