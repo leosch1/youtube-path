@@ -18,7 +18,7 @@
     padding: 2em;
     background-color: var(--background-color);
     color: var(--primary-text-color);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: visible;
 }
 
