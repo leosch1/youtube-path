@@ -2,7 +2,7 @@
 import { WatchHistoryEntry, PhaseData } from "../types/types";
 
 const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLimit: number, maxTimeLimit: number, totalVideoCount: number): PhaseData[] => {
-    const phases: PhaseData[] = [];
+    const potentialPhases: PhaseData[] = [];
 
     // Group the data by channel
     const groupedData = data.reduce((acc, entry) => {
@@ -21,32 +21,46 @@ const calculatePhases = (data: WatchHistoryEntry[], threshold: number, minTimeLi
         entries.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
         let start = 0;
+        let maxDensityPhase: PhaseData | null = null;
         for (let end = 0; end < entries.length; end++) {
             const count = end - start + 1;
             const duration = new Date(entries[end].time).getTime() - new Date(entries[start].time).getTime();
             if (count > threshold && duration >= minTimeLimit && duration <= maxTimeLimit) {
                 const density = count / duration;
-                phases.push({
+                const phase = {
                     start: new Date(entries[start].time),
                     end: new Date(entries[end].time),
                     title: channel,
                     count: count,
                     density: density,
                     normalizedDensity: density / totalVideoCount
-                });
+                };
+                // If this phase has a higher density than the current highest for this channel, replace it
+                if (!maxDensityPhase || phase.density > maxDensityPhase.density) {
+                    maxDensityPhase = phase;
+                }
                 start = end + 1;
             }
         }
+        if (maxDensityPhase) {
+            potentialPhases.push(maxDensityPhase);
+        }
     });
 
-    // Sort the phases by normalizedDensity in descending order
-    phases.sort((a, b) => b.normalizedDensity - a.normalizedDensity);
+    // Sort the potential phases by density in descending order
+    potentialPhases.sort((a, b) => b.density - a.density);
+
+    // Add phases to the final list only if they do not overlap with any existing phase
+    const phases: PhaseData[] = [];
+    for (const phase of potentialPhases) {
+        if (!phases.some(existingPhase => (existingPhase.start.getTime() <= phase.end.getTime() && existingPhase.end.getTime() >= phase.start.getTime()))) {
+            phases.push(phase);
+        }
+    }
 
     return phases;
 };
 
-// TODO: Optimize the channel phase calculation
-// TODO: Make phases non overlapping
 const getChannelPhases = (data: WatchHistoryEntry[], minTargetPhaseCount: number, maxTargetPhaseCount: number): PhaseData[] => {
     const minTimeLimit = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
     let maxTimeLimit = 12 * 7 * 24 * 60 * 60 * 1000; // 12 weeks in milliseconds
