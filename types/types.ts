@@ -30,6 +30,12 @@ export interface AverageVideosPerWeekdayData {
   value: number;
 };
 
+export interface HourlyAverageVideoCountData {
+  time: Date;
+  weekendVideos: number;
+  weekdayVideos: number;
+}
+
 export interface ScrollPoint {
   scrollPosition: number;
   diagramPosition: number;
