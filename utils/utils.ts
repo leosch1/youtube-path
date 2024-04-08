@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData } from "../types/types";
+import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData } from "../types/types";
 
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
   // Create a copy of the data array
@@ -100,3 +100,7 @@ export const getAverageVideosPerWeekdayData = (data: WatchHistoryEntry[]): Avera
 
   return videosPerWeekdayData;
 };
+
+export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAverageVideoCountData[] => {
+  return [];
+}

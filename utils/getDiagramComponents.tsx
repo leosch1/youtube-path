@@ -4,7 +4,8 @@ import Phase from '../components/Phase';
 import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
 import VideosPerWeekday from '../components/AverageVideosPerWeekday';
 import Share from '../components/Share';
-import { VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
+import HourlyAverageVideoCount from '../components/HourlyAverageVideoCount';
+import { VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, PhaseData } from "../types/types";
 
 // Function to calculate the center date for each phase
 const getPhaseComponents = (phaseData: PhaseData[]): { component: JSX.Element, date: Date }[] => {
@@ -51,9 +52,10 @@ const getInsertIndex = (componentsWithDates: { component: JSX.Element, date: Dat
 
 export const getDiagramComponents = (
   videosPerWeekData: VideoCountData[],
+  phaseData: PhaseData[],
   totalVideoCountData: TotalVideoCountData,
   videosPerWeekdayData: AverageVideosPerWeekdayData[],
-  phaseData: PhaseData[]
+  hourlyAverageVideoCountData: HourlyAverageVideoCountData[]
 ): JSX.Element[] => {
   const maxVideosPerWeekData = videosPerWeekData.reduce((max, current) => current.value > max.value ? current : max);
   const phaseComponents = getPhaseComponents(phaseData);
@@ -73,7 +75,8 @@ export const getDiagramComponents = (
   });
 
   const componentsWithoutDates = [
-    <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />
+    <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />,
+    <HourlyAverageVideoCount key="hourlyAverageVideoCount" data={hourlyAverageVideoCountData} />
   ]
 
   // Iterate over the dateless components, finding the best insert index for each and inserting it
