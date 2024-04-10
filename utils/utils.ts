@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData } from "../types/types";
+import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData } from "../types/types";
 
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
   // Create a copy of the data array
@@ -99,4 +99,62 @@ export const getAverageVideosPerWeekdayData = (data: WatchHistoryEntry[]): Avera
   }));
 
   return videosPerWeekdayData;
+};
+
+const isWeekday = (date: Date): boolean => {
+  const day = date.getDay();
+  return day >= 1 && day <= 5;
+}
+
+const approximateDayCounts = (startDate: Date, endDate: Date): { totalWeekdays: number, totalWeekendDays: number } => {
+  const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  const totalWeekdays = Math.floor(totalDays / 7 * 5);
+  const totalWeekendDays = totalDays - totalWeekdays;
+  return { totalWeekdays, totalWeekendDays };
+}
+
+export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAverageVideoCountData[] => {
+  // Loop through all 60 minute windows in a 24 hour day in 10 minute intervals
+  // For each window, calculate the average video count for that window (add to weekday or weekend count)
+  const result: HourlyAverageVideoCountData[] = [];
+
+  for (let startMinutes = 0; startMinutes < 24 * 60; startMinutes += 10) { // Calculate 1 hour average every 10-minutes for a 24 hour day
+    const endMinutes = startMinutes + 60; // 1 Hour window
+
+    // Calculate the center date of the window
+    const centerMinutes = startMinutes + 30;
+    const centerDate = new Date();
+    centerDate.setHours(Math.floor(centerMinutes / 60));
+    centerDate.setMinutes(centerMinutes % 60);
+    centerDate.setSeconds(0);
+    centerDate.setMilliseconds(0);
+
+    // Loop through all entries
+    let weekdayVideoCount = 0;
+    let weekendVideoCount = 0;
+    for (const entry of data) {
+      const entryDate = new Date(entry.time);
+      const entryMinutes = entryDate.getHours() * 60 + entryDate.getMinutes();
+      if (entryMinutes >= startMinutes && entryMinutes < endMinutes) {
+        if (isWeekday(entryDate)) {
+          weekdayVideoCount++;
+        } else {
+          weekendVideoCount++;
+        }
+      }
+    }
+
+    // Calculate average using the total number of weekdays and weekends between first and last entry
+    const startDate = new Date(data[0].time);
+    const endDate = new Date(data[data.length - 1].time);
+    const { totalWeekdays, totalWeekendDays } = approximateDayCounts(startDate, endDate);
+
+    result.push({
+      time: centerDate,
+      weekdayVideos: weekdayVideoCount / totalWeekdays,
+      weekendVideos: weekendVideoCount / totalWeekendDays,
+    });
+  }
+
+  return result;
 };

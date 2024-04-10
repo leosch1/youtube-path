@@ -4,7 +4,8 @@ import Phase from '../components/Phase';
 import MaxVideosPerWeek from '../components/MaxVideosPerWeek';
 import VideosPerWeekday from '../components/AverageVideosPerWeekday';
 import Share from '../components/Share';
-import { VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
+import HourlyAverageVideoCount from '../components/HourlyAverageVideoCount';
+import { VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, PhaseData } from "../types/types";
 
 // Function to calculate the center date for each phase
 const getPhaseComponents = (phaseData: PhaseData[]): { component: JSX.Element, date: Date }[] => {
@@ -39,7 +40,7 @@ const getInsertIndex = (componentsWithDates: { component: JSX.Element, date: Dat
     } else {
       diff = componentsWithDates[i].date.getTime() - componentsWithDates[i - 1].date.getTime();
     }
-  
+
     if (diff > maxDiff) {
       maxDiff = diff;
       insertIndex = i;
@@ -51,32 +52,50 @@ const getInsertIndex = (componentsWithDates: { component: JSX.Element, date: Dat
 
 export const getDiagramComponents = (
   videosPerWeekData: VideoCountData[],
+  phaseData: PhaseData[],
   totalVideoCountData: TotalVideoCountData,
   videosPerWeekdayData: AverageVideosPerWeekdayData[],
-  phaseData: PhaseData[]
+  hourlyAverageVideoCountData: HourlyAverageVideoCountData[]
 ): JSX.Element[] => {
   const maxVideosPerWeekData = videosPerWeekData.reduce((max, current) => current.value > max.value ? current : max);
   const phaseComponents = getPhaseComponents(phaseData);
-  const componentsWithDates = [
+  let componentsWithDates = [
     ...phaseComponents,
     { component: <MaxVideosPerWeek key="maxVideosPerWeek" data={videosPerWeekData} />, date: maxVideosPerWeekData.date },
   ];
 
-  const sortedComponents = componentsWithDates.sort((a, b) => {
+  const startDate = videosPerWeekData[0].date;
+  const endDate = videosPerWeekData[videosPerWeekData.length - 1].date;
+
+  // Sort the components with dates
+  componentsWithDates.sort((a, b) => {
     if (a.date === null) return 1;
     if (b.date === null) return -1;
     return a.date.getTime() - b.date.getTime();
-  }).map(item => item.component);
+  });
 
-  const startDate = videosPerWeekData[0].date;
-  const endDate = videosPerWeekData[videosPerWeekData.length - 1].date;
-  const insertIndex = getInsertIndex(componentsWithDates, startDate, endDate);
+  const componentsWithoutDates = [
+    <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />,
+    <HourlyAverageVideoCount key="hourlyAverageVideoCount" data={hourlyAverageVideoCountData} />
+  ]
 
-  sortedComponents.splice(insertIndex, 0, <VideosPerWeekday key="videosPerWeekday" data={videosPerWeekdayData} />);
+  // Iterate over the dateless components, finding the best insert index for each and inserting it
+  for (const component of componentsWithoutDates) {
+    const insertIndex = getInsertIndex(componentsWithDates, startDate, endDate);
+    let date;
+    if (insertIndex === 0) {
+      date = new Date((startDate.getTime() + componentsWithDates[insertIndex].date.getTime()) / 2);
+    } else if (insertIndex === componentsWithDates.length) {
+      date = new Date((componentsWithDates[insertIndex - 1].date.getTime() + endDate.getTime()) / 2);
+    } else {
+      date = new Date((componentsWithDates[insertIndex - 1].date.getTime() + componentsWithDates[insertIndex].date.getTime()) / 2);
+    }
+    componentsWithDates.splice(insertIndex, 0, { component, date });
+  }
 
   return [
     <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
-    ...sortedComponents,
+    ...componentsWithDates.map(item => item.component),
     <Share key="share" />,
   ];
 }
