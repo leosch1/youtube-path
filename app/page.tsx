@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData } from '../utils/utils';
 import { getDiagramComponents } from '../utils/getDiagramComponents';
 import { getChannelPhases } from '../utils/channelPhases';
+import { getChannelPhasesV2 } from '../utils/channelPhasesV2';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
 import { WatchHistoryEntry, VideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, PhaseData } from "../types/types";
@@ -26,6 +27,33 @@ export default function Home() {
   const [phaseData, setPhaseData] = useState<PhaseData[]>(examplePhaseData);
   const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
   const [videosPerWeekdayData, setAverageVideosPerWeekdayData] = useState<AverageVideosPerWeekdayData[]>(exampleAverageVideosPerWeekdayData);
+
+  const bla: WatchHistoryEntry[] = [{
+    "header": "YouTube",
+    "title": "Watched Why is every country against us? (once again)",
+    "titleUrl": "https://www.youtube.com/watch?v\u003dZMGQpSZ27yM",
+    "subtitles": [{
+      "name": "1420 by Daniil Orain",
+      "url": "https://www.youtube.com/channel/UCl4R4M9YVfYjjPmILU2Ie1A"
+    }],
+    "time": "2023-05-31T13:23:38.379Z",
+    "products": ["YouTube"],
+    "activityControls": ["YouTube watch history"]
+  }, {
+    "header": "YouTube",
+    "title": "Watched Would you support Putin no matter what?",
+    "titleUrl": "https://www.youtube.com/watch?v\u003dZzkkX76Pjus",
+    "subtitles": [{
+      "name": "1420 by Daniil Orain",
+      "url": "https://www.youtube.com/channel/UCl4R4M9YVfYjjPmILU2Ie1A"
+    }],
+    "time": "2023-05-31T13:16:57.886Z",
+    "products": ["YouTube"],
+    "activityControls": ["YouTube watch history"]
+  }];
+
+  const blu = getChannelPhasesV2(bla);
+  console.log(blu);
 
   const handleDataChange = async (data: WatchHistoryEntry[]) => {
     try {

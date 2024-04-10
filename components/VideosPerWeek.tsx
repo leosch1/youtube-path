@@ -72,13 +72,21 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
         const yEnd = y(phase.end);
         const height = yEnd - yStart;
 
+        // Function to generate a random RGB color
+        const getRandomColor = () => {
+          const r = Math.floor(Math.random() * 256);
+          const g = Math.floor(Math.random() * 256);
+          const b = Math.floor(Math.random() * 256);
+          return `rgb(${r},${g},${b})`;
+        };
+
         // Add the rectangle to the SVG
         diagramGroup.append("rect")
           .attr("x", margin.left)
           .attr("y", yStart)
           .attr("width", totalWidth - margin.left - margin.right)
           .attr("height", height)
-          .attr("fill", highlightColor)
+          .attr("fill", getRandomColor()) // Use random color
           .attr("rx", 2)
           .attr("ry", 2);
       });
