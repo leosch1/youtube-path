@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { scaleTime, scaleLinear, max, extent, select, line, axisBottom, axisLeft } from 'd3';
+import { scaleTime, scaleLinear, max, extent, select, line, axisBottom, axisLeft, timeFormat } from 'd3';
 import { HourlyAverageVideoCountData } from '../types/types';
+import styles from './HourlyAverageVideoCount.module.css';
 
 interface HourlyAverageVideoCountProps {
   data: HourlyAverageVideoCountData[];
@@ -12,8 +13,8 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
   useEffect(() => {
     // Set dimensions and margins for the graph
     const margin = { top: 20, right: 30, bottom: 30, left: 60 },
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = 600 - margin.left - margin.right,
+      height = 400 - margin.top - margin.bottom;
 
     // Append the svg object to the div
     const svg = select(ref.current)
@@ -30,7 +31,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(axisBottom(x));
+      .call(axisBottom(x).tickFormat((domainValue: any) => timeFormat("%I:%M %p")(domainValue)));
 
     // Add Y axis
     const y = scaleLinear()
@@ -68,7 +69,13 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       );
   }, [data]);
 
-  return <svg ref={ref}></svg>;
+  return (
+    <div className={styles.container}>
+      <h2>Different habits on weekends</h2>
+      <h3>Amount of videos watched in a typical day</h3>
+      <svg ref={ref}></svg>
+    </div>
+  );
 };
 
 export default HourlyAverageVideoCount;
