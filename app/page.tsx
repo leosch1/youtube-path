@@ -14,6 +14,7 @@ import FileReadError from '../errors/FileReadError';
 import { exampleVideosPerWeekData } from '../example-data/exampleVideosPerWeekData';
 import { exampleTotalVideoCountData } from '../example-data/exampleTotalVideoCountData';
 import { exampleAverageVideosPerWeekdayData } from '../example-data/exampleAverageVideosPerWeekdayData';
+import { exampleHourlyAverageVideoCountData } from '../example-data/exampleHourlyAverageVideoCountData';
 import { examplePhaseData } from '../example-data/examplePhaseData';
 import { ProcessingContext } from '../contexts/ProcessingContext';
 
@@ -26,7 +27,7 @@ export default function Home() {
   const [phaseData, setPhaseData] = useState<PhaseData[]>(examplePhaseData);
   const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
   const [videosPerWeekdayData, setAverageVideosPerWeekdayData] = useState<AverageVideosPerWeekdayData[]>(exampleAverageVideosPerWeekdayData);
-  const [hourlyAverageVideoCounts, setHourlyAverageVideoCounts] = useState<HourlyAverageVideoCountData[]>([]);
+  const [hourlyAverageVideoCounts, setHourlyAverageVideoCounts] = useState<HourlyAverageVideoCountData[]>(exampleHourlyAverageVideoCountData);
 
   const handleDataChange = async (data: WatchHistoryEntry[]) => {
     try {
@@ -49,7 +50,7 @@ export default function Home() {
       setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
       setProcessingProgress(prevProgress => prevProgress + 1 / 6);
 
-      setHourlyAverageVideoCounts(getHourlyAverageVideoCounts(watchHistoryDataRef.current));
+      setHourlyAverageVideoCounts(getHourlyAverageVideoCounts(watchHistoryDataRef.current))
       setProcessingProgress(prevProgress => prevProgress + 1 / 6);
     } catch (error) {
       console.error(error);
