@@ -13,3 +13,8 @@
     font-size: 2em;
     text-wrap: balance;
 }
+
+.container h2 em {
+    font-style: normal;
+    color: var(--primary-action-color);
+}
