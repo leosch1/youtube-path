@@ -71,8 +71,8 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
 
   return (
     <div className={styles.container}>
-      <h2>Different habits on weekends</h2>
-      <h3>Amount of videos watched in a typical day</h3>
+      <h2>Different habits on <em>weekends</em></h2>
+      <h3>Amount of videos watched per hour in a typical day</h3>
       <svg ref={ref}></svg>
     </div>
   );
