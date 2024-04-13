@@ -53,9 +53,18 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    // Calculate the extent of the data
+    const dataExtent = extent(data, (d) => d.time) as [Date, Date];
+
+    // Extend the domain by a certain amount (e.g., 1 hour)
+    const extendedDomain: [Date, Date] = [
+      dataExtent[0],
+      new Date(dataExtent[1].getTime() + 30 * 60 * 1000), // 30 minutes after the last data point
+    ];
+
     // Add X axis
     const x = scaleTime()
-      .domain(extent(data, (d) => d.time) as [Date, Date])
+      .domain(extendedDomain)
       .range([0, width]);
 
     svg
