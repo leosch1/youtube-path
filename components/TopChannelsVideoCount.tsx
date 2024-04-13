@@ -42,8 +42,8 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
 
     // Set the dimensions and margins of the graph
     const margin = { top: 20, right: 30, bottom: 40, left: 90 };
-    const width = availableWidth - margin.left - margin.right;
-    const height = availableHeight - margin.top - margin.bottom;
+    const width = availableWidth * 0.9 - margin.left - margin.right;
+    const height = availableHeight * 0.5 - margin.top - margin.bottom;
 
     // Append the svg object to the div
     const chart = svg
@@ -83,7 +83,9 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
 
   return (
     <div className={styles.container}>
-      <svg ref={ref} />
+      <h2>The channel you watched the <em>most</em></h2>
+      <h3>Number of watched videos per channel</h3>
+      <svg ref={ref}></svg>
     </div>
   );
 };

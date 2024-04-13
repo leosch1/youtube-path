@@ -1,6 +1,25 @@
 .container {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    margin-left: 30px;
+}
+
+.container h2 {
+    margin-bottom: 0.2em;
+    font-weight: 400;
+    font-size: 2em;
+    text-wrap: balance;
+}
+
+.container h2 em {
+    font-style: normal;
+    color: var(--primary-action-color);
+}
+
+.container h3 {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--secondary-text-color);
 }
