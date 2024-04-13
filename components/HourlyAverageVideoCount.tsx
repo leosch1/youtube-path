@@ -106,6 +106,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .attr('fill', 'none')
       .attr('stroke', primaryTextColor)
       .attr('stroke-width', 3)
+      .attr('stroke-linecap', 'round')
       .attr('d', weekdayLine);
 
     // Add annotation for the weekday line
@@ -129,6 +130,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .attr('fill', 'none')
       .attr('stroke', primaryActionColor)
       .attr('stroke-width', 3)
+      .attr('stroke-linecap', 'round')
       .attr('d', weekendLine);
 
     // Add annotation for the weekend line
