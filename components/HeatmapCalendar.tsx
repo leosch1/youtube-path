@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
-import { select, scaleLinear, max, timeFormat, timeWeek } from 'd3';
+import { select, scaleSqrt, max, timeFormat, timeWeek } from 'd3';
 import styles from './HeatmapCalendar.module.css';
 import { DateVideoCountData } from '../types/types';
 
@@ -58,9 +58,9 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .attr('height', height)
 
     // Set the opacity scale
-    const opacityScale = scaleLinear()
+    const opacityScale = scaleSqrt()
       .domain([0, max(data, d => d.value) as number])
-      .range([0.1, 1]); // Adjust the range as needed
+      .range([0.01, 1]);
 
     // Positioning the day rectangles
     const dayRects = svg.append("g")
