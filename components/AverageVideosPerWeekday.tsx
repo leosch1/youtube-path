@@ -13,18 +13,18 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
   const [availableHeight, setAvailableHeight] = useState(0);
 
   useLayoutEffect(() => {
-    const updateViewportSize = () => {
+    const updateAvailableSize = () => {
       if (ref.current && ref.current.parentNode) {
         setAvailableWidth((ref.current.parentNode as HTMLElement).clientWidth);
         setAvailableHeight((ref.current.parentNode as HTMLElement).clientHeight);
       }
     };
 
-    window.addEventListener('resize', updateViewportSize);
-    updateViewportSize(); // Call it once initially
+    window.addEventListener('resize', updateAvailableSize);
+    updateAvailableSize(); // Call it once initially
 
     return () => {
-      window.removeEventListener('resize', updateViewportSize); // Clean up event listener on unmount
+      window.removeEventListener('resize', updateAvailableSize); // Clean up event listener on unmount
     };
   }, []);
 
