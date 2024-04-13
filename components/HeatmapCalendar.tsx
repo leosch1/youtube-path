@@ -11,13 +11,11 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
   const ref = useRef<SVGSVGElement | null>(null);
   const legendRef = useRef<SVGSVGElement | null>(null);
   const [availableWidth, setAvailableWidth] = useState(0);
-  const [availableHeight, setAvailableHeight] = useState(0);
 
   useLayoutEffect(() => {
     const updateAvailableSize = () => {
       if (ref.current && ref.current.parentNode) {
         setAvailableWidth((ref.current.parentNode as HTMLElement).clientWidth);
-        setAvailableHeight((ref.current.parentNode as HTMLElement).clientHeight);
       }
     };
 
@@ -31,7 +29,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
 
 
   useEffect(() => {
-    if (availableWidth === 0 || availableHeight === 0) {
+    if (availableWidth === 0) {
       return;
     }
 
@@ -44,14 +42,13 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     svg.selectAll("*").remove();
 
     // Set the dimensions and margins of the graph
-    const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-    const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date);
-
-    const gridSize = Math.floor(availableWidth / weeksCount);
-    const cellSize = gridSize - 2; // Subtract 2 for grid gap
+    const margin = { top: 0, right: 0, bottom: 0, left: 40 };
 
     // Adjust width and height based on grid size and number of weeks
+    const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date);
     const width = availableWidth - margin.left - margin.right;
+    const gridSize = Math.floor(width / weeksCount);
+    const cellSize = gridSize - 2; // Subtract 2 for grid gap
     const height = gridSize * 7 + margin.top + margin.bottom;
 
     svg
@@ -70,8 +67,8 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .join("rect")
       .attr("width", cellSize)
       .attr("height", cellSize)
-      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize)
-      .attr("y", d => d.date.getDay() * gridSize)
+      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize + margin.left)
+      .attr("y", d => d.date.getDay() * gridSize + margin.top)
       .attr("rx", 1)
       .attr("ry", 1)
       .attr("fill", primaryActionColor)
@@ -80,6 +77,21 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     // Add tooltips
     dayRects.append("title")
       .text(d => `${timeFormat("%Y-%m-%d")(d.date)}: ${d.value}`);
+
+    // Add weekdays
+    const weekdays = ["Sun", "", "Tue", "", "Thu", "", "Sat"];
+    svg.append("g")
+      .selectAll("text")
+      .data(weekdays)
+      .join("text")
+      .attr("x", margin.left - 10)
+      .attr("y", (d, i) => i * gridSize)
+      .attr("dy", "0.8em") // to vertically center text
+      .attr("text-anchor", "end")
+      .attr("font-size", "0.8em")
+      .attr("font-weight", "500")
+      .attr("fill", primaryTextColor)
+      .text(d => d);
 
 
     /* ------ LEGEND START ------ */
@@ -130,7 +142,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     legendSvg.attr('width', maxWidth);
     legendSvg.attr('height', maxHeight);
 
-  }, [data, availableWidth, availableHeight]);
+  }, [data, availableWidth]);
 
   return (
     <div className={styles.container}>
