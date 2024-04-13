@@ -1,9 +1,15 @@
 import { select, scaleLinear, line, max, extent, scaleTime, axisTop, axisLeft, format, timeFormat, curveStepAfter } from 'd3';
 import { VideoCountData, ScrollPoint, PhaseData } from '../types/types';
 
-
-const getScrollPoints = (data: VideoCountData[], diagramComponents: JSX.Element[], phaseData: PhaseData[], y: d3.ScaleTime<number, number>, titleHeight: number, titleBottomMargin: number): ScrollPoint[] => {
-    const viewportHeight = window.innerHeight;
+const getScrollPoints = (
+    data: VideoCountData[],
+    diagramComponents: JSX.Element[],
+    phaseData: PhaseData[],
+    y: d3.ScaleTime<number, number>,
+    viewportHeight: number,
+    titleHeight: number,
+    titleBottomMargin: number
+): ScrollPoint[] => {
     const result: ScrollPoint[] = [{
         scrollPosition: 0,
         diagramPosition: viewportHeight
@@ -207,10 +213,11 @@ const createDiagram = (d3Container: SVGSVGElement, data: VideoCountData[], diagr
     return { y, titleHeight, titleBottomMargin };
 };
 
-const handleScroll = (scrollPoints: ScrollPoint[],
+const handleScroll = (
+    scrollPosition: number,
+    scrollPoints: ScrollPoint[],
     svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
 ) => {
-    const scrollPosition = window.scrollY;
     const activeScrollInterval = getActiveScrollInterval(scrollPoints, scrollPosition)
     const yTranslate = calculateYTranslate(scrollPosition, activeScrollInterval);
     svg.attr('transform', `translate(0, ${yTranslate})`);
