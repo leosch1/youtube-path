@@ -142,8 +142,6 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
 
       const viewportHeight = window.innerHeight;
 
-      svg.attr('transform', `translate(0, ${viewportHeight})`);
-
       const getScrollPoints = (): ScrollPoint[] => {
         const result: ScrollPoint[] = [{
           scrollPosition: 0,
@@ -217,6 +215,8 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
           svg.attr('transform', `translate(0, ${translate})`);
         }
       };
+
+      handleScroll();
 
       window.addEventListener('scroll', handleScroll);
 
