@@ -49,6 +49,7 @@ export default function Home() {
 
       setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
       setProcessingProgress(prevProgress => prevProgress + 1 / 6);
+      await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setHourlyAverageVideoCounts(getHourlyAverageVideoCounts(watchHistoryDataRef.current))
       setProcessingProgress(prevProgress => prevProgress + 1 / 6);
