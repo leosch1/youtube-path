@@ -117,30 +117,41 @@ const approximateDayCounts = (startDate: Date, endDate: Date): { totalWeekdays: 
   return { totalWeekdays, totalWeekendDays };
 }
 
-// TODO: This has still some bug. E.g. start and end do not match even though it should between they are basically the same time.
+const isWithinHourWindow = (date: Date, startMinutes: number, endMinutes: number): boolean => {
+  const entryMinutes = date.getHours() * 60 + date.getMinutes();
+
+  if (startMinutes < 0) {
+    return entryMinutes >= startMinutes + 24 * 60 || entryMinutes < endMinutes;
+  } else if (endMinutes >= 24 * 60) {
+    return entryMinutes >= startMinutes || entryMinutes < endMinutes - 24 * 60;
+  }
+  return entryMinutes >= startMinutes && entryMinutes < endMinutes
+}
+
 export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAverageVideoCountData[] => {
   // Loop through all 60 minute windows in a 24 hour day in 10 minute intervals
   // For each window, calculate the average video count for that window (add to weekday or weekend count)
   const result: HourlyAverageVideoCountData[] = [];
 
-  for (let startMinutes = 0; startMinutes < 24 * 60; startMinutes += 10) { // Calculate 1 hour average every 10-minutes for a 24 hour day
-    const endMinutes = startMinutes + 60; // 1 Hour window
+  for (let centerMinutes = 0; centerMinutes <= 24 * 60; centerMinutes += 10) { // Calculate 1 hour average every 10-minutes for a 24 hour day
+    // 1 Hour window
+    const startMinutes = centerMinutes - 30;
+    const endMinutes = centerMinutes + 30;
 
     // Calculate the center date of the window
-    const centerMinutes = startMinutes + 30;
     const centerDate = new Date();
     centerDate.setHours(Math.floor(centerMinutes / 60));
     centerDate.setMinutes(centerMinutes % 60);
     centerDate.setSeconds(0);
     centerDate.setMilliseconds(0);
+    console.log(centerDate)
 
     // Loop through all entries
     let weekdayVideoCount = 0;
     let weekendVideoCount = 0;
     for (const entry of data) {
       const entryDate = new Date(entry.time);
-      const entryMinutes = entryDate.getHours() * 60 + entryDate.getMinutes();
-      if (entryMinutes >= startMinutes && entryMinutes < endMinutes) {
+      if (isWithinHourWindow(entryDate, startMinutes, endMinutes)) {
         if (isWeekday(entryDate)) {
           weekdayVideoCount++;
         } else {
