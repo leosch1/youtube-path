@@ -42,7 +42,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     svg.selectAll("*").remove();
 
     // Set the dimensions and margins of the graph
-    const margin = { top: 0, right: 0, bottom: 0, left: 40 };
+    const margin = { top: 30, right: 0, bottom: 0, left: 40 };
 
     // Adjust width and height based on grid size and number of weeks
     const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date);
@@ -51,9 +51,11 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     const cellSize = gridSize - 2; // Subtract 2 for grid gap
     const height = gridSize * 7 + margin.top + margin.bottom;
 
-    svg
+    const chart = svg
       .attr('width', availableWidth)
       .attr('height', height)
+      .append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // Set the opacity scale
     const opacityScale = scaleSqrt()
@@ -61,14 +63,14 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .range([0.01, 1]);
 
     // Positioning the day rectangles
-    const dayRects = svg.append("g")
+    const dayRects = chart.append("g")
       .selectAll("rect")
       .data(data)
       .join("rect")
       .attr("width", cellSize)
       .attr("height", cellSize)
-      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize + margin.left)
-      .attr("y", d => d.date.getDay() * gridSize + margin.top)
+      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize)
+      .attr("y", d => d.date.getDay() * gridSize)
       .attr("rx", 1)
       .attr("ry", 1)
       .attr("fill", primaryActionColor)
@@ -80,12 +82,12 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
 
     // Add weekdays
     const weekdays = ["Sun", "", "Tue", "", "Thu", "", "Sat"];
-    svg.append("g")
+    chart.append("g")
       .selectAll("text")
       .data(weekdays)
       .join("text")
-      .attr("x", margin.left - 10)
       .attr("y", (d, i) => i * gridSize)
+      .attr("dx", "-1em")
       .attr("dy", "0.8em") // to vertically center text
       .attr("text-anchor", "end")
       .attr("font-size", "0.8em")
@@ -93,8 +95,25 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .attr("fill", primaryTextColor)
       .text(d => d);
 
+    // Add month labels
+    const monthFormat = timeFormat("%b");
+    const firstDayOfMonthDates = data.filter((d, i, arr) => {
+      return i === 0 || d.date.getMonth() !== arr[i - 1].date.getMonth();
+    });
+    chart.append("g")
+      .selectAll("text")
+      .data(firstDayOfMonthDates)
+      .join("text")
+      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize)
+      .attr("dy", "-1em") // to position text above the grid
+      .attr("text-anchor", "start")
+      .attr("font-size", "0.8em")
+      .attr("font-weight", "500")
+      .attr("fill", primaryTextColor)
+      .text(d => monthFormat(d.date));
 
-    /* ------ LEGEND START ------ */
+
+    /* ------ OPACITY LEGEND START ------ */
     // Create the legend SVG
     const legendSvg = select(legendRef.current);
 
