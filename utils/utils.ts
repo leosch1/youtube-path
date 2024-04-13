@@ -174,7 +174,7 @@ export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAv
   return result;
 };
 
-export const getTopChannelVideoCountData = (data: WatchHistoryEntry[], topK = 5): ChannelVideoCountData[] => {
+export const getTopChannelsVideoCountData = (data: WatchHistoryEntry[], topK = 5): ChannelVideoCountData[] => {
   // Initialize an object to count videos per channel
   const counts: { [key: string]: number } = {};
 
