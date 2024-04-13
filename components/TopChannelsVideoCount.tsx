@@ -1,5 +1,5 @@
 import { useRef, useEffect, useLayoutEffect, useState } from 'react';
-import { select, scaleLinear, max, axisBottom, scaleBand, axisLeft } from 'd3';
+import { select, scaleLinear, max, scaleBand, axisLeft } from 'd3';
 import styles from './TopChannelsVideoCount.module.css';
 import { ChannelVideoCountData } from '../types/types';
 
