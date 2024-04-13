@@ -55,10 +55,14 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(axisBottom(x).tickFormat((domainValue: any) => {
-        let format = timeFormat("%I %p")(domainValue);
-        return format.charAt(0) === '0' ? format.slice(1) : format; // Remove leading zero
-      }))
+      .call(
+        axisBottom(x)
+          .tickSize(0)
+          .tickPadding(10)
+          .tickFormat((domainValue: any) => {
+            let format = timeFormat("%I%p")(domainValue);
+            return format.charAt(0) === '0' ? format.slice(1) : format; // Remove leading zero
+          }))
       .style('font-size', '16px')
       .style('color', axisLabelColor);
 
@@ -67,14 +71,23 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .domain([0, max(data, (d) => Math.max(d.weekendVideos ?? 0, d.weekdayVideos ?? 0))!])
       .range([height, 0]);
 
-    svg.append('g')
+    const yAxis = svg.append('g')
       .attr('transform', `translate(${width},0)`) // Move the Y axis to the right
       .call(
         axisRight(y)
+          .tickSizeOuter(0)
+          .tickSize(0)
+          .tickPadding(10)
           .tickFormat((d) => `${d} video${d !== 1 ? 's' : ''}`)
       )
       .style('font-size', '16px')
       .style('color', axisLabelColor);
+
+    // Add horizontal gridlines
+    yAxis.selectAll("line")
+      .clone()
+      .attr("x2", -width)
+      .attr("stroke-opacity", 0.1);
 
     // Add the weekday line
     svg
