@@ -1,10 +1,13 @@
 .container {
     height: 100vh;
-    margin: 0 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+}
+
+.container .title {
+    margin-left: 90px;
 }
 
 .container h2 {

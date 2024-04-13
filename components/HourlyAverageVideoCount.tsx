@@ -30,13 +30,15 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     if (availableWidth === 0) {
       return;
     }
+    const primaryActionColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
+    const primaryTextColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
     const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
     // Clear the previous diagram
     select(ref.current).selectAll("*").remove();
 
     // Set dimensions and margins for the graph
-    const margin = { top: 20, right: 70, bottom: 30, left: 1 },
+    const margin = { top: 20, right: 70, bottom: 30, left: 90 },
       width = availableWidth - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -90,40 +92,59 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .attr("stroke-opacity", 0.1);
 
     // Add the weekday line
+    const weekdayLine = line<HourlyAverageVideoCountData>()
+      .x((d) => x(d.time))
+      .y((d) => y(d.weekdayVideos))
+      .curve(curveBasis);
     svg
       .append('path')
       .datum(data)
       .attr('fill', 'none')
-      .attr('stroke', 'white')
+      .attr('stroke', primaryTextColor)
       .attr('stroke-width', 3)
-      .attr(
-        'd',
-        line<HourlyAverageVideoCountData>()
-          .x((d) => x(d.time))
-          .y((d) => y(d.weekdayVideos))
-          .curve(curveBasis)
-      );
+      .attr('d', weekdayLine);
+
+    // Add annotation for the weekday line
+    svg
+      .append("text")
+      .attr("transform", `translate(${x(data[0].time) - 10},${y(data[0].weekdayVideos)})`)
+      .style("text-anchor", "end")
+      .style('dominant-baseline', 'middle')
+      .style('font-size', '16px')
+      .attr('fill', primaryTextColor)
+      .text("weekdays");
 
     // Add the weekend line
+    const weekendLine = line<HourlyAverageVideoCountData>()
+      .x((d) => x(d.time))
+      .y((d) => y(d.weekendVideos))
+      .curve(curveBasis);
     svg
       .append('path')
       .datum(data)
       .attr('fill', 'none')
-      .attr('stroke', 'orange')
+      .attr('stroke', primaryActionColor)
       .attr('stroke-width', 3)
-      .attr(
-        'd',
-        line<HourlyAverageVideoCountData>()
-          .x((d) => x(d.time))
-          .y((d) => y(d.weekendVideos))
-          .curve(curveBasis)
-      );
+      .attr('d', weekendLine);
+
+    // Add annotation for the weekend line
+    svg
+      .append("text")
+      .attr("transform", `translate(${x(data[0].time) - 10},${y(data[0].weekendVideos)})`)
+      .style("text-anchor", "end")
+      .style('dominant-baseline', 'middle')
+      .style('font-size', '16px')
+      .style('fill', primaryActionColor)
+      .text("weekends");
+
   }, [data, availableWidth]);
 
   return (
     <div className={styles.container}>
-      <h2>Different habits on <em>weekends</em></h2>
-      <h3>Amount of videos watched per hour in a typical day</h3>
+      <div className={styles.title}>
+        <h2>Different habits on <em>weekends</em></h2>
+        <h3>Amount of videos watched per hour in a typical day</h3>
+      </div>
       <svg ref={ref}></svg>
     </div>
   );
