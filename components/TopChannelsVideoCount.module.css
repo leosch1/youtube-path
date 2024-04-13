@@ -22,4 +22,5 @@
     font-size: 1em;
     font-weight: 500;
     color: var(--secondary-text-color);
+    margin-bottom: 1em;
 }
