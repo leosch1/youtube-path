@@ -93,7 +93,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
           .tickSizeOuter(0)
           .tickSize(0)
           .tickPadding(10)
-          .tickFormat((d) => `${d} video${d !== 1 ? 's' : ''}`)
+          .tickFormat((d) => d !== 0 ? `${d} video${d !== 1 ? 's' : ''}` : '')
       )
       .style('font-size', '16px')
       .style('color', axisLabelColor);
