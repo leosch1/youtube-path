@@ -82,7 +82,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .text(d => `${timeFormat("%Y-%m-%d")(d.date)}: ${d.value}`);
 
     // Add weekdays
-    const weekdays = ["Sun", "", "Tue", "", "Thu", "", "Sat"];
+    const weekdays = ["Mon", "", "Wed", "", "Fri", "", "Sun"];
     chart.append("g")
       .selectAll("text")
       .data(weekdays)
