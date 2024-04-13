@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import { scaleTime, scaleLinear, max, extent, select, curveBasis, line, axisBottom, axisRight, timeFormat } from 'd3';
 import { HourlyAverageVideoCountData } from '../types/types';
 import styles from './HourlyAverageVideoCount.module.css';
@@ -8,12 +8,34 @@ interface HourlyAverageVideoCountProps {
 }
 
 const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data }) => {
-  const ref = useRef(null);
+  const ref = useRef<SVGSVGElement | null>(null);
+  const [availableWidth, setAvailableWidth] = useState(0); // Initial width
+
+  useLayoutEffect(() => {
+    const updateWidth = () => {
+      if (ref.current && ref.current.parentNode) {
+        setAvailableWidth((ref.current.parentNode as HTMLElement).clientWidth);
+      }
+    };
+  
+    window.addEventListener('resize', updateWidth);
+    updateWidth(); // Call it once initially
+  
+    return () => {
+      window.removeEventListener('resize', updateWidth); // Clean up event listener on unmount
+    };
+  }, []);
 
   useEffect(() => {
+    if (availableWidth === 0) {
+      return;
+    }
+    // Clear the previous diagram
+    select(ref.current).selectAll("*").remove();
+
     // Set dimensions and margins for the graph
-    const margin = { top: 20, right: 30, bottom: 30, left: 10 },
-      width = 600 - margin.left - margin.right,
+    const margin = { top: 20, right: 30, bottom: 30, left: 1 },
+      width = availableWidth - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
     // Append the svg object to the div
@@ -71,7 +93,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
           .y((d) => y(d.weekdayVideos))
           .curve(curveBasis)
       );
-  }, [data]);
+  }, [data, availableWidth]);
 
   return (
     <div className={styles.container}>
