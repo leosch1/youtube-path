@@ -1,6 +1,10 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
 import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData } from "../types/types";
 
+export const approximatelyEqual = (a: number, b: number, epsilon = 0.00001): boolean => {
+  return Math.abs(a - b) <= epsilon;
+}
+
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
   // Create a copy of the data array
   const sortedData = [...data];
@@ -113,6 +117,7 @@ const approximateDayCounts = (startDate: Date, endDate: Date): { totalWeekdays: 
   return { totalWeekdays, totalWeekendDays };
 }
 
+// TODO: This has still some bug. E.g. start and end do not match even though it should between they are basically the same time.
 export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAverageVideoCountData[] => {
   // Loop through all 60 minute windows in a 24 hour day in 10 minute intervals
   // For each window, calculate the average video count for that window (add to weekday or weekend count)
