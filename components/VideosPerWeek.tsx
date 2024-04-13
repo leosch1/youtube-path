@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import { VideoCountData, ScrollPoint, PhaseData } from '../types/types';
 
@@ -226,7 +226,23 @@ const handleScroll = (scrollPoints: ScrollPoint[],
 
 const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, phaseData }) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
+  const [windowWidth, setWindowWidth] = useState(0);
 
+  // Update the window width when the window is resized
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Create the diagram when the component is mounted
   useEffect(() => {
     if (!d3Container.current) {
       return;
@@ -244,9 +260,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
     return () => {
       window.removeEventListener('scroll', () => handleScroll(scrollPoints, svg));
     };
-  }, [data, diagramComponents, phaseData]);
-
-  
+  }, [data, diagramComponents, phaseData, windowWidth]);
 
   return (
     <svg
