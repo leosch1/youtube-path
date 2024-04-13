@@ -69,7 +69,7 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
       .padding(0.25);
 
     //Bars
-    chart.selectAll("myRect")
+    chart.selectAll()
       .data(data)
       .join("rect")
       .attr("x", x(0))
@@ -78,6 +78,19 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
       .attr("height", y.bandwidth())
       .attr('rx', 2)
       .attr('ry', 2)
+      .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor);
+
+    // Add labels to the right side of each bar
+    chart.selectAll()
+      .data(data)
+      .join("text")
+      .attr("x", d => x(d.count) + 5) // Add 5 to position the label a bit to the right of the bar
+      .attr("y", d => y(d.name)! + y.bandwidth() / 2) // Position the label in the middle of the bar
+      .text(d => d.count)
+      .attr("text-anchor", "start")
+      .attr("dominant-baseline", "middle")
+      .style("font-size", "12px")
+      .style("font-weight", "600")
       .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor);
 
     // Add y-axis (After the bars to make sure it's on top of the bars)
@@ -99,7 +112,7 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
   return (
     <div className={styles.container}>
       <h2>The channel you watched the <em>most</em></h2>
-      <h3>Number of watched videos per channel</h3>
+      <h3>Number of total watched videos per channel</h3>
       <svg ref={ref}></svg>
     </div>
   );
