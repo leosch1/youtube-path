@@ -144,7 +144,6 @@ export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAv
     centerDate.setMinutes(centerMinutes % 60);
     centerDate.setSeconds(0);
     centerDate.setMilliseconds(0);
-    console.log(centerDate)
 
     // Loop through all entries
     let weekdayVideoCount = 0;
