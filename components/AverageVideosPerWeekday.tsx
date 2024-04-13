@@ -47,7 +47,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       // Set the ranges for the scales
       const xScale = d3.scaleBand()
         .range([0, width])
-        .padding(0.1)
+        .padding(0.25)
         .domain(data.map(d => d.day));
 
       const yScale = d3.scaleLinear()
