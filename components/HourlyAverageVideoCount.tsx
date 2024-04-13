@@ -11,8 +11,6 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
   const ref = useRef<SVGSVGElement | null>(null);
   const [availableWidth, setAvailableWidth] = useState(0);
 
-  const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
-
   useLayoutEffect(() => {
     const updateWidth = () => {
       if (ref.current && ref.current.parentNode) {
@@ -32,6 +30,8 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     if (availableWidth === 0) {
       return;
     }
+    const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
+
     // Clear the previous diagram
     select(ref.current).selectAll("*").remove();
 
