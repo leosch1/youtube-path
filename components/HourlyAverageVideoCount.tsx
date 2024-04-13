@@ -29,9 +29,10 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
   }, []);
 
   useEffect(() => {
-    if (availableWidth === 0) {
+    if (availableWidth === 0 || availableHeight === 0) {
       return;
     }
+
     const primaryActionColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
     const primaryTextColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
     const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
