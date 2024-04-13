@@ -101,8 +101,8 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
       .attr('y', d => yScale(d.value))
       .attr('height', d => height - yScale(d.value))
       .attr('fill', d => d.value === maxValue ? maxBarColor : barColor)
-      .attr('rx', 2) // Set the x-radius for the corners
-      .attr('ry', 2); // Set the y-radius for the corners
+      .attr('rx', 2)
+      .attr('ry', 2);
 
     // Add annotation for the highest bar
     const annotation = svg.append('g')

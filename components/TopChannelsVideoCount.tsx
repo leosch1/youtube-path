@@ -57,21 +57,12 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
     const x = scaleLinear()
       .domain([0, max(data, d => d.count) ?? 0])
       .range([0, width]);
-    chart.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(axisBottom(x))
-      .selectAll("text")
-      .style("text-anchor", "end");
 
     // Y axis
     const y = scaleBand()
       .range([0, height])
       .domain(data.map(d => d.name))
-      .padding(.1);
-    chart.append("g")
-      .call(axisLeft(y))
-      .selectAll("text")
-      .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor);
+      .padding(0.25);
 
     //Bars
     chart.selectAll("myRect")
@@ -81,7 +72,23 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
       .attr("y", d => y(d.name)!)
       .attr("width", d => x(d.count))
       .attr("height", y.bandwidth())
+      .attr('rx', 2)
+      .attr('ry', 2)
       .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor);
+
+    // Add y-axis (After the bars to make sure it's on top of the bars)
+    chart.append("g")
+      .call(axisLeft(y).tickSize(0).tickPadding(10))
+      .selectAll("text")
+      .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor)
+      .style("font-size", "12px")
+      .style("font-weight", "600");
+
+    // Style the y-axis
+    chart.select(".domain")
+      .style("stroke", primaryTextColor)
+      .style("stroke-width", 2)
+      .style("stroke-linecap", "round");
 
   }, [data, availableWidth, availableHeight]);
 
