@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { select } from 'd3';
-import { VideoCountData, PhaseData } from '../types/types';
+import { DateVideoCountData, PhaseData } from '../types/types';
 import { createDiagram, getScrollPoints, handleScroll } from './VideosPerWeek.helpers';
 
 interface VideosPerWeekProps {
-  data: VideoCountData[];
+  data: DateVideoCountData[];
   diagramComponents: JSX.Element[];
   phaseData: PhaseData[];
 }

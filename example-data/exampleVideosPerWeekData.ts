@@ -1,6 +1,6 @@
-import { VideoCountData } from "../types/types";
+import { DateVideoCountData } from "../types/types";
 
-export const exampleVideosPerWeekData: VideoCountData[] = [
+export const exampleVideosPerWeekData: DateVideoCountData[] = [
   { "date": new Date("2020-11-14T17:00:00.000Z"), "value": 71 },
   { "date": new Date("2020-11-21T17:00:00.000Z"), "value": 302 },
   { "date": new Date("2020-11-28T17:00:00.000Z"), "value": 342 },

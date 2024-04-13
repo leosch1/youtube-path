@@ -1,4 +1,4 @@
-export interface VideoCountData {
+export interface DateVideoCountData {
   date: Date;
   value: number;
 }
@@ -34,6 +34,11 @@ export interface HourlyAverageVideoCountData {
   time: Date;
   weekendVideos: number;
   weekdayVideos: number;
+}
+
+export interface ChannelVideoCountData {
+  name: string;
+  count: number;
 }
 
 export interface ScrollPoint {
