@@ -17,10 +17,10 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
         setAvailableWidth((ref.current.parentNode as HTMLElement).clientWidth);
       }
     };
-  
+
     window.addEventListener('resize', updateWidth);
     updateWidth(); // Call it once initially
-  
+
     return () => {
       window.removeEventListener('resize', updateWidth); // Clean up event listener on unmount
     };
@@ -64,33 +64,33 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .attr('transform', `translate(${width},0)`) // Move the Y axis to the right
       .call(axisRight(y));
 
-    // Add the weekend line
-    svg
-      .append('path')
-      .datum(data)
-      .attr('fill', 'none')
-      .attr('stroke', 'orange')
-      .attr('stroke-width', 1.5)
-      .attr(
-        'd',
-        line<HourlyAverageVideoCountData>()
-          .x((d) => x(d.time))
-          .y((d) => y(d.weekendVideos))
-          .curve(curveBasis)
-      );
-
     // Add the weekday line
     svg
       .append('path')
       .datum(data)
       .attr('fill', 'none')
       .attr('stroke', 'white')
-      .attr('stroke-width', 1.5)
+      .attr('stroke-width', 3)
       .attr(
         'd',
         line<HourlyAverageVideoCountData>()
           .x((d) => x(d.time))
           .y((d) => y(d.weekdayVideos))
+          .curve(curveBasis)
+      );
+
+    // Add the weekend line
+    svg
+      .append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', 'orange')
+      .attr('stroke-width', 3)
+      .attr(
+        'd',
+        line<HourlyAverageVideoCountData>()
+          .x((d) => x(d.time))
+          .y((d) => y(d.weekendVideos))
           .curve(curveBasis)
       );
   }, [data, availableWidth]);
