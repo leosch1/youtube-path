@@ -3,5 +3,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+}
+
+.container h2 {
+    margin-bottom: 0.8em;
+    font-weight: 600;
+    font-size: 1.3em;
+    text-wrap: balance;
 }

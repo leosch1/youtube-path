@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
-import { select, scaleQuantize, min, max, group, selectAll, timeFormat, timeYear, timeMonths, timeWeek, timeDays } from 'd3';
+import { select, scaleLinear, max, timeFormat, timeWeek } from 'd3';
 import styles from './HeatmapCalendar.module.css';
 import { DateVideoCountData } from '../types/types';
 
@@ -44,10 +44,10 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
 
     // Set the dimensions and margins of the graph
     const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-    const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date) + 1;
-    
+    const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date);
+
     const gridSize = Math.floor(availableWidth / weeksCount);
-    const cellSize = gridSize - 1; // Subtract 1 for grid gap
+    const cellSize = gridSize - 2; // Subtract 2 for grid gap
 
     // Adjust width and height based on grid size and number of weeks
     const width = availableWidth - margin.left - margin.right;
@@ -57,10 +57,10 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .attr('width', availableWidth)
       .attr('height', height)
 
-    // Set the color scale
-    const colorScale = scaleQuantize<string>()
+    // Set the opacity scale
+    const opacityScale = scaleLinear()
       .domain([0, max(data, d => d.value) as number])
-      .range(['#ffffcc', '#ffeda0', '#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c', '#bd0026', '#800026']);
+      .range([0.1, 1]); // Adjust the range as needed
 
     // Positioning the day rectangles
     const dayRects = svg.append("g")
@@ -69,21 +69,21 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .join("rect")
       .attr("width", cellSize)
       .attr("height", cellSize)
-      .attr("x", d => (timeYear.count(data[0].date, d.date) * 52 + timeWeek.count(timeYear(d.date), d.date)) * gridSize)
+      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize)
       .attr("y", d => d.date.getDay() * gridSize)
-      .attr("fill", d => colorScale(d.value));
+      .attr("rx", 1)
+      .attr("ry", 1)
+      .attr("fill", primaryActionColor)
+      .attr("opacity", d => opacityScale(d.value));
 
     // Add tooltips
     dayRects.append("title")
       .text(d => `${timeFormat("%Y-%m-%d")(d.date)}: ${d.value}`);
-
-
-
   }, [data, availableWidth, availableHeight]);
 
   return (
     <div className={styles.container}>
-      <h2>hello</h2>
+      <h2>You watched X videos that day.</h2>
       <svg ref={ref} />
     </div>
   );
