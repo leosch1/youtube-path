@@ -8,6 +8,15 @@
 .container h2 {
     margin-bottom: 0.8em;
     font-weight: 600;
-    font-size: 1.3em;
+    font-size: 1.5em;
     text-wrap: balance;
+}
+
+.legendSvg {
+    vertical-align: middle;
+    margin-left: 0.2em;
+}
+
+.legendSvg text {
+    font-weight: 500;
 }
