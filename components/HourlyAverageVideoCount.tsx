@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { scaleTime, scaleLinear, max, extent, select, line, axisBottom, axisLeft, timeFormat } from 'd3';
+import { scaleTime, scaleLinear, max, extent, select, curveBasis, line, axisBottom, axisLeft, timeFormat } from 'd3';
 import { HourlyAverageVideoCountData } from '../types/types';
 import styles from './HourlyAverageVideoCount.module.css';
 
@@ -52,6 +52,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
         line<HourlyAverageVideoCountData>()
           .x((d) => x(d.time))
           .y((d) => y(d.weekendVideos))
+          .curve(curveBasis)
       );
 
     // Add the weekday line
@@ -66,6 +67,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
         line<HourlyAverageVideoCountData>()
           .x((d) => x(d.time))
           .y((d) => y(d.weekdayVideos))
+          .curve(curveBasis)
       );
   }, [data]);
 
