@@ -10,19 +10,21 @@ interface HourlyAverageVideoCountProps {
 const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data }) => {
   const ref = useRef<SVGSVGElement | null>(null);
   const [availableWidth, setAvailableWidth] = useState(0);
+  const [availableHeight, setAvailableHeight] = useState(0);
 
   useLayoutEffect(() => {
-    const updateWidth = () => {
+    const updateViewportSize = () => {
       if (ref.current && ref.current.parentNode) {
         setAvailableWidth((ref.current.parentNode as HTMLElement).clientWidth);
+        setAvailableHeight((ref.current.parentNode as HTMLElement).clientHeight);
       }
     };
 
-    window.addEventListener('resize', updateWidth);
-    updateWidth(); // Call it once initially
+    window.addEventListener('resize', updateViewportSize);
+    updateViewportSize(); // Call it once initially
 
     return () => {
-      window.removeEventListener('resize', updateWidth); // Clean up event listener on unmount
+      window.removeEventListener('resize', updateViewportSize); // Clean up event listener on unmount
     };
   }, []);
 
@@ -38,9 +40,10 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     select(ref.current).selectAll("*").remove();
 
     // Set dimensions and margins for the graph
-    const margin = { top: 20, right: 70, bottom: 30, left: 90 },
-      width = availableWidth - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    const margin = { top: 20, right: 70, bottom: 30, left: 90 };
+
+    const width = availableWidth - margin.left - margin.right;
+    const height = availableHeight * 0.5 - margin.top - margin.bottom;
 
     // Append the svg object to the div
     const svg = select(ref.current)
