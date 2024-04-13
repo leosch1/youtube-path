@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styles from './LandingZone.module.css';
 import OwnDataModal from './OwnDataModal';
 import { ProcessingContext } from '../contexts/ProcessingContext';
+import { approximatelyEqual } from '../utils/utils';
 
 interface LandingZoneProps {
   onClickUpload: () => void;
@@ -26,7 +27,7 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
   }, [setModalOpen, setProgress, setError]);
 
   useEffect(() => {
-    if (progress === 1) {
+    if (approximatelyEqual(progress, 1)) {
       setTimeout(() => { // Wait for 1 second before closing modal
         closeModal();
         goToStartingComponent();
