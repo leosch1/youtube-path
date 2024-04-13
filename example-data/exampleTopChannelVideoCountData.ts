@@ -2,23 +2,23 @@ import { ChannelVideoCountData } from "../types/types";
 
 export const exampleTopChannelVideoCountData: ChannelVideoCountData[] = [
   {
-    "name": "ジュキぱっぱ",
+    "name": "Cooking with Layla",
     "count": 437
   },
   {
-    "name": "Suits Official",
+    "name": "PewDiePie",
     "count": 339
   },
   {
-    "name": "The Jayleno Fly",
+    "name": "JustinBieberVEVO",
     "count": 258
   },
   {
-    "name": "Ozzy Man Reviews",
+    "name": "Fireship",
     "count": 245
   },
   {
-    "name": "Team Coco",
+    "name": "Ozzy Man Reviews",
     "count": 233
   }
 ];
