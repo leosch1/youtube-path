@@ -202,3 +202,23 @@ export const getTopChannelsVideoCountData = (data: WatchHistoryEntry[], topK = 5
   // Return the top K channels
   return channelVideoCountData.slice(0, topK);
 }
+
+export const getDailyVideoCounts = (data: WatchHistoryEntry[]): DateVideoCountData[] => {
+  // Loop over all entries
+  const dailyCounts: { [key: string]: number } = {};
+  for (const entry of data) {
+    const date = new Date(entry.time).toLocaleDateString('en-US');
+    dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+  }
+
+  // Convert the counts object to an array of DateVideoCountData
+  const result: DateVideoCountData[] = Object.keys(dailyCounts).map(date => ({
+    date: new Date(date),
+    value: dailyCounts[date],
+  }));
+
+  // Sort the array by date
+  result.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  return result;
+}
