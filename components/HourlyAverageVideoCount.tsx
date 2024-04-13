@@ -9,7 +9,9 @@ interface HourlyAverageVideoCountProps {
 
 const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data }) => {
   const ref = useRef<SVGSVGElement | null>(null);
-  const [availableWidth, setAvailableWidth] = useState(0); // Initial width
+  const [availableWidth, setAvailableWidth] = useState(0);
+
+  const axisLabelColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
   useLayoutEffect(() => {
     const updateWidth = () => {
@@ -53,8 +55,12 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(axisBottom(x).tickFormat((domainValue: any) => timeFormat("%I:%M %p")(domainValue)))
-      .style('font-size', '16px'); // Increase the font size of the X axis ticks
+      .call(axisBottom(x).tickFormat((domainValue: any) => {
+        let format = timeFormat("%I %p")(domainValue);
+        return format.charAt(0) === '0' ? format.slice(1) : format; // Remove leading zero
+      }))
+      .style('font-size', '16px')
+      .style('color', axisLabelColor);
 
     // Add Y axis
     const y = scaleLinear()
@@ -65,9 +71,10 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .attr('transform', `translate(${width},0)`) // Move the Y axis to the right
       .call(
         axisRight(y)
-          .tickFormat((d) => `${d} video${d !== 1 ? 's' : ''}`) // Add custom label to the ticks
+          .tickFormat((d) => `${d} video${d !== 1 ? 's' : ''}`)
       )
-      .style('font-size', '16px'); // Increase the font size of the Y axis ticks
+      .style('font-size', '16px')
+      .style('color', axisLabelColor);
 
     // Add the weekday line
     svg
