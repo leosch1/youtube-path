@@ -41,8 +41,12 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
     // Clear SVG before adding new elements
     svg.selectAll("*").remove();
 
+    // Estimate the width of the longest label
+    const longestLabel = max(data, d => d.name.length) ?? 0;
+    const estimatedLongestLabelWidth = longestLabel * 7; // 6 pixels per character is a rough estimate for a typical font
+
     // Set the dimensions and margins of the graph
-    const margin = { top: 20, right: 30, bottom: 40, left: 90 };
+    const margin = { top: 0, right: 30, bottom: 0, left: estimatedLongestLabelWidth + 10 };
     const width = availableWidth * 0.9 - margin.left - margin.right;
     const height = availableHeight * 0.5 - margin.top - margin.bottom;
 
