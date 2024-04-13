@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import * as d3 from 'd3';
 import styles from './AverageVideosPerWeekday.module.css'; // Create a CSS module for your styles
 import { AverageVideosPerWeekdayData } from "../types/types";
@@ -8,21 +8,41 @@ type VideosPerWeekdayProps = {
 };
 
 const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
-  const d3Container = useRef<SVGSVGElement | null>(null);
+  const ref = useRef<SVGSVGElement | null>(null);
+  const [availableWidth, setAvailableWidth] = useState(0);
+  const [availableHeight, setAvailableHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const updateViewportSize = () => {
+      if (ref.current && ref.current.parentNode) {
+        setAvailableWidth((ref.current.parentNode as HTMLElement).clientWidth);
+        setAvailableHeight((ref.current.parentNode as HTMLElement).clientHeight);
+      }
+    };
+
+    window.addEventListener('resize', updateViewportSize);
+    updateViewportSize(); // Call it once initially
+
+    return () => {
+      window.removeEventListener('resize', updateViewportSize); // Clean up event listener on unmount
+    };
+  }, []);
 
   useEffect(() => {
-    if (data && d3Container.current) {
-      const svg = d3.select(d3Container.current);
+    if (data && ref.current) {
+      const svg = d3.select(ref.current);
 
-      // Set up your chart dimensions and margins
-      const totalWidth = d3Container.current.clientWidth;
-      const totalHeight = d3Container.current.clientHeight;
-      const margin = { top: 70, right: 45, bottom: 30, left: 5 };
-      const width = totalWidth - margin.left - margin.right;
-      const height = totalHeight - margin.top - margin.bottom;
+      // Set dimensions and margins for the graph
+      const margin = { top: 70, right: 40, bottom: 30, left: 90 };
+
+      const width = availableWidth - margin.left - margin.right;
+      const height = availableHeight * 0.5 - margin.top - margin.bottom;
 
       // Clear svg content before adding new elements
       svg.selectAll("*").remove();
+
+      svg.attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
 
       // Set the ranges for the scales
       const xScale = d3.scaleBand()
@@ -126,16 +146,14 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
         .style("stroke-width", 2) // Make the x-axis thicker
         .style("stroke-linecap", "round"); // Make the x-axis line rounded at the end
     }
-  }, [data]);
+  }, [data, availableWidth, availableHeight]);
 
   return (
     <div className={styles.container}>
       <h2>The average amount of videos you watch per weekday.</h2>
       <svg
         className={styles.VideosPerWeekday}
-        width={600}
-        height={400}
-        ref={d3Container}
+        ref={ref}
       />
     </div>
   );

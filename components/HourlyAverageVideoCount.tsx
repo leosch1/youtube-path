@@ -140,7 +140,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .style('fill', primaryActionColor)
       .text("weekends");
 
-  }, [data, availableWidth]);
+  }, [data, availableWidth, availableHeight]);
 
   return (
     <div className={styles.container}>
