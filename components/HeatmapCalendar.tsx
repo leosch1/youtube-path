@@ -9,6 +9,7 @@ interface HeatmapCalendarProps {
 
 const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
   const ref = useRef<SVGSVGElement | null>(null);
+  const legendRef = useRef<SVGSVGElement | null>(null);
   const [availableWidth, setAvailableWidth] = useState(0);
   const [availableHeight, setAvailableHeight] = useState(0);
 
@@ -79,11 +80,61 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     // Add tooltips
     dayRects.append("title")
       .text(d => `${timeFormat("%Y-%m-%d")(d.date)}: ${d.value}`);
+
+
+    /* ------ LEGEND START ------ */
+    // Create the legend SVG
+    const legendSvg = select(legendRef.current);
+
+    // Clear SVG before adding new elements
+    legendSvg.selectAll("*").remove();
+
+    // Calculate round factor by which to round the legend values
+    const maxValue = max(data, d => d.value) ?? 0;
+    const roundFactor = Math.pow(10, Math.floor(Math.log10(maxValue)) - 1);
+
+    // Define the legend data
+    const legendData = [
+      Math.floor(maxValue / (10 * roundFactor)) * roundFactor,
+      Math.floor(maxValue / (2 * roundFactor)) * roundFactor,
+      Math.floor(maxValue / roundFactor) * roundFactor,
+    ];
+
+    // Create the legend rectangles and labels
+    const legend = legendSvg.selectAll('g')
+      .data(legendData)
+      .join('g')
+      .attr('transform', (d, i) => `translate(0, ${i * (cellSize + 4)})`);
+
+    legend.append('rect')
+      .attr('width', cellSize)
+      .attr('height', cellSize)
+      .attr("rx", 1)
+      .attr("ry", 1)
+      .attr('fill', primaryActionColor)
+      .attr('opacity', opacityScale);
+
+    const textElements = legend.append('text')
+      .attr('x', cellSize + 5)
+      .attr('y', cellSize / 2)
+      .attr('dy', '0.35em')
+      .attr('font-size', '0.6em')
+      .attr('fill', primaryTextColor)
+      .text(d => d);
+
+    // Calculate the maximum width and height of the legend items
+    const maxWidth = max(textElements.nodes(), node => node.getBBox().width) as number + cellSize + 5;
+    const maxHeight = legendData.length * (cellSize + 4);
+
+    // Set the width and height of the SVG
+    legendSvg.attr('width', maxWidth);
+    legendSvg.attr('height', maxHeight);
+
   }, [data, availableWidth, availableHeight]);
 
   return (
     <div className={styles.container}>
-      <h2>You watched X videos that day.</h2>
+      <h2>You watched <svg ref={legendRef} className={styles.legendSvg} /> videos that day.</h2>
       <svg ref={ref} />
     </div>
   );
