@@ -1,15 +1,16 @@
 .container {
     height: 100vh;
+    margin: 0 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 
 .container h2 {
     text-align: end;
-    margin-bottom: 0.5em;
-    font-weight: 500;
+    margin-bottom: 0.2em;
+    font-weight: 400;
     font-size: 2em;
     text-wrap: balance;
 }
@@ -17,4 +18,10 @@
 .container h2 em {
     font-style: normal;
     color: var(--primary-action-color);
+}
+
+.container h3 {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--secondary-text-color);
 }

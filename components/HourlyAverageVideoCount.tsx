@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { scaleTime, scaleLinear, max, extent, select, curveBasis, line, axisBottom, axisLeft, timeFormat } from 'd3';
+import { scaleTime, scaleLinear, max, extent, select, curveBasis, line, axisBottom, axisRight, timeFormat } from 'd3';
 import { HourlyAverageVideoCountData } from '../types/types';
 import styles from './HourlyAverageVideoCount.module.css';
 
@@ -12,7 +12,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
 
   useEffect(() => {
     // Set dimensions and margins for the graph
-    const margin = { top: 20, right: 30, bottom: 30, left: 60 },
+    const margin = { top: 20, right: 30, bottom: 30, left: 10 },
       width = 600 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -38,7 +38,9 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
       .domain([0, max(data, (d) => Math.max(d.weekendVideos ?? 0, d.weekdayVideos ?? 0))!])
       .range([height, 0]);
 
-    svg.append('g').call(axisLeft(y));
+    svg.append('g')
+      .attr('transform', `translate(${width},0)`) // Move the Y axis to the right
+      .call(axisRight(y));
 
     // Add the weekend line
     svg
