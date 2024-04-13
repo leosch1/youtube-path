@@ -34,7 +34,7 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     select(ref.current).selectAll("*").remove();
 
     // Set dimensions and margins for the graph
-    const margin = { top: 20, right: 30, bottom: 30, left: 1 },
+    const margin = { top: 20, right: 70, bottom: 30, left: 1 },
       width = availableWidth - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -53,7 +53,8 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
     svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(axisBottom(x).tickFormat((domainValue: any) => timeFormat("%I:%M %p")(domainValue)));
+      .call(axisBottom(x).tickFormat((domainValue: any) => timeFormat("%I:%M %p")(domainValue)))
+      .style('font-size', '16px'); // Increase the font size of the X axis ticks
 
     // Add Y axis
     const y = scaleLinear()
@@ -62,7 +63,11 @@ const HourlyAverageVideoCount: React.FC<HourlyAverageVideoCountProps> = ({ data 
 
     svg.append('g')
       .attr('transform', `translate(${width},0)`) // Move the Y axis to the right
-      .call(axisRight(y));
+      .call(
+        axisRight(y)
+          .tickFormat((d) => `${d} video${d !== 1 ? 's' : ''}`) // Add custom label to the ticks
+      )
+      .style('font-size', '16px'); // Increase the font size of the Y axis ticks
 
     // Add the weekday line
     svg
