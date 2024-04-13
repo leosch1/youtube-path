@@ -203,12 +203,28 @@ export const getTopChannelsVideoCountData = (data: WatchHistoryEntry[], topK = 5
   return channelVideoCountData.slice(0, topK);
 }
 
-export const getDailyVideoCounts = (data: WatchHistoryEntry[]): DateVideoCountData[] => {
-  // Loop over all entries
+export const getDailyVideoCounts = (data: WatchHistoryEntry[], maxNewestKDays = 300): DateVideoCountData[] => {
+  // Find the latest date and calculate the earliest date for the newest K days
+  const latestDate = new Date(data[data.length - 1].time);
+  const earliestMaxKDaysDate = new Date(latestDate.getTime() - (maxNewestKDays - 1) * 24 * 60 * 60 * 1000);
+  const earliestDate = new Date(Math.max(earliestMaxKDaysDate.getTime(), new Date(data[0].time).getTime()));
+
+  // Initialize dailyCounts with all dates from earliestDate to latestDate set to 0
   const dailyCounts: { [key: string]: number } = {};
-  for (const entry of data) {
-    const date = new Date(entry.time).toLocaleDateString('en-US');
-    dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+  for (let d = new Date(earliestDate); d <= latestDate; d.setDate(d.getDate() + 1)) {
+    const dateString = d.toLocaleDateString('en-US');
+    dailyCounts[dateString] = 0;
+  }
+
+  // Count the videos
+  for (let i = data.length - 1; i >= 0; i--) {
+    const entry = data[i];
+    const date = new Date(entry.time);
+    if (date < earliestDate) {
+      break;
+    }
+    const dateString = date.toLocaleDateString('en-US');
+    dailyCounts[dateString]++;
   }
 
   // Convert the counts object to an array of DateVideoCountData
