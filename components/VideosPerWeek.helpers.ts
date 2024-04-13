@@ -1,8 +1,8 @@
 import { select, scaleLinear, line, max, extent, scaleTime, axisTop, axisLeft, format, timeFormat, curveStepAfter } from 'd3';
-import { VideoCountData, ScrollPoint, PhaseData } from '../types/types';
+import { DateVideoCountData, ScrollPoint, PhaseData } from '../types/types';
 
 const getScrollPoints = (
-    data: VideoCountData[],
+    data: DateVideoCountData[],
     diagramComponents: JSX.Element[],
     phaseData: PhaseData[],
     y: d3.ScaleTime<number, number>,
@@ -80,7 +80,7 @@ const calculateYTranslate = (
     return translate
 };
 
-const createDiagram = (d3Container: SVGSVGElement, data: VideoCountData[], diagramComponents: JSX.Element[], phaseData: PhaseData[]): {
+const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], diagramComponents: JSX.Element[], phaseData: PhaseData[]): {
     y: d3.ScaleTime<number, number>,
     titleHeight: number,
     titleBottomMargin: number
@@ -154,7 +154,7 @@ const createDiagram = (d3Container: SVGSVGElement, data: VideoCountData[], diagr
     });
 
     // Define the step function for the stepped line
-    const steppedLine = line<VideoCountData>()
+    const steppedLine = line<DateVideoCountData>()
         .x(d => x(d.value))
         .y(d => y(d.date))
         .curve(curveStepAfter); // Use the step after curve to create the stepped look

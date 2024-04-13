@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { VideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData } from "../types/types";
+import { DateVideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData } from "../types/types";
 
 export const approximatelyEqual = (a: number, b: number, epsilon = 0.00001): boolean => {
   return Math.abs(a - b) <= epsilon;
@@ -16,13 +16,13 @@ export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] =
   return sortedData;
 };
 
-export const getVideosPerWeekData = (data: WatchHistoryEntry[]): VideoCountData[] => {
+export const getVideosPerWeekData = (data: WatchHistoryEntry[]): DateVideoCountData[] => {
   // Initialize the start and end dates
   let startDate = startOfWeek(new Date(data[0].time));
   let endDate = endOfWeek(startDate);
 
   // Initialize the result array
-  const result: VideoCountData[] = [];
+  const result: DateVideoCountData[] = [];
 
   // Initialize the video count
   let videoCount = 0;
@@ -173,3 +173,32 @@ export const getHourlyAverageVideoCounts = (data: WatchHistoryEntry[]): HourlyAv
 
   return result;
 };
+
+export const getTopChannelVideoCountData = (data: WatchHistoryEntry[], topK = 5): ChannelVideoCountData[] => {
+  // Initialize an object to count videos per channel
+  const counts: { [key: string]: number } = {};
+
+  // Iterate over the data
+  for (const entry of data) {
+    // Skip entries without subtitles
+    if (!entry.subtitles) continue;
+
+    // Get the channel name
+    const channel = entry.subtitles[0].name;
+
+    // Increment the count for this channel
+    counts[channel] = (counts[channel] || 0) + 1;
+  }
+
+  // Convert the counts object to an array of ChannelVideoCount
+  const channelVideoCountData: ChannelVideoCountData[] = Object.keys(counts).map(channel => ({
+    name: channel,
+    count: counts[channel],
+  }));
+
+  // Sort the array by count in descending order
+  channelVideoCountData.sort((a, b) => b.count - a.count);
+
+  // Return the top K channels
+  return channelVideoCountData.slice(0, topK);
+}

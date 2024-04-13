@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './MaxVideosPerWeek.module.css';
-import { VideoCountData } from '../types/types';
+import { DateVideoCountData } from '../types/types';
 
 interface VideosPerWeekProps {
-  data: VideoCountData[];
+  data: DateVideoCountData[];
 }
 
 const MaxVideosPerWeek: React.FC<VideosPerWeekProps> = ({ data }) => {
