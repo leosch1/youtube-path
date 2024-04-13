@@ -6,6 +6,7 @@ import VideosPerWeekday from '../components/AverageVideosPerWeekday';
 import Share from '../components/Share';
 import HourlyAverageVideoCount from '../components/HourlyAverageVideoCount';
 import TopChannelsVideoCount from '../components/TopChannelsVideoCount';
+import HeatmapCalendar from '../components/HeatmapCalendar';
 import { DateVideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, PhaseData, ChannelVideoCountData } from "../types/types";
 
 // Function to calculate the center date for each phase
@@ -57,7 +58,8 @@ export const getDiagramComponents = (
   totalVideoCountData: TotalVideoCountData,
   videosPerWeekdayData: AverageVideosPerWeekdayData[],
   hourlyAverageVideoCountData: HourlyAverageVideoCountData[],
-  topChannelsVideoCountData: ChannelVideoCountData[]
+  topChannelsVideoCountData: ChannelVideoCountData[],
+  dailyVideoCounts: DateVideoCountData[]
 ): JSX.Element[] => {
   const maxVideosPerWeekData = videosPerWeekData.reduce((max, current) => current.value > max.value ? current : max);
   const phaseComponents = getPhaseComponents(phaseData);
@@ -99,6 +101,7 @@ export const getDiagramComponents = (
   return [
     <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
     ...componentsWithDates.map(item => item.component),
-    <Share key="share" />,
+    <HeatmapCalendar key="heatmapCalendar" data={dailyVideoCounts} />,
+    // <Share key="share" />,
   ];
 }
