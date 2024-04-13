@@ -36,15 +36,20 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
     }
 
     const { y, titleHeight, titleBottomMargin } = createDiagram(d3Container.current, data, diagramComponents, phaseData);
-    const scrollPoints = getScrollPoints(data, diagramComponents, phaseData, y, titleHeight, titleBottomMargin);
+    const viewportHeight = window.innerHeight;
+    const scrollPoints = getScrollPoints(data, diagramComponents, phaseData, y, viewportHeight, titleHeight, titleBottomMargin);
 
     const svg = select(d3Container.current);
-    handleScroll(scrollPoints, svg);
-    window.addEventListener('scroll', () => handleScroll(scrollPoints, svg));
+    const onScroll = () => {
+      const scrollPosition = window.scrollY;
+      handleScroll(scrollPosition, scrollPoints, svg);
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll);
 
     // Clean up the event listener when the component is unmounted
     return () => {
-      window.removeEventListener('scroll', () => handleScroll(scrollPoints, svg));
+      window.removeEventListener('scroll', onScroll);
     };
   }, [data, diagramComponents, phaseData, windowWidth]);
 
