@@ -33,6 +33,7 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
       return;
     }
 
+    const primaryActionColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
     const primaryTextColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
 
     const svg = select(ref.current);
@@ -69,6 +70,8 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
       .padding(.1);
     chart.append("g")
       .call(axisLeft(y))
+      .selectAll("text")
+      .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor);
 
     //Bars
     chart.selectAll("myRect")
@@ -78,7 +81,8 @@ const TopChannelsVideoCount: React.FC<TopChannelsVideoCountProps> = ({ data }) =
       .attr("y", d => y(d.name)!)
       .attr("width", d => x(d.count))
       .attr("height", y.bandwidth())
-      .attr("fill", primaryTextColor);
+      .attr("fill", (d, i) => i === 0 ? primaryActionColor : primaryTextColor);
+
   }, [data, availableWidth, availableHeight]);
 
   return (
