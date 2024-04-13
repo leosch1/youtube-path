@@ -46,7 +46,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     const margin = { top: 40, right: 0, bottom: 0, left: 40 };
 
     // Adjust width and height based on grid size and number of weeks
-    const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date);
+    const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date) + 1;
     const width = availableWidth - margin.left - margin.right;
     const gridSize = Math.floor(width / weeksCount);
     const cellSize = gridSize - 2; // Subtract 2 for grid gap
@@ -87,10 +87,10 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .selectAll("text")
       .data(weekdays)
       .join("text")
-      .attr("y", (d, i) => i * gridSize)
+      .attr("y", (d, i) => i * gridSize + gridSize / 2)
       .attr("dx", "-10px")
-      .attr("dy", "0.9em") // to vertically center text
       .attr("text-anchor", "end")
+      .attr("dominant-baseline", "middle") // center text vertically
       .attr("font-size", "0.9em")
       .attr("font-weight", "500")
       .attr("fill", primaryTextColor)
