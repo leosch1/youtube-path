@@ -35,6 +35,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
 
     const primaryActionColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-action-color').trim();
     const primaryTextColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
+    const secondaryTextColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
 
     const svg = select(ref.current);
 
@@ -42,7 +43,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
     svg.selectAll("*").remove();
 
     // Set the dimensions and margins of the graph
-    const margin = { top: 30, right: 0, bottom: 0, left: 40 };
+    const margin = { top: 40, right: 0, bottom: 0, left: 40 };
 
     // Adjust width and height based on grid size and number of weeks
     const weeksCount = timeWeek.count(data[0].date, data[data.length - 1].date);
@@ -87,10 +88,10 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .data(weekdays)
       .join("text")
       .attr("y", (d, i) => i * gridSize)
-      .attr("dx", "-1em")
-      .attr("dy", "0.8em") // to vertically center text
+      .attr("dx", "-10px")
+      .attr("dy", "0.9em") // to vertically center text
       .attr("text-anchor", "end")
-      .attr("font-size", "0.8em")
+      .attr("font-size", "0.9em")
       .attr("font-weight", "500")
       .attr("fill", primaryTextColor)
       .text(d => d);
@@ -105,12 +106,29 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
       .data(firstDayOfMonthDates)
       .join("text")
       .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize)
-      .attr("dy", "-1em") // to position text above the grid
+      .attr("dy", "-10px") // to position text above the grid
       .attr("text-anchor", "start")
-      .attr("font-size", "0.8em")
+      .attr("font-size", "0.9em")
       .attr("font-weight", "500")
       .attr("fill", primaryTextColor)
       .text(d => monthFormat(d.date));
+
+    // Add year labels
+    const yearFormat = timeFormat("%Y");
+    const firstDayOfYearDates = data.filter((d, i, arr) => {
+      return i === 0 || d.date.getFullYear() !== arr[i - 1].date.getFullYear();
+    });
+    chart.append("g")
+      .selectAll("text")
+      .data(firstDayOfYearDates)
+      .join("text")
+      .attr("x", d => timeWeek.count(data[0].date, d.date) * gridSize)
+      .attr("dy", "-28px") // to position text above the month labels
+      .attr("text-anchor", "start")
+      .attr("font-size", "0.7em")
+      .attr("font-weight", "500")
+      .attr("fill", secondaryTextColor)
+      .text(d => yearFormat(d.date));
 
 
     /* ------ OPACITY LEGEND START ------ */
