@@ -137,7 +137,12 @@ export default function Home() {
       <div className={styles.content}>
         <div className={styles.sideDiagram}>
           <div className={styles.videosPerWeek}>
-            <VideosPerWeek data={videosPerWeekData} diagramComponents={diagramComponents} phaseData={phaseData} />
+            <VideosPerWeek
+              data={videosPerWeekData}
+              diagramComponents={diagramComponents}
+              mostWatchedVideo={mostWatchedVideo}
+              phaseData={phaseData}
+            />
           </div>
         </div>
         <div className={styles.mainDiagrams}>

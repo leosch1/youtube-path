@@ -1,9 +1,10 @@
 import { select, scaleLinear, line, max, extent, scaleTime, axisTop, axisLeft, format, timeFormat, curveStepAfter } from 'd3';
-import { DateVideoCountData, ScrollPoint, PhaseData } from '../types/types';
+import { DateVideoCountData, ScrollPoint, Video, PhaseData } from '../types/types';
 
 const getScrollPoints = (
     data: DateVideoCountData[],
     diagramComponents: JSX.Element[],
+    mostWatchedVideo: Video,
     phaseData: PhaseData[],
     y: d3.ScaleTime<number, number>,
     viewportHeight: number,
@@ -27,6 +28,12 @@ const getScrollPoints = (
             result.push({
                 scrollPosition: (index + 1) * viewportHeight,
                 diagramPosition: (index + 1) * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
+            });
+        } else if (component.key === 'mostWatchedVideo') {
+            const mostWatchedVideoY = y(mostWatchedVideo.firstWatchedDate) + titleHeight + titleBottomMargin;
+            result.push({
+                scrollPosition: (index + 1) * viewportHeight,
+                diagramPosition: (index + 1) * viewportHeight - mostWatchedVideoY + viewportHeight / 2
             });
         } else if (component.key && component.key.startsWith('phase')) {
             const phaseIndex = component.props.phaseIndex;
