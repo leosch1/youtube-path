@@ -25,6 +25,14 @@ export interface WatchHistoryEntry {
   details?: { name: string }[];
 }
 
+export interface Video {
+  firstWatchedDate: Date;
+  watchedCount: number;
+  videoTitle: string;
+  videoId: string;
+  channelTitle: string;
+}
+
 export interface AverageVideosPerWeekdayData {
   day: string;
   value: number;
