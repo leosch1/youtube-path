@@ -245,19 +245,19 @@ export const getMostWatchedVideo = (data: WatchHistoryEntry[]): Video => {
 
   // Iterate over the data
   for (const entry of data) {
-    // Get the video title
-    const url = entry.titleUrl;
-
-    // Skip entries without channel information
-    if (!entry.subtitles || entry.subtitles.length === 0) {
+    // Skip entries without URL or channel information
+    if (!entry.titleUrl || !entry.subtitles || entry.subtitles.length === 0) {
       continue;
     }
 
+    // Get the video id from the url
+    const id = entry.titleUrl.split('v=')[1];
+
     // Increment the count for this video and keep track of the entry
-    if (counts[url]) {
-      counts[url].count += 1;
+    if (counts[id]) {
+      counts[id].count += 1;
     } else {
-      counts[url] = { count: 1, entry };
+      counts[id] = { count: 1, entry };
     }
   }
 
@@ -266,14 +266,14 @@ export const getMostWatchedVideo = (data: WatchHistoryEntry[]): Video => {
   }
 
   // Find the most watched video
-  const mostWatched = Object.values(counts).reduce((a, b) => a.count > b.count ? a : b);
+  const mostWatched = Object.entries(counts).reduce((a, b) => a[1].count > b[1].count ? a : b);
 
   const mostWatchedVideo = {
-    firstWatchedDate: new Date(mostWatched.entry.time),
-    watchedCount: mostWatched.count,
-    videoTitle: mostWatched.entry.title,
-    videoId: mostWatched.entry.titleUrl,
-    channelTitle: mostWatched.entry.subtitles![0].name,
+    firstWatchedDate: new Date(mostWatched[1].entry.time),
+    watchedCount: mostWatched[1].count,
+    videoTitle: mostWatched[1].entry.title,
+    videoId: mostWatched[0],
+    channelTitle: mostWatched[1].entry.subtitles![0].name,
   };
 
   return mostWatchedVideo;
