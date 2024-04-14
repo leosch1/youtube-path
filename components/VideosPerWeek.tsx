@@ -1,15 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { select } from 'd3';
-import { DateVideoCountData, PhaseData } from '../types/types';
+import { DateVideoCountData, Video, PhaseData } from '../types/types';
 import { createDiagram, getScrollPoints, handleScroll } from './VideosPerWeek.helpers';
 
 interface VideosPerWeekProps {
   data: DateVideoCountData[];
   diagramComponents: JSX.Element[];
+  mostWatchedVideo: Video;
   phaseData: PhaseData[];
 }
 
-const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, phaseData }) => {
+const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, mostWatchedVideo, phaseData }) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
   const [windowWidth, setWindowWidth] = useState(0);
 
@@ -35,7 +36,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
 
     const { y, titleHeight, titleBottomMargin } = createDiagram(d3Container.current, data, diagramComponents, phaseData);
     const viewportHeight = window.innerHeight;
-    const scrollPoints = getScrollPoints(data, diagramComponents, phaseData, y, viewportHeight, titleHeight, titleBottomMargin);
+    const scrollPoints = getScrollPoints(data, diagramComponents, mostWatchedVideo, phaseData, y, viewportHeight, titleHeight, titleBottomMargin);
 
     const svg = select(d3Container.current);
     const onScroll = () => {

@@ -68,7 +68,7 @@ export const getDiagramComponents = (
   let componentsWithDates = [
     ...phaseComponents,
     { component: <MaxVideosPerWeek key="maxVideosPerWeek" data={videosPerWeekData} />, date: maxVideosPerWeekData.date },
-    { component: <DayYouWatchedVideo key="dayYouWatchedVideo" data={mostWatchedVideo} />, date: mostWatchedVideo.firstWatchedDate }
+    { component: <DayYouWatchedVideo key="mostWatchedVideo" data={mostWatchedVideo} />, date: mostWatchedVideo.firstWatchedDate }
   ];
 
   const startDate = videosPerWeekData[0].date;
