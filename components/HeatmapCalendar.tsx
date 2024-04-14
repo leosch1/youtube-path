@@ -144,9 +144,9 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
 
     // Define the legend data
     const legendData = [
-      Math.floor(maxValue / (10 * roundFactor)) * roundFactor,
-      Math.floor(maxValue / (2 * roundFactor)) * roundFactor,
-      Math.floor(maxValue / roundFactor) * roundFactor,
+      Number((Math.floor(maxValue / (10 * roundFactor)) * roundFactor).toFixed(2)),
+      Number((Math.floor(maxValue / (2 * roundFactor)) * roundFactor).toFixed(2)),
+      Number((Math.floor(maxValue / roundFactor) * roundFactor).toFixed(2)),
     ];
 
     // Create the legend rectangles and labels
