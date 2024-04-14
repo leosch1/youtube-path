@@ -1,0 +1,36 @@
+.container {
+  position: relative;
+  height: 100vh;
+}
+
+.centeredElement {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.centeredElement .annotationBox {
+  margin-left: 2em;
+}
+
+.centeredElement .annotationBox h2 {
+  font-size: 2em;
+  text-wrap: balance;
+}
+
+.centeredElement .annotationBox h2 .videoTitle {
+  white-space: nowrap;
+}
+
+.centeredElement .annotationBox h3 {
+  font-size: 1.2em;
+  font-weight: 400;
+}
+
+.centeredElement .annotationBox h3 em {
+  font-style: normal;
+  color: var(--primary-action-color);
+}

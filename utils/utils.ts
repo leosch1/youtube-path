@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { DateVideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData } from "../types/types";
+import { DateVideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData, Video } from "../types/types";
 
 export const approximatelyEqual = (a: number, b: number, epsilon = 0.00001): boolean => {
   return Math.abs(a - b) <= epsilon;
@@ -237,4 +237,44 @@ export const getDailyVideoCounts = (data: WatchHistoryEntry[], maxNewestKDays = 
   result.sort((a, b) => a.date.getTime() - b.date.getTime());
 
   return result;
+}
+
+export const getMostWatchedVideo = (data: WatchHistoryEntry[]): Video => {
+  // Initialize an object to count videos
+  const counts: { [key: string]: { count: number, entry: WatchHistoryEntry } } = {};
+
+  // Iterate over the data
+  for (const entry of data) {
+    // Get the video title
+    const url = entry.titleUrl;
+
+    // Skip entries without channel information
+    if (!entry.subtitles || entry.subtitles.length === 0) {
+      continue;
+    }
+
+    // Increment the count for this video and keep track of the entry
+    if (counts[url]) {
+      counts[url].count += 1;
+    } else {
+      counts[url] = { count: 1, entry };
+    }
+  }
+
+  if (Object.keys(counts).length === 0) {
+    throw new Error('No data available');
+  }
+
+  // Find the most watched video
+  const mostWatched = Object.values(counts).reduce((a, b) => a.count > b.count ? a : b);
+
+  const mostWatchedVideo = {
+    firstWatchedDate: new Date(mostWatched.entry.time),
+    watchedCount: mostWatched.count,
+    videoTitle: mostWatched.entry.title,
+    videoId: mostWatched.entry.titleUrl,
+    channelTitle: mostWatched.entry.subtitles![0].name,
+  };
+
+  return mostWatchedVideo;
 }

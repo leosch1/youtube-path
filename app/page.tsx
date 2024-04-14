@@ -2,12 +2,12 @@
 
 import React, { ChangeEvent, useRef, useState } from 'react';
 import styles from "./page.module.css";
-import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData, getHourlyAverageVideoCounts, getTopChannelsVideoCountData, getDailyVideoCounts } from '../utils/utils';
+import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData, getHourlyAverageVideoCounts, getTopChannelsVideoCountData, getDailyVideoCounts, getMostWatchedVideo } from '../utils/utils';
 import { getDiagramComponents } from '../utils/getDiagramComponents';
 import { getChannelPhases } from '../utils/channelPhases';
 import LandingZone from '../components/LandingZone';
 import VideosPerWeek from "../components/VideosPerWeek";
-import { WatchHistoryEntry, DateVideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData, PhaseData } from "../types/types";
+import { WatchHistoryEntry, DateVideoCountData, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData, PhaseData, Video } from "../types/types";
 import CalculationError from '../errors/CalculationError';
 import ParseError from '../errors/ParseError';
 import FileReadError from '../errors/FileReadError';
@@ -18,6 +18,7 @@ import { exampleHourlyAverageVideoCountData } from '../example-data/exampleHourl
 import { exampleTopChannelVideoCountData } from '../example-data/exampleTopChannelVideoCountData';
 import { exampleDailyVideoCounts } from '../example-data/exampleDailyVideoCounts';
 import { examplePhaseData } from '../example-data/examplePhaseData';
+import { exampleMostWatchedVideo } from '../example-data/exampleMostWatchedVideo';
 import { ProcessingContext } from '../contexts/ProcessingContext';
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
   const [processingError, setProcessingError] = useState<Error | null>(null);
   const [videosPerWeekData, setVideosPerWeekData] = useState<DateVideoCountData[]>(exampleVideosPerWeekData);
   const [phaseData, setPhaseData] = useState<PhaseData[]>(examplePhaseData);
+  const [mostWatchedVideo, setMostWatchedVideo] = useState<Video>(exampleMostWatchedVideo);
   const [totalVideoCountData, setTotalVideoCountData] = useState<TotalVideoCountData>(exampleTotalVideoCountData);
   const [videosPerWeekdayData, setAverageVideosPerWeekdayData] = useState<AverageVideosPerWeekdayData[]>(exampleAverageVideosPerWeekdayData);
   const [hourlyAverageVideoCounts, setHourlyAverageVideoCounts] = useState<HourlyAverageVideoCountData[]>(exampleHourlyAverageVideoCountData);
@@ -36,35 +38,39 @@ export default function Home() {
   const handleDataChange = async (data: WatchHistoryEntry[]) => {
     try {
       watchHistoryDataRef.current = sortDataByTime(data);
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setVideosPerWeekData(getVideosPerWeekData(watchHistoryDataRef.current));
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setPhaseData(getChannelPhases(watchHistoryDataRef.current, 3, 5));
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
+      await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
+
+      setMostWatchedVideo(getMostWatchedVideo(watchHistoryDataRef.current));
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setTotalVideoCountData(getTotalVideoCountData(watchHistoryDataRef.current));
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setAverageVideosPerWeekdayData(getAverageVideosPerWeekdayData(watchHistoryDataRef.current));
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setHourlyAverageVideoCounts(getHourlyAverageVideoCounts(watchHistoryDataRef.current))
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setTopChannelsVideoCountData(getTopChannelsVideoCountData(watchHistoryDataRef.current));
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
       await new Promise(resolve => setTimeout(resolve, 100)); // Workaround for progress bar not updating
 
       setDailyVideoCounts(getDailyVideoCounts(watchHistoryDataRef.current));
-      setProcessingProgress(prevProgress => prevProgress + 1 / 8);
+      setProcessingProgress(prevProgress => prevProgress + 1 / 9);
     } catch (error) {
       console.error(error);
       setProcessingError(new CalculationError('An error occurred while processing the data.', watchHistoryDataRef.current));
@@ -107,6 +113,7 @@ export default function Home() {
   const diagramComponents = getDiagramComponents(
     videosPerWeekData,
     phaseData,
+    mostWatchedVideo,
     totalVideoCountData,
     videosPerWeekdayData,
     hourlyAverageVideoCounts,
