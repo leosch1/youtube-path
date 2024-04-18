@@ -79,7 +79,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ data }) => {
 
     // Add tooltips
     dayRects.append("title")
-      .text(d => `${timeFormat("%Y-%m-%d")(d.date)}: ${d.value}`);
+      .text(d => `${timeFormat("%Y-%m-%d")(d.date)}: ${d.value} video${d.value !== 1 ? 's' : ''}`);
 
     // Add weekdays
     const weekdays = ["Mon", "", "Wed", "", "Fri", "", "Sun"];
