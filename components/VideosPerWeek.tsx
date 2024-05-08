@@ -34,14 +34,13 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
       return;
     }
 
-    const { y, titleHeight, titleBottomMargin } = createDiagram(d3Container.current, data, diagramComponents, phaseData);
+    const { containerGroup, y, titleHeight, titleBottomMargin } = createDiagram(d3Container.current, data, diagramComponents, phaseData);
     const viewportHeight = window.innerHeight;
     const scrollPoints = getScrollPoints(data, diagramComponents, mostWatchedVideo, phaseData, y, viewportHeight, titleHeight, titleBottomMargin);
 
-    const svg = select(d3Container.current);
     const onScroll = () => {
       const scrollPosition = window.scrollY;
-      handleScroll(scrollPosition, scrollPoints, svg);
+      handleScroll(scrollPosition, scrollPoints, containerGroup);
     }
     onScroll();
     window.addEventListener('scroll', onScroll);

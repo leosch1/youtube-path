@@ -9,7 +9,7 @@
 
 .videosPerWeek {
   width: calc(0.3 * (100% - 60px)); /* 30% of (full width - horizontal margins)*/
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 30px;
 }

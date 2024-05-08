@@ -17,7 +17,7 @@ const getScrollPoints = (
     },
     {
         scrollPosition: viewportHeight,
-        diagramPosition: viewportHeight
+        diagramPosition: 0
     }];
 
     diagramComponents.forEach((component, index) => {
@@ -27,13 +27,13 @@ const getScrollPoints = (
             const stepSize = y(data[1].date) - y(data[0].date);
             result.push({
                 scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight - maxVideosWeekY + viewportHeight / 2 + stepSize / 2
+                diagramPosition: -maxVideosWeekY + viewportHeight / 2 + stepSize / 2
             });
         } else if (component.key === 'mostWatchedVideo') {
             const mostWatchedVideoY = y(mostWatchedVideo.firstWatchedDate) + titleHeight + titleBottomMargin;
             result.push({
                 scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight - mostWatchedVideoY + viewportHeight / 2
+                diagramPosition: -mostWatchedVideoY + viewportHeight / 2
             });
         } else if (component.key && component.key.startsWith('phase')) {
             const phaseIndex = component.props.phaseIndex;
@@ -41,13 +41,13 @@ const getScrollPoints = (
             const phaseY = y(phaseMiddle) + titleBottomMargin + titleHeight;
             result.push({
                 scrollPosition: (index + 1) * viewportHeight,
-                diagramPosition: (index + 1) * viewportHeight - phaseY + viewportHeight / 2
+                diagramPosition: -phaseY + viewportHeight / 2
             });
         }
     });
     result.push({
         scrollPosition: diagramComponents.length * viewportHeight,
-        diagramPosition: (diagramComponents.length + 1) * viewportHeight - 2000 - 50
+        diagramPosition: - 2000 + viewportHeight - 50 // 2000 is the height of the diagram, 50 is to have some margin
     });
 
     return result;
@@ -59,7 +59,7 @@ const getActiveScrollInterval = (scrollPoints: ScrollPoint[], scrollPosition: nu
     for (let i = 1; i < scrollPoints.length; i++) {
         if (scrollPoints[i].scrollPosition >= scrollPosition) {
             return {
-                start: lastScrollPoint ?? scrollPoints[i],
+                start: lastScrollPoint,
                 end: scrollPoints[i]
             };
         }
@@ -69,7 +69,10 @@ const getActiveScrollInterval = (scrollPoints: ScrollPoint[], scrollPosition: nu
 
     return {
         start: lastScrollPoint,
-        end: scrollPoints[scrollPoints.length - 1]
+        end: {
+            scrollPosition: lastScrollPoint.scrollPosition + 100, // Handle overscroll
+            diagramPosition: lastScrollPoint.diagramPosition - 100 // Handle overscroll
+        }
     };
 };
 
@@ -87,7 +90,8 @@ const calculateYTranslate = (
     return translate
 };
 
-const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], diagramComponents: JSX.Element[], phaseData: PhaseData[]): {
+const createDiagram = (d3Container: SVGElement, data: DateVideoCountData[], diagramComponents: JSX.Element[], phaseData: PhaseData[]): {
+    containerGroup: d3.Selection<SVGGElement, unknown, null, undefined>,
     y: d3.ScaleTime<number, number>,
     titleHeight: number,
     titleBottomMargin: number
@@ -96,6 +100,9 @@ const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], d
 
     // Clear the SVG before drawing new content
     svg.selectAll("*").remove();
+
+    // Create a container group for the diagram
+    const containerGroup = svg.append('g');
 
     const textColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text-color').trim();
     const tickColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-text-color').trim();
@@ -120,7 +127,7 @@ const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], d
         .domain([offsettedStartDate, endDate])
         .range([margin.top, totalHeight - margin.bottom]);
 
-    const title = svg.append("text")
+    const title = containerGroup.append("text")
         .attr("x", margin.left)     // Position the text on the left edge of the diagram
         .attr("y", margin.top)      // Position the text at the top of the diagram
         .attr("font-size", "1em") // Set the font size
@@ -139,7 +146,7 @@ const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], d
     const titleBottomMargin = 15;
 
     // Create a group for the diagram and translate it down by the height of the title
-    const diagramGroup = svg.append('g');
+    const diagramGroup = containerGroup.append('g');
     diagramGroup.attr('transform', `translate(0, ${titleHeight + titleBottomMargin})`);
 
     // Create rectangles for each phase
@@ -149,7 +156,7 @@ const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], d
         const yEnd = y(phase.end);
         const height = yEnd - yStart;
 
-        // Add the rectangle to the SVG
+        // Add the rectangle to the diagram group
         diagramGroup.append("rect")
             .attr("x", margin.left)
             .attr("y", yStart)
@@ -217,17 +224,17 @@ const createDiagram = (d3Container: SVGSVGElement, data: DateVideoCountData[], d
         .attr("font-size", "1.2em")
         .attr("fill", tickColor);
 
-    return { y, titleHeight, titleBottomMargin };
+    return { containerGroup, y, titleHeight, titleBottomMargin };
 };
 
 const handleScroll = (
     scrollPosition: number,
     scrollPoints: ScrollPoint[],
-    svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
+    containerGroup: d3.Selection<SVGGElement, unknown, null, undefined>
 ) => {
     const activeScrollInterval = getActiveScrollInterval(scrollPoints, scrollPosition)
     const yTranslate = calculateYTranslate(scrollPosition, activeScrollInterval);
-    svg.attr('transform', `translate(0, ${yTranslate})`);
+    containerGroup.attr('transform', `translate(0, ${yTranslate})`);
 };
 
 export { getScrollPoints, createDiagram, handleScroll };
