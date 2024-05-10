@@ -182,7 +182,7 @@ const createDiagram = (d3Container: SVGElement, data: DateVideoCountData[], diag
         .attr("d", steppedLine);
 
     // Define the desired distance between the x ticks (in pixels)
-    const xTickSpacing = 35;
+    const xTickSpacing = 50;
 
     // Calculate the number of ticks
     const numTicks = Math.floor((totalWidth - margin.left - margin.right) / xTickSpacing);
