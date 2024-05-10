@@ -49,7 +49,7 @@ const VideosPerWeek: React.FC<VideosPerWeekProps> = ({ data, diagramComponents, 
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [data, diagramComponents, phaseData, windowWidth]);
+  }, [data, diagramComponents, mostWatchedVideo, phaseData, windowWidth]);
 
   return (
     <svg
