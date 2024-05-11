@@ -1,6 +1,7 @@
 .content {
   display: flex;
-  margin: 0 30px;
+  margin: 0 max(calc((100vw - 1300px) / 2), 30px); /* Horizontal margin set to auto or at least 30px */
+  max-width: 1300px;
 }
 
 .sideDiagram {
@@ -8,10 +9,9 @@
 }
 
 .videosPerWeek {
-  width: calc(0.3 * (100% - 60px)); /* 30% of (full width - horizontal margins)*/
   position: fixed;
   top: 0;
-  left: 30px;
+  left: max(calc((100vw - 1300px) / 2), 30px); /* Use the same margin as the content */
 }
 
 .mainDiagrams {
