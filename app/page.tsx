@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import { sortDataByTime, getVideosPerWeekData, getTotalVideoCountData, getAverageVideosPerWeekdayData, getHourlyAverageVideoCounts, getTopChannelsVideoCountData, getDailyVideoCounts, getMostWatchedVideo } from '../utils/utils';
 import { getDiagramComponents } from '../utils/getDiagramComponents';
@@ -109,6 +109,31 @@ export default function Home() {
       reader.readAsText(file);
     }
   };
+
+  const setVideosPerWeekWidth = () => {
+    const content = document.querySelector('.' + styles.content) as HTMLElement;
+    const videosPerWeek = document.querySelector('.' + styles.videosPerWeek) as HTMLElement;
+
+    if (content && videosPerWeek) {
+      // Set the width of the videos per week diagram to 30% of the content width
+      // This needs to be done in JavaScript because the width of the content is not known in CSS
+      // and we want to use fixed positioning for the videos per week diagram
+      videosPerWeek.style.width = 0.3 * content.offsetWidth + 'px';
+    }
+  };
+
+  useEffect(() => {
+    // Call the function initially to set the position
+    setVideosPerWeekWidth();
+
+    // Add the event listener
+    window.addEventListener('resize', setVideosPerWeekWidth);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', setVideosPerWeekWidth);
+    };
+  }, []);
 
   const diagramComponents = getDiagramComponents(
     videosPerWeekData,
