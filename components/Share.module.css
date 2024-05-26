@@ -4,3 +4,13 @@
   justify-content: center;
   align-items: center;
 }
+
+.container h2 {
+  font-size: 3em;
+  text-wrap: balance;
+}
+
+.container h2 em {
+  font-style: normal;
+  color: var(--primary-action-color);
+}

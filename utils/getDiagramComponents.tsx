@@ -105,6 +105,6 @@ export const getDiagramComponents = (
     <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
     ...componentsWithDates.map(item => item.component),
     <HeatmapCalendar key="heatmapCalendar" data={dailyVideoCounts} />,
-    // <Share key="share" />,
+    <Share key="share" />,
   ];
 }
