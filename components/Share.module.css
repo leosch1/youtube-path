@@ -23,7 +23,11 @@
 }
 
 .button {
-  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
   margin: 5px 0;
   border: none;
   border-radius: 5px;
