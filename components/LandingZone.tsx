@@ -1,5 +1,7 @@
 import React, { FC, useState, useEffect, useContext, useCallback } from 'react';
 import Image from 'next/image';
+import ExploreIcon from '@mui/icons-material/Explore';
+import UploadIcon from '@mui/icons-material/Upload';
 import styles from './LandingZone.module.css';
 import OwnDataModal from './OwnDataModal';
 import { ProcessingContext } from '../contexts/ProcessingContext';
@@ -53,8 +55,8 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
         />
       </div>
       <div className={styles.buttons}>
-        <button className={`${styles.button} ${styles.exploreButton}`} onClick={goToStartingComponent}>Explore an example</button>
-        <button className={`${styles.button} ${styles.dataButton}`} onClick={openModal}>Use your own data</button>
+        <button className={`${styles.button} ${styles.exploreButton}`} onClick={goToStartingComponent}><ExploreIcon /> Explore an example</button>
+        <button className={`${styles.button} ${styles.dataButton}`} onClick={openModal}><UploadIcon /> Use your own data</button>
       </div>
       {isModalOpen && <OwnDataModal onClose={closeModal} onClickUpload={onClickUpload} />}
     </div>
