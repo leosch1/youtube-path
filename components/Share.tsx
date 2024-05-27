@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './Share.module.css';
+import ShareIcon from '@mui/icons-material/Share';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const Share: React.FC = () => {
 
@@ -9,8 +11,8 @@ const Share: React.FC = () => {
       <div className={styles.right}>
         <h2><em>Share</em> your YouTube path</h2>
         <div className={styles.buttons}>
-          <button className={`${styles.button} ${styles.shareButton}`}>Share</button>
-          <button className={`${styles.button} ${styles.downloadButton}`}>Download</button>
+          <button className={`${styles.button} ${styles.shareButton}`}><ShareIcon /> Share</button>
+          <button className={`${styles.button} ${styles.downloadButton}`}><DownloadIcon /> Download</button>
         </div>
       </div>
     </div>
