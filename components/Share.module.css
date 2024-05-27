@@ -5,12 +5,39 @@
   align-items: center;
 }
 
-.container h2 {
+.container .right h2 {
   font-size: 3em;
+  font-weight: 400;
   text-wrap: balance;
+  margin-bottom: 0.5em;
 }
 
-.container h2 em {
+.container .right h2 em {
   font-style: normal;
   color: var(--primary-action-color);
+}
+
+.container .right .buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.button {
+  padding: 13px 16px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.shareButton {
+  background-color: var(--primary-action-color);
+  color: var(--on-primary-action-color);
+}
+
+.downloadButton {
+  background-color: var(--secondary-action-color);
+  color: var(--on-secondary-action-color);
 }
