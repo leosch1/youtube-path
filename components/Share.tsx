@@ -1,20 +1,29 @@
 import React from 'react';
-import Image from 'next/image';
 import styles from './Share.module.css';
 import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
+import ShareImage from './ShareImage';
+
+
 
 const Share: React.FC = () => {
 
+  const youtubePath = [{
+    name: "channel1Name",
+    videoCount: 10,
+  },
+  {
+    name: "channel2Name",
+    videoCount: 30,
+  },
+  {
+    name: "channel3Name",
+    videoCount: 20
+  }];
+
   return (
     <div className={styles.container}>
-      <Image
-        src="/images/share-my-path.svg"
-        alt="Your YouTube path"
-        width={0}
-        height={0}
-        className={styles.left}
-      />
+      <ShareImage channel1={youtubePath[0]} channel2={youtubePath[1]} channel3={youtubePath[2]} />
       <div className={styles.right}>
         <h2><em>Share</em> your YouTube path</h2>
         <div className={styles.buttons}>
