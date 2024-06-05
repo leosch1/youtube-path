@@ -36,7 +36,7 @@ const Share: React.FC<ShareProps> = ({ youtubePath }) => {
       <div className={styles.right}>
         <h2><em>Share</em> your YouTube path</h2>
         <div className={styles.buttons}>
-          <button className={`${styles.button} ${styles.shareButton}`}><ShareIcon /> Share</button>
+          {/* <button className={`${styles.button} ${styles.shareButton}`}><ShareIcon /> Share</button> */}
           <button className={`${styles.button} ${styles.downloadButton}`} onClick={downloadImage}><DownloadIcon /> Download</button>
         </div>
       </div>
