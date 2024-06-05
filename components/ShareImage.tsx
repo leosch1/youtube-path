@@ -1,15 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { ChannelVideoCountData } from '../types/types';
 
 interface Props {
-    channel1: { name: string, videoCount: number };
-    channel2: { name: string, videoCount: number };
-    channel3: { name: string, videoCount: number };
+    youtubePath: ChannelVideoCountData[];
 }
 
-const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
-    const { name: channel1Name, videoCount: channel1VideoCount } = channel1;
-    const { name: channel2Name, videoCount: channel2VideoCount } = channel2;
-    const { name: channel3Name, videoCount: channel3VideoCount } = channel3;
+const ShareImage: React.FC<Props> = ({ youtubePath }) => {
+    const [channel1, channel2, channel3] = youtubePath;
+
+    const { name: channel1Name, count: channel1VideoCount } = channel1;
+    const { name: channel2Name, count: channel2VideoCount } = channel2;
+    const { name: channel3Name, count: channel3VideoCount } = channel3;
 
     const channel1VideoCountString = `${channel1VideoCount} VIDEOS!`;
     const channel2VideoCountString = `${channel2VideoCount} VIDEOS!`;
@@ -23,29 +24,35 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
     const channel2VideoCountRef = useRef<SVGTextElement>(null);
     const channel3VideoCountRef = useRef<SVGTextElement>(null);
 
-    // State for text x positions
-    const [channel1NameX, setChannel1NameX] = useState(233);
-    const [channel2NameX, setChannel2NameX] = useState(196.352);
-    const [channel3NameX, setChannel3NameX] = useState(571);
-    const [channel1VideoCountX, setChannel1VideoCountX] = useState(493.395);
-    const [channel2VideoCountX, setChannel2VideoCountX] = useState(196.1);
-    const [channel3VideoCountX, setChannel3VideoCountX] = useState(638.295);
-
-    // State for rectangle widths
-    const [channel1NameBackgroundWidth, setChannel1NameBackgroundWidth] = useState(578.449);
-    const [channel2NameBackgroundWidth, setChannel2NameBackgroundWidth] = useState(376.749);
+    // State for channel name rectangle widths
     const [channel3NameBackgroundWidth, setChannel3NameBackgroundWidth] = useState(300);
-    const [channel1VideoCountBackgroundWidth, setChannel1VideoCountBackgroundWidth] = useState(300);
-    const [channel2VideoCountBackgroundWidth, setChannel2VideoCountBackgroundWidth] = useState(318);
-    const [channel3VideoCountBackgroundWidth, setChannel3VideoCountBackgroundWidth] = useState(233);
+    const [channel2NameBackgroundWidth, setChannel2NameBackgroundWidth] = useState(376.749);
+    const [channel1NameBackgroundWidth, setChannel1NameBackgroundWidth] = useState(578.449);
 
-    // State for rectangle x positions
-    const [channel1NameBackgroundX, setChannel1NameBackgroundX] = useState(176.5);
-    const [channel2NameBackgroundX, setChannel2NameBackgroundX] = useState(156.75);
+    // State for video count rectangle widths
+    const [channel3VideoCountBackgroundWidth, setChannel3VideoCountBackgroundWidth] = useState(233);
+    const [channel2VideoCountBackgroundWidth, setChannel2VideoCountBackgroundWidth] = useState(318);
+    const [channel1VideoCountBackgroundWidth, setChannel1VideoCountBackgroundWidth] = useState(300);
+
+    // State for channel name rectangle x positions
     const [channel3NameBackgroundX, setChannel3NameBackgroundX] = useState(538.5);
-    const [channel1VideoCountBackgroundX, setChannel1VideoCountBackgroundX] = useState(453.5);
-    const [channel2VideoCountBackgroundX, setChannel2VideoCountBackgroundX] = useState(156.5);
+    const [channel2NameBackgroundX, setChannel2NameBackgroundX] = useState(156.75);
+    const [channel1NameBackgroundX, setChannel1NameBackgroundX] = useState(176.5);
+
+    // State for video count rectangle x positions
     const [channel3VideoCountBackgroundX, setChannel3VideoCountBackgroundX] = useState(605.5);
+    const [channel2VideoCountBackgroundX, setChannel2VideoCountBackgroundX] = useState(156.5);
+    const [channel1VideoCountBackgroundX, setChannel1VideoCountBackgroundX] = useState(453.5);
+
+    // State for channel name x positions
+    const [channel3NameX, setChannel3NameX] = useState(571);
+    const [channel2NameX, setChannel2NameX] = useState(196.352);
+    const [channel1NameX, setChannel1NameX] = useState(233);
+
+    // State for video count x positions
+    const [channel3VideoCountX, setChannel3VideoCountX] = useState(638.295);
+    const [channel2VideoCountX, setChannel2VideoCountX] = useState(196.1);
+    const [channel1VideoCountX, setChannel1VideoCountX] = useState(493.395);
 
     // Effect to calculate width after component mounts
     useEffect(() => {
@@ -91,7 +98,7 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
             setChannel3VideoCountBackgroundX(newBackgroundX);
             setChannel3VideoCountX(newTextX);
         }
-    }, []);
+    }, [youtubePath]);
 
     return (
         <svg width="1061" height="2297" viewBox="0 0 1061 2297" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -167,11 +174,11 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
                     </g>
                     <g id="channel-name-panel" filter="url(#filter4_d_1454_553)">
                         <rect id="channel-3-name-bg" x={channel3NameBackgroundX} y="246.5" width={channel3NameBackgroundWidth} height="122" rx="12.5" fill="#0A8053" stroke="white" strokeWidth="5" />
-                        <text id="channel-3-name" ref={channel3NameRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="48" fontWeight="bold" letterSpacing="0em"><tspan x={channel3NameX} y="322.5">{channel3Name}</tspan></text>
+                        <text id="channel-3-name" ref={channel3NameRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="48" fontWeight="bold" letterSpacing="0em"><tspan x={channel3NameX} y="322.5">{channel1Name}</tspan></text>
                     </g>
                     <g id="video-count-panel" filter="url(#filter5_d_1454_553)">
                         <rect id="channel-3-video-count-bg" x={channel3VideoCountBackgroundX} y="388.5" width={channel3VideoCountBackgroundWidth} height="66" rx="12.5" fill="#0A8053" stroke="white" strokeWidth="5" />
-                        <text id="channel-3-video-count" ref={channel3VideoCountRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="28" fontWeight="bold" letterSpacing="0em"><tspan x={channel3VideoCountX} y="429.5">{channel3VideoCountString}</tspan></text>
+                        <text id="channel-3-video-count" ref={channel3VideoCountRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="28" fontWeight="bold" letterSpacing="0em"><tspan x={channel3VideoCountX} y="429.5">{channel1VideoCountString}</tspan></text>
                     </g>
                 </g>
                 <g id="channel-2">
@@ -203,11 +210,11 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
                     </g>
                     <g id="channel-name-panel_3" filter="url(#filter10_d_1454_553)">
                         <rect id="channel-1-name-bg" x={channel1NameBackgroundX} y="1362.5" width={channel1NameBackgroundWidth} height="180.483" rx="12.5" fill="#0A8053" stroke="white" strokeWidth="5" />
-                        <text id="channel-1-name" ref={channel1NameRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="75" fontWeight="bold" letterSpacing="0em"><tspan x={channel1NameX} y="1478.25">{channel1Name}</tspan></text>
+                        <text id="channel-1-name" ref={channel1NameRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="75" fontWeight="bold" letterSpacing="0em"><tspan x={channel1NameX} y="1478.25">{channel3Name}</tspan></text>
                     </g>
                     <g id="video-count-panel_3" filter="url(#filter11_d_1454_553)">
                         <rect id="channel-1-video-count-bg" x={channel1VideoCountBackgroundX} y="1569.5" width={channel1VideoCountBackgroundWidth} height="99" rx="12.5" fill="#0A8053" stroke="white" strokeWidth="5" />
-                        <text id="channel-1-video-count" ref={channel1VideoCountRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="36" fontWeight="bold" letterSpacing="0em"><tspan x={channel1VideoCountX} y="1631">{channel1VideoCountString}</tspan></text>
+                        <text id="channel-1-video-count" ref={channel1VideoCountRef} fill="white" xmlSpace="preserve" style={{ "whiteSpace": "pre" }} fontFamily="Overpass" fontSize="36" fontWeight="bold" letterSpacing="0em"><tspan x={channel1VideoCountX} y="1631">{channel3VideoCountString}</tspan></text>
                     </g>
                 </g>
                 <g id="car">
@@ -268,7 +275,7 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
                     <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1454_553" />
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1454_553" result="shape" />
                 </filter>
-                <filter id="filter5_d_1454_553" x="599" y="386" width="246" height="79" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <filter id="filter5_d_1454_553" y="386" height="79" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                     <feOffset dy="4" />
@@ -298,7 +305,7 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
                     <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1454_553" />
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1454_553" result="shape" />
                 </filter>
-                <filter id="filter8_d_1454_553" x="150" y="845" width="331" height="104" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <filter id="filter8_d_1454_553" y="845" height="104" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                     <feOffset dy="4" />
@@ -328,7 +335,7 @@ const ShareImage: React.FC<Props> = ({ channel1, channel2, channel3 }) => {
                     <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1454_553" />
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1454_553" result="shape" />
                 </filter>
-                <filter id="filter11_d_1454_553" x="447" y="1567" width="313" height="112" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <filter id="filter11_d_1454_553" y="1567" height="112" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                     <feOffset dy="4" />
