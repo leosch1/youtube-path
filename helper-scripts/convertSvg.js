@@ -98,19 +98,106 @@ function camelCaseAttributes(svgContent) {
         'xmlns:xlink': 'xmlnsXlink'
     };
 
-    const propsMaps = {
+    const propsMap = {
         'WILTY Nope!': '{channel1Name}',
-        '206 VIDEOS!': '{channel1VideoCount}',
+        '206 VIDEOS!': '{channel1VideoCountString}',
         'GM Hikaru': '{channel2Name}',
-        '5389 VIDEOS!!!': '{channel2VideoCount}',
+        '5389 VIDEOS!!!': '{channel2VideoCountString}',
         'PewDiePie': '{channel3Name}',
-        '321 VIDEOS!!': '{channel3VideoCount}'
+        '321 VIDEOS!!': '{channel3VideoCountString}'
     };
 
-    // combined both maps
-    const replaceMap = { ...attributesMap, ...propsMaps };
+    const refMap = {
+        '<text id="channel-3-name"': '<text id="channel-3-name" ref={channel3NameRef}',
+        '<text id="channel-3-video-count"': '<text id="channel-3-video-count" ref={channel3VideoCountRef}',
+        '<text id="channel-2-name"': '<text id="channel-2-name" ref={channel2NameRef}',
+        '<text id="channel-2-video-count"': '<text id="channel-2-video-count" ref={channel2VideoCountRef}',
+        '<text id="channel-1-name"': '<text id="channel-1-name" ref={channel1NameRef}',
+        '<text id="channel-1-video-count"': '<text id="channel-1-video-count" ref={channel1VideoCountRef}'
+    }
+
+    const replaceMap = { ...attributesMap, ...propsMap, ...refMap };
 
     let convertedContent = svgContent;
+
+    const replaceNameBackgroundWidths = (inputText) => {
+        return inputText.replace(/(<rect id="channel-(\d+)-name-bg"[^>]* width)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, width, postFix) => {
+            console.log(`Channel name ${channelNumber} bg width: ${width}`);
+            return `${prefix}={channel${channelNumber}NameBackgroundWidth}${postFix}`;
+        });
+    }
+
+    const replaceVideoCountBackgroundWidths = (inputText) => {
+        return inputText.replace(/(<rect id="channel-(\d+)-video-count-bg"[^>]* width)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, width, postFix) => {
+            console.log(`Video count ${channelNumber} bg width: ${width}`);
+            return `${prefix}={channel${channelNumber}VideoCountBackgroundWidth}${postFix}`;
+        });
+    }
+
+    const replaceNameBackgroundX = (inputText) => {
+        return inputText.replace(/(<rect id="channel-(\d+)-name-bg"[^>]* x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
+            console.log(`Channel name ${channelNumber} bg x: ${x}`);
+            return `${prefix}={channel${channelNumber}NameBackgroundX}${postFix}`;
+        });
+    }
+
+    const replaceVideoCountBackgroundX = (inputText) => {
+        return inputText.replace(/(<rect id="channel-(\d+)-video-count-bg"[^>]* x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
+            console.log(`Video count ${channelNumber} bg x: ${x}`);
+            return `${prefix}={channel${channelNumber}VideoCountBackgroundX}${postFix}`;
+        });
+    }
+
+    const replaceNameX = (inputText) => {
+        return inputText.replace(/(<text id="channel-(\d+)-name"[^>]*><tspan x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
+            console.log(`Channel name ${channelNumber} x: ${x}`);
+            return `${prefix}={channel${channelNumber}NameX}${postFix}`;
+        });
+    }
+
+    const replaceVideoCountX = (inputText) => {
+        return inputText.replace(/(<text id="channel-(\d+)-video-count"[^>]*><tspan x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
+            console.log(`Video count ${channelNumber} x: ${x}`);
+            return `${prefix}={channel${channelNumber}VideoCountX}${postFix}`;
+        });
+    }
+
+    const removeFilterWidth = (inputText) => {
+        // Extract filter IDs
+        const filterIdRegex = /<g id="channel-name-panel_?\d?" filter="url\(#(.*)\)"/g;
+        let match;
+        const filterIds = new Set();
+
+        while (match = filterIdRegex.exec(inputText)) {
+            filterIds.add(match[1]);
+        }
+
+        // Remove 'width' attribute from <filter> tags
+        let newText = inputText.replace(/<filter ([^>]*id="([a-z_\d]+)".*) width="\d+.?\d*"(.*>)/g, (fullMatch, preWidth, id, postWidth) => {
+            if (filterIds.has(id)) {
+                return `<filter ${preWidth}${postWidth}`;
+            }
+            return fullMatch;
+        });
+
+        // Remove 'x' attribute from <filter> tags
+        newText = newText.replace(/<filter ([^>]*id="([a-z_\d]+)".*) x="\d+.?\d*"(.*>)/g, (fullMatch, preX, id, postX) => {
+            if (filterIds.has(id)) {
+                return `<filter ${preX}${postX}`;
+            }
+            return fullMatch;
+        });
+
+        return newText;
+    }
+
+    convertedContent = replaceNameBackgroundWidths(convertedContent);
+    convertedContent = replaceVideoCountBackgroundWidths(convertedContent);
+    convertedContent = removeFilterWidth(convertedContent);
+    convertedContent = replaceNameBackgroundX(convertedContent);
+    convertedContent = replaceVideoCountBackgroundX(convertedContent);
+    convertedContent = replaceNameX(convertedContent);
+    convertedContent = replaceVideoCountX(convertedContent);
 
     // Sort keys by length in descending order
     const sortedKeys = Object.keys(replaceMap).sort((a, b) => b.length - a.length);
