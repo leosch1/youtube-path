@@ -61,7 +61,8 @@ export const getDiagramComponents = (
   videosPerWeekdayData: AverageVideosPerWeekdayData[],
   hourlyAverageVideoCountData: HourlyAverageVideoCountData[],
   topChannelsVideoCountData: ChannelVideoCountData[],
-  dailyVideoCounts: DateVideoCountData[]
+  dailyVideoCounts: DateVideoCountData[],
+  youtubePath: ChannelVideoCountData[]
 ): JSX.Element[] => {
   const maxVideosPerWeekData = videosPerWeekData.reduce((max, current) => current.value > max.value ? current : max);
   const phaseComponents = getPhaseComponents(phaseData);
@@ -105,6 +106,6 @@ export const getDiagramComponents = (
     <TotalVideoCount key="totalVideoCount" data={totalVideoCountData} />,
     ...componentsWithDates.map(item => item.component),
     <HeatmapCalendar key="heatmapCalendar" data={dailyVideoCounts} />,
-    <Share key="share" />,
+    <Share key="share" youtubePath={youtubePath}/>,
   ];
 }

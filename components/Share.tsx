@@ -3,27 +3,16 @@ import styles from './Share.module.css';
 import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import ShareImage from './ShareImage';
+import { ChannelVideoCountData } from '../types/types';
 
+interface ShareProps {
+  youtubePath: ChannelVideoCountData[];
+}
 
-
-const Share: React.FC = () => {
-
-  const youtubePath = [{
-    name: "channel1Name",
-    videoCount: 10,
-  },
-  {
-    name: "channel2Name",
-    videoCount: 30,
-  },
-  {
-    name: "channel3Name",
-    videoCount: 20
-  }];
-
+const Share: React.FC<ShareProps> = ({ youtubePath }) => {
   return (
     <div className={styles.container}>
-      <ShareImage channel1={youtubePath[0]} channel2={youtubePath[1]} channel3={youtubePath[2]} />
+      <ShareImage youtubePath={youtubePath} />
       <div className={styles.right}>
         <h2><em>Share</em> your YouTube path</h2>
         <div className={styles.buttons}>

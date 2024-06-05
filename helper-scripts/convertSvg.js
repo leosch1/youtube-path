@@ -99,12 +99,12 @@ function camelCaseAttributes(svgContent) {
     };
 
     const propsMap = {
-        'WILTY Nope!': '{channel1Name}',
-        '206 VIDEOS!': '{channel1VideoCountString}',
+        'WILTY Nope!': '{channel3Name}',
+        '206 VIDEOS!': '{channel3VideoCountString}',
         'GM Hikaru': '{channel2Name}',
         '5389 VIDEOS!!!': '{channel2VideoCountString}',
-        'PewDiePie': '{channel3Name}',
-        '321 VIDEOS!!': '{channel3VideoCountString}'
+        'PewDiePie': '{channel1Name}',
+        '321 VIDEOS!!': '{channel1VideoCountString}'
     };
 
     const refMap = {
@@ -121,55 +121,61 @@ function camelCaseAttributes(svgContent) {
     let convertedContent = svgContent;
 
     const replaceNameBackgroundWidths = (inputText) => {
+        console.log('\n// State for channel name rectangle widths');
         return inputText.replace(/(<rect id="channel-(\d+)-name-bg"[^>]* width)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, width, postFix) => {
-            console.log(`Channel name ${channelNumber} bg width: ${width}`);
+            console.log(`const [channel${channelNumber}NameBackgroundWidth, setChannel${channelNumber}NameBackgroundWidth] = useState(${width});`);
             return `${prefix}={channel${channelNumber}NameBackgroundWidth}${postFix}`;
         });
     }
 
     const replaceVideoCountBackgroundWidths = (inputText) => {
+        console.log('\n// State for video count rectangle widths');
         return inputText.replace(/(<rect id="channel-(\d+)-video-count-bg"[^>]* width)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, width, postFix) => {
-            console.log(`Video count ${channelNumber} bg width: ${width}`);
+            console.log(`const [channel${channelNumber}VideoCountBackgroundWidth, setChannel${channelNumber}VideoCountBackgroundWidth] = useState(${width});`);
             return `${prefix}={channel${channelNumber}VideoCountBackgroundWidth}${postFix}`;
         });
     }
 
     const replaceNameBackgroundX = (inputText) => {
+        console.log('\n// State for channel name rectangle x positions');
         return inputText.replace(/(<rect id="channel-(\d+)-name-bg"[^>]* x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
-            console.log(`Channel name ${channelNumber} bg x: ${x}`);
+            console.log(`const [channel${channelNumber}NameBackgroundX, setChannel${channelNumber}NameBackgroundX] = useState(${x});`);
             return `${prefix}={channel${channelNumber}NameBackgroundX}${postFix}`;
         });
     }
 
     const replaceVideoCountBackgroundX = (inputText) => {
+        console.log('\n// State for video count rectangle x positions')
         return inputText.replace(/(<rect id="channel-(\d+)-video-count-bg"[^>]* x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
-            console.log(`Video count ${channelNumber} bg x: ${x}`);
+            console.log(`const [channel${channelNumber}VideoCountBackgroundX, setChannel${channelNumber}VideoCountBackgroundX] = useState(${x});`);
             return `${prefix}={channel${channelNumber}VideoCountBackgroundX}${postFix}`;
         });
     }
 
     const replaceNameX = (inputText) => {
+        console.log('\n// State for channel name x positions');
         return inputText.replace(/(<text id="channel-(\d+)-name"[^>]*><tspan x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
-            console.log(`Channel name ${channelNumber} x: ${x}`);
+            console.log(`const [channel${channelNumber}NameX, setChannel${channelNumber}NameX] = useState(${x});`);
             return `${prefix}={channel${channelNumber}NameX}${postFix}`;
         });
     }
 
     const replaceVideoCountX = (inputText) => {
+        console.log('\n// State for video count x positions');
         return inputText.replace(/(<text id="channel-(\d+)-video-count"[^>]*><tspan x)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, x, postFix) => {
-            console.log(`Video count ${channelNumber} x: ${x}`);
+            console.log(`const [channel${channelNumber}VideoCountX, setChannel${channelNumber}VideoCountX] = useState(${x});`);
             return `${prefix}={channel${channelNumber}VideoCountX}${postFix}`;
         });
     }
 
     const removeFilterWidth = (inputText) => {
         // Extract filter IDs
-        const filterIdRegex = /<g id="channel-name-panel_?\d?" filter="url\(#(.*)\)"/g;
+        const filterIdRegex = /<g id="(channel-name|video-count)-panel_?\d?" filter="url\(#(.*)\)"/g;
         let match;
         const filterIds = new Set();
 
         while (match = filterIdRegex.exec(inputText)) {
-            filterIds.add(match[1]);
+            filterIds.add(match[2]);
         }
 
         // Remove 'width' attribute from <filter> tags
@@ -232,7 +238,7 @@ function convertSVG(filePath) {
                 console.error('Error writing file:', err);
                 return;
             }
-            console.log('File has been converted and saved to:', outputFilePath);
+            console.log('\nFile has been converted and saved to:', outputFilePath);
         });
     });
 }

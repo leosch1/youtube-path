@@ -1,5 +1,5 @@
 import { startOfWeek, endOfWeek, isWithinInterval, addWeeks } from 'date-fns';
-import { DateVideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData, Video } from "../types/types";
+import { DateVideoCountData, WatchHistoryEntry, TotalVideoCountData, AverageVideosPerWeekdayData, HourlyAverageVideoCountData, ChannelVideoCountData, Video, PhaseData } from "../types/types";
 
 export const approximatelyEqual = (a: number, b: number, epsilon = 0.00001): boolean => {
   return Math.abs(a - b) <= epsilon;
@@ -277,4 +277,14 @@ export const getMostWatchedVideo = (data: WatchHistoryEntry[]): Video => {
   };
 
   return mostWatchedVideo;
+}
+
+export const getYoutubePath = (phaseData: PhaseData[]): ChannelVideoCountData[] => {
+  // Get the top 3 phases by count and order them by start date
+  const topPhases = phaseData.sort((a, b) => b.count - a.count).slice(0, 3);
+  topPhases.sort((a, b) => a.start.getTime() - b.start.getTime());
+  return topPhases.map(phase => ({
+    name: phase.title,
+    count: phase.count,
+  }));
 }
