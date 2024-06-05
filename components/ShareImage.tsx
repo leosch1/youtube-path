@@ -98,7 +98,18 @@ const ShareImage: React.FC<Props> = ({ youtubePath }) => {
             setChannel3VideoCountBackgroundX(newBackgroundX);
             setChannel3VideoCountX(newTextX);
         }
-    }, [youtubePath]);
+    }, [channel1NameBackgroundWidth,
+        channel1NameBackgroundX,
+        channel1NameX,
+        channel1VideoCountBackgroundWidth,
+        channel1VideoCountBackgroundX,
+        channel1VideoCountX,
+        channel3NameBackgroundWidth,
+        channel3NameBackgroundX,
+        channel3NameX,
+        channel3VideoCountBackgroundWidth,
+        channel3VideoCountBackgroundX,
+        channel3VideoCountX]);
 
     return (
         <svg width="100%" height="100%" viewBox="0 0 1061 2297" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
