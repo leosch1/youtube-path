@@ -120,6 +120,8 @@ function camelCaseAttributes(svgContent) {
 
     let convertedContent = svgContent;
 
+    convertedContent = convertedContent.replace(/<svg width="\d+.?\d*" height="\d+.?\d*"/, '<svg width="100%" height="100%"');
+
     const replaceNameBackgroundWidths = (inputText) => {
         console.log('\n// State for channel name rectangle widths');
         return inputText.replace(/(<rect id="channel-(\d+)-name-bg"[^>]* width)="(\d+.?\d*)"(.*)/g, (fullMatch, prefix, channelNumber, width, postFix) => {
