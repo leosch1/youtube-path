@@ -8,9 +8,14 @@ interface Props {
 const ShareImage: React.FC<Props> = ({ youtubePath }) => {
     const [channel1, channel2, channel3] = youtubePath;
 
-    const { name: channel1Name, count: channel1VideoCount } = channel1;
-    const { name: channel2Name, count: channel2VideoCount } = channel2;
-    const { name: channel3Name, count: channel3VideoCount } = channel3;
+    const { name: channel1FullName, count: channel1VideoCount } = channel1;
+    const { name: channel2FullName, count: channel2VideoCount } = channel2;
+    const { name: channel3FullName, count: channel3VideoCount } = channel3;
+
+    // Shorten the channel names to 16 characters
+    const channel1Name = channel1FullName.length > 16 ? `${channel1FullName.slice(0, 16)}...` : channel1FullName;
+    const channel2Name = channel2FullName.length > 16 ? `${channel2FullName.slice(0, 16)}...` : channel2FullName;
+    const channel3Name = channel3FullName.length > 16 ? `${channel3FullName.slice(0, 16)}...` : channel3FullName;
 
     const channel1VideoCountString = `${channel1VideoCount} VIDEOS!`;
     const channel2VideoCountString = `${channel2VideoCount} VIDEOS!`;
