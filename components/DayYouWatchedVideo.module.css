@@ -36,6 +36,7 @@
 
 .centeredElement .annotationBox h3 em {
   font-style: normal;
+  font-weight: 600;
   color: var(--primary-action-color);
 }
 
