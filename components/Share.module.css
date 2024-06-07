@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -53,4 +54,12 @@
 .downloadButton {
   background-color: var(--secondary-action-color);
   color: var(--on-secondary-action-color);
+}
+
+.scrollToTopButton {
+  position: absolute;
+  right: 0;
+  bottom: 100px;
+  background-color: var(--primary-action-color);
+  color: var(--on-primary-action-color);
 }

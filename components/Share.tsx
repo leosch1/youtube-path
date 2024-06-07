@@ -9,9 +9,11 @@ import { saveAs } from 'file-saver';
 
 interface ShareProps {
   youtubePath: ChannelVideoCountData[];
+  showScrollToTopButton: boolean;
+  scrollToTop: () => void;
 }
 
-const Share: React.FC<ShareProps> = ({ youtubePath }) => {
+const Share: React.FC<ShareProps> = ({ youtubePath, showScrollToTopButton, scrollToTop }) => {
   const shareImageRef = useRef(null);
 
   const downloadImage = () => {
@@ -40,6 +42,11 @@ const Share: React.FC<ShareProps> = ({ youtubePath }) => {
           <button className={`${styles.button} ${styles.downloadButton}`} onClick={downloadImage}><DownloadIcon /> Download</button>
         </div>
       </div>
+      {showScrollToTopButton && (
+        <button className={`${styles.button} ${styles.scrollToTopButton}`} onClick={scrollToTop}>
+          Scroll to top
+        </button>
+      )}
     </div>
   );
 };

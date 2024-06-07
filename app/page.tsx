@@ -25,6 +25,7 @@ import { ProcessingContext } from '../contexts/ProcessingContext';
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
+  const [isExampleData, setIsExampleData] = useState(true);
   const [processingProgress, setProcessingProgress] = useState(0);
   const [processingError, setProcessingError] = useState<Error | null>(null);
   const [videosPerWeekData, setVideosPerWeekData] = useState<DateVideoCountData[]>(exampleVideosPerWeekData);
@@ -36,6 +37,10 @@ export default function Home() {
   const [topChannelsVideoCountData, setTopChannelsVideoCountData] = useState<ChannelVideoCountData[]>(exampleTopChannelVideoCountData);
   const [dailyVideoCounts, setDailyVideoCounts] = useState<DateVideoCountData[]>(exampleDailyVideoCounts);
   const [youtubePath, setYoutubePath] = useState<ChannelVideoCountData[]>(exampleYoutubePathData);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleDataChange = async (data: WatchHistoryEntry[]) => {
     try {
@@ -78,6 +83,7 @@ export default function Home() {
 
       setYoutubePath(getYoutubePath(channelPhases));
       setProcessingProgress(prevProgress => prevProgress + 1 / 10);
+      setIsExampleData(false);
     } catch (error) {
       console.error(error);
       setProcessingError(new CalculationError('An error occurred while processing the data.', watchHistoryDataRef.current));
@@ -151,7 +157,9 @@ export default function Home() {
     hourlyAverageVideoCounts,
     topChannelsVideoCountData,
     dailyVideoCounts,
-    youtubePath
+    youtubePath,
+    isExampleData,
+    scrollToTop
   );
 
   return (
