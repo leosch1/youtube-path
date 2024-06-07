@@ -6,8 +6,8 @@ import { CSPostHogProvider } from './providers';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "YouTube Path",
-  description: "A visualization of your YouTube watch history.",
+  title: "My YouTube Path",
+  description: "A visualization of your YouTube watch history."
 };
 
 export default function RootLayout({
