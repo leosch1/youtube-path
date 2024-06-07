@@ -3,11 +3,12 @@ import styles from './OwnDataModal.module.css';
 import UploadArea from './UploadArea';
 
 interface OwnDataModalProps {
+    isOpen: boolean;
     onClose: () => void;
     onClickUpload: () => void;
 }
 
-const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
+const OwnDataModal: FC<OwnDataModalProps> = ({ isOpen, onClose, onClickUpload }) => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
     const stopPropagation = (event: React.MouseEvent) => {
@@ -57,7 +58,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ onClose, onClickUpload }) => {
     }, []);
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div className={styles.modalOverlay} onClick={onClose} style={{ display: isOpen ? 'flex' : 'none' }}>
             <button ref={closeButtonRef} className={styles.closeButton} onClick={onClose}>X</button>
             <div ref={containerRef} className={styles.container} onClick={stopPropagation}>
 
