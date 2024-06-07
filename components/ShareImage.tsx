@@ -32,30 +32,30 @@ const ShareImage: React.FC<Props> = ({ youtubePath }) => {
     // State for channel name rectangle widths
     const [channel3NameBackgroundWidth, setChannel3NameBackgroundWidth] = useState(300);
     const [channel2NameBackgroundWidth, setChannel2NameBackgroundWidth] = useState(376.749);
-    const [channel1NameBackgroundWidth, setChannel1NameBackgroundWidth] = useState(578.449);
+    const [channel1NameBackgroundWidth, setChannel1NameBackgroundWidth] = useState(534);
 
     // State for video count rectangle widths
-    const [channel3VideoCountBackgroundWidth, setChannel3VideoCountBackgroundWidth] = useState(233);
+    const [channel3VideoCountBackgroundWidth, setChannel3VideoCountBackgroundWidth] = useState(226);
     const [channel2VideoCountBackgroundWidth, setChannel2VideoCountBackgroundWidth] = useState(318);
     const [channel1VideoCountBackgroundWidth, setChannel1VideoCountBackgroundWidth] = useState(300);
 
     // State for channel name rectangle x positions
     const [channel3NameBackgroundX, setChannel3NameBackgroundX] = useState(538.5);
     const [channel2NameBackgroundX, setChannel2NameBackgroundX] = useState(156.75);
-    const [channel1NameBackgroundX, setChannel1NameBackgroundX] = useState(176.5);
+    const [channel1NameBackgroundX, setChannel1NameBackgroundX] = useState(220.5);
 
     // State for video count rectangle x positions
-    const [channel3VideoCountBackgroundX, setChannel3VideoCountBackgroundX] = useState(605.5);
+    const [channel3VideoCountBackgroundX, setChannel3VideoCountBackgroundX] = useState(612.5);
     const [channel2VideoCountBackgroundX, setChannel2VideoCountBackgroundX] = useState(156.5);
     const [channel1VideoCountBackgroundX, setChannel1VideoCountBackgroundX] = useState(453.5);
 
     // State for channel name x positions
     const [channel3NameX, setChannel3NameX] = useState(571);
     const [channel2NameX, setChannel2NameX] = useState(196.352);
-    const [channel1NameX, setChannel1NameX] = useState(233);
+    const [channel1NameX, setChannel1NameX] = useState(273);
 
     // State for video count x positions
-    const [channel3VideoCountX, setChannel3VideoCountX] = useState(638.295);
+    const [channel3VideoCountX, setChannel3VideoCountX] = useState(644.302);
     const [channel2VideoCountX, setChannel2VideoCountX] = useState(196.1);
     const [channel1VideoCountX, setChannel1VideoCountX] = useState(493.395);
 
@@ -74,7 +74,7 @@ const ShareImage: React.FC<Props> = ({ youtubePath }) => {
             setChannel2NameBackgroundWidth(channel2NameRef.current.getBBox().width + 80);
         }
         if (channel3NameRef.current) {
-            const newWidth = channel3NameRef.current.getBBox().width + 70;
+            const newWidth = channel3NameRef.current.getBBox().width + 60;
             const diff = channel3NameBackgroundWidth - newWidth;
             const newBackgroundX = channel3NameBackgroundX + diff;
             const newTextX = channel3NameX + diff;
@@ -95,7 +95,7 @@ const ShareImage: React.FC<Props> = ({ youtubePath }) => {
             setChannel2VideoCountBackgroundWidth(channel2VideoCountRef.current.getBBox().width + 80);
         }
         if (channel3VideoCountRef.current) {
-            const newWidth = channel3VideoCountRef.current.getBBox().width + 80;
+            const newWidth = channel3VideoCountRef.current.getBBox().width + 60;
             const diff = channel3VideoCountBackgroundWidth - newWidth;
             const newBackgroundX = channel3VideoCountBackgroundX + diff;
             const newTextX = channel3VideoCountX + diff;
