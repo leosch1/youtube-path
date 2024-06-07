@@ -58,7 +58,7 @@ const LandingZone: FC<LandingZoneProps> = ({ onClickUpload }) => {
         <button className={`${styles.button} ${styles.exploreButton}`} onClick={goToStartingComponent}><ExploreIcon /> Explore an example</button>
         <button className={`${styles.button} ${styles.dataButton}`} onClick={openModal}><UploadIcon /> Use your own data</button>
       </div>
-      {isModalOpen && <OwnDataModal onClose={closeModal} onClickUpload={onClickUpload} />}
+      <OwnDataModal isOpen={isModalOpen} onClose={closeModal} onClickUpload={onClickUpload} />
     </div>
   );
 };
