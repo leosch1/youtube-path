@@ -24,7 +24,7 @@ import { ProcessingContext } from '../contexts/ProcessingContext';
 
 export default function Home() {
   const [showCookieInfo, setShowCookieInfo] = useState(true);
-  const [showMobileWarning, setShowMobileWarning] = useState(window.innerWidth <= 768);
+  const [showMobileWarning, setShowMobileWarning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
   const [isExampleData, setIsExampleData] = useState(true);
