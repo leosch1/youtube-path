@@ -2,7 +2,7 @@
 
 [![CI/CD Workflow](https://github.com/leosch1/youtube-path/actions/workflows/deploy.yaml/badge.svg)](https://github.com/leosch1/youtube-path/actions/workflows/deploy.yaml)
 
-https://youtube-path.schleo.com
+https://my-youtube-path.com
 
 ## Getting Started
 
