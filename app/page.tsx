@@ -165,6 +165,14 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
+      {showCookieInfo && (
+        <div className={styles.cookieInfo}>
+          <span style={{ flex: 1, textAlign: 'center' }}>
+            Please tell me when you find any bugs. There are analytics cookies used to allow UX improvement. Thanks for understanding! 😊
+          </span>
+          <span onClick={() => setShowCookieInfo(false)} style={{ marginLeft: '10px', marginRight: '10px', fontWeight: '600', cursor: 'pointer' }}>X</span>
+        </div>
+      )}
       <div className={styles.snapContainer}>
         <ProcessingContext.Provider value={{
           progress: processingProgress,
@@ -195,14 +203,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-      {showCookieInfo && (
-        <div className={styles.cookieInfo}>
-          <span style={{ flex: 1, textAlign: 'center' }}>
-            Please tell me when you find any bugs. There are analytics cookies used to allow UX improvement. Thanks for understanding! 😊
-          </span>
-          <span onClick={() => setShowCookieInfo(false)} style={{ marginLeft: '10px', marginRight: '10px', fontWeight: '600', cursor: 'pointer' }}>X</span>
-        </div>
-      )}
     </main>
   );
 }
