@@ -20,6 +20,8 @@
     color: var(--primary-text-color);
     overflow-y: auto;
     overflow-x: visible;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 .closeButton {
