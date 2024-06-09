@@ -147,6 +147,8 @@ CloudFront (needed for `/infrastructure/frontend.yaml`):
 
 Route53 (needed for `/infrastructure/frontend.yaml`):
 
+Replace "Z06009411YUFOH75I3G4S" with the correct hosted zone ID.
+
 ```json
 {
     "Version": "2012-10-17",
@@ -161,7 +163,7 @@ Route53 (needed for `/infrastructure/frontend.yaml`):
                 "route53:GetChange"
             ],
             "Resource": [
-                "arn:aws:route53:::hostedzone/Z0720910164XX8B5317OC",
+                "arn:aws:route53:::hostedzone/Z06009411YUFOH75I3G4S",
                 "arn:aws:route53:::change/*"
             ]
         }
