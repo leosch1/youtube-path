@@ -24,6 +24,7 @@ import { ProcessingContext } from '../contexts/ProcessingContext';
 
 export default function Home() {
   const [showCookieInfo, setShowCookieInfo] = useState(true);
+  const [showMobileWarning, setShowMobileWarning] = useState(window.innerWidth <= 768);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const watchHistoryDataRef = useRef<WatchHistoryEntry[]>([]);
   const [isExampleData, setIsExampleData] = useState(true);
@@ -38,10 +39,6 @@ export default function Home() {
   const [topChannelsVideoCountData, setTopChannelsVideoCountData] = useState<ChannelVideoCountData[]>(exampleTopChannelVideoCountData);
   const [dailyVideoCounts, setDailyVideoCounts] = useState<DateVideoCountData[]>(exampleDailyVideoCounts);
   const [youtubePath, setYoutubePath] = useState<ChannelVideoCountData[]>(exampleYoutubePathData);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   const handleDataChange = async (data: WatchHistoryEntry[]) => {
     try {
@@ -91,6 +88,10 @@ export default function Home() {
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const onClickUpload = () => {
     setProcessingProgress(0);
     setProcessingError(null);
@@ -136,16 +137,21 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    // Call the function initially to set the position
+  const handleResize = () => {
+    setShowMobileWarning(window.innerWidth <= 768);
     setVideosPerWeekWidth();
+  }
+
+  useEffect(() => {
+    // Call the function initially
+    handleResize()
 
     // Add the event listener
-    window.addEventListener('resize', setVideosPerWeekWidth);
+    window.addEventListener('resize', handleResize);
 
     // Cleanup function to remove the event listener when the component unmounts
     return () => {
-      window.removeEventListener('resize', setVideosPerWeekWidth);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -171,6 +177,11 @@ export default function Home() {
             Please tell me when you find any bugs. There are analytics cookies used to allow UX improvement. Thanks for understanding! 😊
           </span>
           <span onClick={() => setShowCookieInfo(false)} style={{ marginLeft: '10px', marginRight: '10px', fontWeight: '600', cursor: 'pointer' }}>X</span>
+        </div>
+      )}
+      {showMobileWarning && (
+        <div className={styles.mobileWarning} onClick={() => setShowMobileWarning(false)}>
+          This page is not optimized for mobile devices. Please use a desktop for the best experience.
         </div>
       )}
       <div className={styles.snapContainer}>

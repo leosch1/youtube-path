@@ -16,6 +16,8 @@
   --secondary-text-color: #CDCDCD;
 
   --success-color: #8EBF8D;
+  --warning-color: #FFDD57;
+  --on-warning-color: #2A2929;
 }
 
 * {
