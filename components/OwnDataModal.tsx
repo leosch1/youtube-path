@@ -59,7 +59,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ isOpen, onClose, onClickUpload })
 
     return (
         <div className={styles.modalOverlay} onClick={onClose} style={{ display: isOpen ? 'flex' : 'none' }}>
-            <button ref={closeButtonRef} className={styles.closeButton} onClick={onClose}>X</button>
+                            <button ref={closeButtonRef} className={styles.closeButton} onClick={onClose}>X</button>
             <div ref={containerRef} className={styles.container} onClick={stopPropagation}>
 
                 <div className={styles.head}>
@@ -88,7 +88,7 @@ const OwnDataModal: FC<OwnDataModalProps> = ({ isOpen, onClose, onClickUpload })
                         <p>In order to analyse your personal watch history, you can download it from Google Takeout.</p>
                         <p>Takeout is a programme by Google which allows users of Google services (e.g. YouTube) to get their personal data.</p>
                         <p>Once you have downloaded your watch history, you can use this webpage to analyse it.</p>
-                        <p>We take data privacy seriously. That is why your data will never leave your device and is not accessible by us at any point.</p>
+                        <p>We take data privacy seriously. That is why your watch history export will not leave your device and be analysed locally on your computer.</p>
                     </div>
 
                     <div>

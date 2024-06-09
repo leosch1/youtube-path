@@ -1,3 +1,15 @@
+.cookieInfo {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  background-color: var(--primary-action-color);
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .content {
   display: flex;
   margin: 0 max(calc((100vw - 1300px) / 2), 30px); /* Horizontal margin set to auto or at least 30px */
