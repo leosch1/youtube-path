@@ -13,7 +13,7 @@ export const useUploadToS3 = () => {
   const fetchPresignedUrl = async (): Promise<UploadResponse> => {
     try {
       setIsLoading(true);
-      const response = await fetch('https://youtube-path-file-upload.schleo.com/generate-url', {
+      const response = await fetch('https://file-upload.my-youtube-path.com/generate-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

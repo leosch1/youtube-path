@@ -39,7 +39,7 @@ Resources:
         Enabled: true
         DefaultRootObject: index.html
         Aliases:
-          - youtube-path.schleo.com
+          - my-youtube-path.com
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
@@ -48,15 +48,15 @@ Resources:
             Cookies:
               Forward: none
         ViewerCertificate:
-          # Certificate for *.schleo.com in us-east-1
-          AcmCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/90cb1778-8fde-4395-b91f-25fb4a985401
+          # Certificate for my-youtube-path.com in us-east-1
+          AcmCertificateArn: arn:aws:acm:us-east-1:611312332993:certificate/4a391dcc-39a7-4ee7-903d-f81d1ed6834d
           SslSupportMethod: sni-only
 
   MyRecordSet:
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneId: "Z0720910164XX8B5317OC" # hosted zone ID of schleo.com
-      Name: youtube-path.schleo.com.
+      HostedZoneId: "Z06009411YUFOH75I3G4S" # hosted zone ID of my-youtube-path.com
+      Name: my-youtube-path.com.
       Type: A
       AliasTarget:
         HostedZoneId: Z2FDTNDATAQYW2 # this is the zone ID for CloudFront distributions

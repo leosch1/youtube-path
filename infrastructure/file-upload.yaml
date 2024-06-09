@@ -9,7 +9,7 @@ Resources:
       CorsConfiguration:
         CorsRules:
           - AllowedOrigins:
-              - "https://youtube-path.schleo.com"
+              - "https://my-youtube-path.com"
               - "http://localhost:3000"
             AllowedMethods:
               - "PUT"
@@ -74,7 +74,7 @@ Resources:
               ACL: 'private',
             });
 
-            const allowedOrigins = ["https://youtube-path.schleo.com", "http://localhost:3000"];
+            const allowedOrigins = ["https://my-youtube-path.com", "http://localhost:3000"];
             const origin = event.headers.origin;
             let headers = {
               "Content-Type": "application/json"
@@ -193,9 +193,9 @@ Resources:
   ApiGatewayCustomDomain:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      DomainName: youtube-path-file-upload.schleo.com
-      # Certificate for *.schleo.com in eu-central-1
-      RegionalCertificateArn: arn:aws:acm:eu-central-1:611312332993:certificate/521236cc-4b93-4d38-8df8-755b7aa142be
+      DomainName: file-upload.my-youtube-path.com
+      # Certificate for file-upload.my-youtube-path.com in eu-central-1
+      RegionalCertificateArn: arn:aws:acm:eu-central-1:611312332993:certificate/80ff25a0-881d-4493-92d2-2f02f9424013
       EndpointConfiguration:
         Types:
           - REGIONAL
@@ -206,15 +206,15 @@ Resources:
       - ApiGatewayCustomDomain
       - ApiGatewayStage
     Properties:
-      DomainName: youtube-path-file-upload.schleo.com
+      DomainName: file-upload.my-youtube-path.com
       RestApiId: !Ref ApiGateway
       Stage: prod
 
   FileUploadApiDNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneId: "Z0720910164XX8B5317OC" # hosted zone ID of schleo.com
-      Name: youtube-path-file-upload.schleo.com
+      HostedZoneId: "Z06009411YUFOH75I3G4S" # hosted zone ID of my-youtube-path.com
+      Name: file-upload.my-youtube-path.com
       Type: A
       AliasTarget:
         HostedZoneId: !GetAtt ApiGatewayCustomDomain.RegionalHostedZoneId
