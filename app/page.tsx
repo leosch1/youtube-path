@@ -174,7 +174,7 @@ export default function Home() {
       {showCookieInfo && (
         <div className={styles.cookieInfo}>
           <span style={{ flex: 1, textAlign: 'center' }}>
-            Please tell me when you find any bugs. There are analytics cookies used to allow UX improvement. Thanks for understanding! 😊
+            Please tell me when you find any <a href="https://github.com/leosch1/youtube-path" target="_blank" rel="noopener">bugs</a>. There are analytics cookies used to allow UX improvement. Thanks for understanding! 😊
           </span>
           <span onClick={() => setShowCookieInfo(false)} style={{ marginLeft: '10px', marginRight: '10px', fontWeight: '600', cursor: 'pointer' }}>X</span>
         </div>
