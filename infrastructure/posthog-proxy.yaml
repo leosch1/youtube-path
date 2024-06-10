@@ -26,8 +26,8 @@ Resources:
           AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
           CachedMethods: [GET, HEAD, OPTIONS]
           CachePolicyId: !Ref CachePolicy
-          OriginRequestPolicyId: !Ref OriginRequestPolicy
-          ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+          OriginRequestPolicyId: "59781a5b-3903-41f3-afcb-af62929ccde1" # CORS-CustomOrigin
+          ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c" # CORS-and-SecurityHeadersPolicy
         CacheBehaviors:
           - PathPattern: /static/*
             TargetOriginId: AssetsOrigin
@@ -35,8 +35,8 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachedMethods: [GET, HEAD, OPTIONS]
             CachePolicyId: !Ref CachePolicy
-            OriginRequestPolicyId: !Ref OriginRequestPolicy
-            ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+            OriginRequestPolicyId: "59781a5b-3903-41f3-afcb-af62929ccde1" # CORS-CustomOrigin
+            ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c" # CORS-and-SecurityHeadersPolicy
 
   CachePolicy:
     Type: AWS::CloudFront::CachePolicy
@@ -57,19 +57,6 @@ Resources:
             QueryStringBehavior: all
           CookiesConfig:
             CookieBehavior: none
-
-  OriginRequestPolicy:
-    Type: AWS::CloudFront::OriginRequestPolicy
-    Properties:
-      OriginRequestPolicyConfig:
-        Name: CORS-CustomOrigin
-        Comment: 'Origin request policy for CORS'
-        HeadersConfig:
-          HeaderBehavior: none
-        QueryStringsConfig:
-          QueryStringBehavior: all
-        CookiesConfig:
-          CookieBehavior: none
 
 Outputs:
   CloudFrontURL:
