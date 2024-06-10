@@ -4,7 +4,7 @@ import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 
 const NEXT_PUBLIC_POSTHOG_KEY = "phc_EU80hbVZJHdKO2qHLaCG9P4gddpEE2Y0BbAn10hWi1Z"
-const NEXT_PUBLIC_POSTHOG_HOST = "https://eu.posthog.com"
+const NEXT_PUBLIC_POSTHOG_HOST = "https://d305bh0jz2baxp.cloudfront.net"
 
 if (typeof window !== 'undefined') {
   posthog.init(NEXT_PUBLIC_POSTHOG_KEY, {
