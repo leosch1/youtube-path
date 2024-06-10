@@ -28,7 +28,7 @@ Resources:
             CachedMethods: [OPTIONS]
           CachePolicyId: !Ref CachePolicy
           OriginRequestPolicyId: !Ref OriginRequestPolicy
-          ResponseHeadersPolicyId: !Ref ResponseHeadersPolicy
+          ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c"
         CacheBehaviors:
           - PathPattern: /static/*
             TargetOriginId: AssetsOrigin
@@ -38,7 +38,7 @@ Resources:
               CachedMethods: [OPTIONS]
             CachePolicyId: !Ref CachePolicy
             OriginRequestPolicyId: !Ref OriginRequestPolicy
-            ResponseHeadersPolicyId: !Ref ResponseHeadersPolicy
+            ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c"
 
   CachePolicy:
     Type: AWS::CloudFront::CachePolicy
@@ -72,28 +72,6 @@ Resources:
           QueryStringBehavior: all
         CookiesConfig:
           CookieBehavior: none
-
-  ResponseHeadersPolicy:
-    Type: AWS::CloudFront::ResponseHeadersPolicy
-    Properties:
-      ResponseHeadersPolicyConfig:
-        Name: CORS-with-preflight-and-SecurityHeadersPolicy
-        # SecurityHeadersConfig:
-        #   ContentSecurityPolicy:
-        #     Override: true
-        #     ContentSecurityPolicy: "default-src 'self';"
-        #   XContentTypeOptions:
-        #     Override: true
-        #     Option: nosniff
-        #   FrameOptions:
-        #     Override: true
-        #     Option: DENY
-        #   ReferrerPolicy:
-        #     Override: true
-        #     Option: no-referrer-when-downgrade
-        #   XSSProtection:
-        #     Override: true
-        #     Protection: "1; mode=block"
 
 Outputs:
   CloudFrontURL:
