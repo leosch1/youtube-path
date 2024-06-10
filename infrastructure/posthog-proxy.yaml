@@ -24,7 +24,7 @@ Resources:
           TargetOriginId: PostHogOrigin
           ViewerProtocolPolicy: redirect-to-https
           AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
-          CachedMethods: [HEAD, GET]
+          CachedMethods: [GET, HEAD, OPTIONS]
           CachePolicyId: !Ref CachePolicy
           OriginRequestPolicyId: !Ref OriginRequestPolicy
           ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c"
@@ -33,7 +33,7 @@ Resources:
             TargetOriginId: AssetsOrigin
             ViewerProtocolPolicy: redirect-to-https
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
-            CachedMethods: [HEAD, GET]
+            CachedMethods: [GET, HEAD, OPTIONS]
             CachePolicyId: !Ref CachePolicy
             OriginRequestPolicyId: !Ref OriginRequestPolicy
             ResponseHeadersPolicyId: "e61eb60c-9c35-4d20-a928-2b84e02af89c"
