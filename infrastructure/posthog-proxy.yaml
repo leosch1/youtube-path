@@ -75,22 +75,22 @@ Resources:
     Properties:
       ResponseHeadersPolicyConfig:
         Name: CORS-with-preflight-and-SecurityHeadersPolicy
-        SecurityHeadersConfig:
-          ContentSecurityPolicy:
-            Override: true
-            ContentSecurityPolicy: "default-src 'self';"
-          ContentTypeOptions:
-            Override: true
-            ContentTypeOptions: nosniff
-          FrameOptions:
-            Override: true
-            FrameOptions: DENY
-          ReferrerPolicy:
-            Override: true
-            ReferrerPolicy: no-referrer-when-downgrade
-          XSSProtection:
-            Override: true
-            XSSProtection: "1; mode=block"
+        # SecurityHeadersConfig:
+        #   ContentSecurityPolicy:
+        #     Override: true
+        #     ContentSecurityPolicy: "default-src 'self';"
+        #   XContentTypeOptions:
+        #     Override: true
+        #     Option: nosniff
+        #   FrameOptions:
+        #     Override: true
+        #     Option: DENY
+        #   ReferrerPolicy:
+        #     Override: true
+        #     Option: no-referrer-when-downgrade
+        #   XSSProtection:
+        #     Override: true
+        #     Protection: "1; mode=block"
 
 Outputs:
   CloudFrontURL:
