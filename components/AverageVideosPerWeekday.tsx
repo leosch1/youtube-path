@@ -153,7 +153,7 @@ const VideosPerWeekday: React.FC<VideosPerWeekdayProps> = ({ data }) => {
 
   return (
     <div className={styles.container}>
-      <h2>The average amount of videos you watch per weekday.</h2>
+      <h2>The average amount of videos you watch per day.</h2>
       <svg
         className={styles.VideosPerWeekday}
         ref={ref}
