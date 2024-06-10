@@ -52,7 +52,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 Create a user in the AWS account where the app should be deployed with the following policies. (Please adapt account ID, hosted zone ID, domain, domain certificate etc. in CloudFormation and policy templates accordingly.)
 
-CloudFormation (needed for `/infrastructure/frontend.yaml` and `/infrastructure/file-upload.yaml`):
+CloudFormation (needed for `/infrastructure/frontend.yaml`, `/infrastructure/file-upload.yaml` and `/infrastructure/posthog-proxy.yaml`):
 
 ```json
 {
@@ -73,8 +73,7 @@ CloudFormation (needed for `/infrastructure/frontend.yaml` and `/infrastructure/
                 "cloudformation:GetTemplateSummary"
             ],
             "Resource": [
-                "arn:aws:cloudformation:eu-central-1:611312332993:stack/YoutubePathFrontend/*",
-                "arn:aws:cloudformation:eu-central-1:611312332993:stack/YoutubePathFileUpload/*"
+              "*"
             ]
         }
     ]
@@ -122,7 +121,7 @@ S3 (needed for `/infrastructure/frontend.yaml`):
 }
 ```
 
-CloudFront (needed for `/infrastructure/frontend.yaml`):
+CloudFront (needed for `/infrastructure/frontend.yaml` and `/infrastructure/posthog-proxy.yaml`):
 
 ```json
 {
@@ -137,7 +136,23 @@ CloudFront (needed for `/infrastructure/frontend.yaml`):
                 "cloudfront:DeleteDistribution",
                 "cloudfront:ListDistributions",
                 "cloudfront:CreateInvalidation",
-                "cloudfront:TagResource"
+                "cloudfront:TagResource",
+                "cloudfront:ListTagsForResource",
+                "cloudfront:CreateCachePolicy",
+                "cloudfront:GetCachePolicy",
+                "cloudfront:UpdateCachePolicy",
+                "cloudfront:DeleteCachePolicy",
+                "cloudfront:ListCachePolicies",
+                "cloudfront:CreateOriginRequestPolicy",
+                "cloudfront:GetOriginRequestPolicy",
+                "cloudfront:UpdateOriginRequestPolicy",
+                "cloudfront:DeleteOriginRequestPolicy",
+                "cloudfront:ListOriginRequestPolicies",
+                "cloudfront:CreateResponseHeadersPolicy",
+                "cloudfront:GetResponseHeadersPolicy",
+                "cloudfront:UpdateResponseHeadersPolicy",
+                "cloudfront:DeleteResponseHeadersPolicy",
+                "cloudfront:ListResponseHeadersPolicies"
             ],
             "Resource": "*"
         }
