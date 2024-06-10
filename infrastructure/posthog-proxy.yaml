@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFront Configuration for PostHog as a Reverse Proxy
+
+Resources:
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+          - DomainName: eu.i.posthog.com
+            Id: PostHogOrigin
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+          - DomainName: eu-assets.i.posthog.com
+            Id: AssetsOrigin
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+        DefaultCacheBehavior:
+          TargetOriginId: PostHogOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            Items: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachedMethods: [OPTIONS]
+          CachePolicyId: !Ref CachePolicy
+          OriginRequestPolicyId: !Ref OriginRequestPolicy
+          ResponseHeadersPolicyId: !Ref ResponseHeadersPolicy
+        CacheBehaviors:
+          - PathPattern: /static/*
+            TargetOriginId: AssetsOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods:
+              Items: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+              CachedMethods: [OPTIONS]
+            CachePolicyId: !Ref CachePolicy
+            OriginRequestPolicyId: !Ref OriginRequestPolicy
+            ResponseHeadersPolicyId: !Ref ResponseHeadersPolicy
+
+  CachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: origin-cors
+        DefaultTTL: 86400
+        MaxTTL: 31536000
+        MinTTL: 0
+        ParametersInCacheKeyAndForwardedToOrigin:
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - Origin
+              - Authorization
+          QueryStringsConfig:
+            QueryStringBehavior: all
+
+  OriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Name: CORS-CustomOrigin
+        Comment: 'Origin request policy for CORS'
+        HeadersConfig:
+          HeaderBehavior: none
+        QueryStringsConfig:
+          QueryStringBehavior: all
+        CookiesConfig:
+          CookieBehavior: none
+
+  ResponseHeadersPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: CORS-with-preflight-and-SecurityHeadersPolicy
+        SecurityHeadersConfig:
+          ContentSecurityPolicy:
+            Override: true
+            ContentSecurityPolicy: "default-src 'self';"
+          ContentTypeOptions:
+            Override: true
+            ContentTypeOptions: nosniff
+          FrameOptions:
+            Override: true
+            FrameOptions: DENY
+          ReferrerPolicy:
+            Override: true
+            ReferrerPolicy: no-referrer-when-downgrade
+          XSSProtection:
+            Override: true
+            XSSProtection: "1; mode=block"
+
+Outputs:
+  CloudFrontURL:
+    Description: The URL of the CloudFront Distribution
+    Value: !GetAtt CloudFrontDistribution.DomainName

@@ -36,8 +36,7 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file infrastructure/frontend.yaml \
-            --stack-name YoutubePathFrontend \
-            # --capabilities CAPABILITY_NAMED_IAM
+            --stack-name YoutubePathFrontend
 
       - name: Deploy File Upload (Backend) with CloudFormation Template
         run: |
@@ -45,6 +44,12 @@ jobs:
             --template-file infrastructure/file-upload.yaml \
             --stack-name YouTubePathFileUpload \
             --capabilities CAPABILITY_NAMED_IAM
+
+      - name: Deploy PostHog proxy (Backend) with CloudFormation Template
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/posthog-proxy.yaml \
+            --stack-name YouTubePathPostHogProxy
 
       - name: Sync Files to S3 Bucket
         run: |
