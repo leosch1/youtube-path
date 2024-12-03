@@ -1,8 +1,12 @@
+# YouTube Path
+
+YouTube Path is a frontend-only web application that allows you to analyse your YouTube watch history.
+
+Try it out at [my-youtube-path.com](https://my-youtube-path.com).
+
 ## Status
 
 [![CI/CD Workflow](https://github.com/leosch1/youtube-path/actions/workflows/deploy.yaml/badge.svg)](https://github.com/leosch1/youtube-path/actions/workflows/deploy.yaml)
-
-https://my-youtube-path.com
 
 ## Getting Started
 
