@@ -55,7 +55,7 @@ Resources:
     Properties:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: nodejs20.x
+      Runtime: nodejs24.x
       Code:
         ZipFile: |
           const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
