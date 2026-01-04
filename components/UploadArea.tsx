@@ -11,9 +11,9 @@ interface UploadAreaProps {
 
 const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
     const { progress, error: processingError } = useContext(ProcessingContext);
-    const { fetchPresignedUrl, uploadFileToS3, isLoading, error: uploadError, isUploadSuccessful } = useUploadToS3();
+    const { fetchPresignedUrl, uploadFileToS3, isLoading, error: uploadError, isUploadSuccessful, setIsUploadSuccessful, setError: setUploadError } = useUploadToS3();
 
-    const handleUpload = async () => {
+    const debugFileUploadHandler = async () => {
         try {
             const { uploadURL } = await fetchPresignedUrl();
             await uploadFileToS3(uploadURL, (processingError as CalculationError).data);
@@ -23,8 +23,16 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
         }
     };
 
+    const onClickUploadHandler = () => {
+        // Reset upload state before new upload
+        setUploadError(null);
+        setIsUploadSuccessful(false);
+
+        onClickUpload();
+    }
+
     return (
-        <div className={styles.uploadArea} onClick={!processingError ? onClickUpload : undefined}>
+        <div className={styles.uploadArea} onClick={!processingError ? onClickUploadHandler : undefined}>
             <svg className={`${styles.dottedRectangle} ${!processingError ? styles.clickable : ''}`}>
                 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="var(--secondary-background-color)" strokeWidth="5" strokeDasharray="10,10" />
             </svg>
@@ -38,21 +46,17 @@ const UploadArea: FC<UploadAreaProps> = ({ onClickUpload }) => {
                         className={styles.errorIcon}
                     />
                     <p className={styles.errorTitle}>Oops, there was an error during processing.</p>
-                    {processingError instanceof CalculationError ? (
-                        <div className={styles.errorButtons}>
-                            <button className={styles.retryButton} onClick={onClickUpload}>Try Again</button>
-                            <button
-                                className={`${styles.sendButton} ${isLoading ? styles.disabled : ''} ${isUploadSuccessful ? styles.uploadSuccessful : ''}`}
-                                onClick={handleUpload}
-                                disabled={isLoading || isUploadSuccessful}
-                            >
-                                {isUploadSuccessful ? 'Upload successful' : 'Send Watch History'}
-                            </button>
-                        </div>
-                    ) : (
-                        /* TODO: Do proper error displaying */
-                        <p>Error: {processingError.message}</p>
-                    )}
+
+                    <div className={styles.errorButtons}>
+                        <button className={styles.retryButton} onClick={onClickUploadHandler}>Try Again</button>
+                        <button
+                            className={`${styles.sendButton} ${isLoading ? styles.disabled : ''} ${isUploadSuccessful ? styles.uploadSuccessful : ''}`}
+                            onClick={debugFileUploadHandler}
+                            disabled={isLoading || isUploadSuccessful}
+                        >
+                            {isUploadSuccessful ? 'Upload successful' : 'Send Watch History for Debugging'}
+                        </button>
+                    </div>
                     {/* TODO: Do proper error displaying */}
                     {uploadError && <p>Error: {uploadError.message}</p>}
                 </div>
