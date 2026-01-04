@@ -48,5 +48,5 @@ export const useUploadToS3 = () => {
     }
   };
 
-  return { fetchPresignedUrl, uploadFileToS3, isLoading, error, isUploadSuccessful };
+  return { fetchPresignedUrl, uploadFileToS3, isLoading, error, isUploadSuccessful, setIsUploadSuccessful, setError};
 };

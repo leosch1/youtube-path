@@ -6,14 +6,16 @@ export const approximatelyEqual = (a: number, b: number, epsilon = 0.00001): boo
 }
 
 export const sortDataByTime = (data: WatchHistoryEntry[]): WatchHistoryEntry[] => {
-  // Create a copy of the data array
-  const sortedData = [...data];
+  for (const entry of data) {
+    if (!entry.time) {
+      throw new Error("WatchHistoryEntry.time is missing");
+    }
+  }
 
-  // Sort the copy in ascending order by date
-  sortedData.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
-
-  // Return the sorted copy
-  return sortedData;
+  return [...data].sort(
+    (a, b) =>
+      new Date(a.time).getTime() - new Date(b.time).getTime()
+  );
 };
 
 export const getVideosPerWeekData = (data: WatchHistoryEntry[]): DateVideoCountData[] => {

@@ -84,7 +84,7 @@ export default function Home() {
       setIsExampleData(false);
     } catch (error) {
       console.error(error);
-      setProcessingError(new CalculationError('An error occurred while processing the data.', watchHistoryDataRef.current));
+      setProcessingError(new CalculationError('An error occurred while processing the data.', data));
     }
   };
 
